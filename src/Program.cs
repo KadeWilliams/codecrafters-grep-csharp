@@ -38,13 +38,13 @@ static bool MatchPattern(string inputLine, string pattern)
                     pointer++;
                     continue;
                 }
-                if (pointer >= validCharacters.Length)
+                if (pointer >= validCharacters.Length - 1)
                 {
-                    return false;
+                    return true;
                 }
                 if (!validCharacters.Contains(curChar))
                 {
-                    return true;
+                    return false;
                 }
                 pointer++;
                 continue;
