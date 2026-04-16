@@ -25,19 +25,26 @@ static bool MatchPattern(string inputLine, string pattern)
 
         if (patternList[patternPointer] == "\\d")
         {
-            if (char.IsDigit(inputLine[inputPointer]) || inputLine[inputPointer].ToString() == patternList[patternPointer])
+            if (char.IsDigit(inputLine[inputPointer]))
             {
                 inputPointer++;
                 patternPointer++;
                 continue;
             }
-            else
-            {
-                inputPointer = recheckPointer;
-                patternPointer = 0;
-                recheckPointer++;
-                continue;
-            }
+        }
+        else if (inputLine[inputPointer].ToString() == patternList[patternPointer])
+        {
+            inputPointer++;
+            patternPointer++;
+            continue;
+
+        }
+        else
+        {
+            inputPointer = recheckPointer;
+            patternPointer = 0;
+            recheckPointer++;
+            continue;
         }
     }
     return false;
