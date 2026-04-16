@@ -53,6 +53,40 @@ static bool MatchPattern(string inputLine, string pattern)
     }
 }
 
+static bool MatchPatterns(string inputLine, string patterns)
+{
+    //int pointer = 0;
+
+    // loop over the patterns 
+    // build a string that's going to be checked (ex: 100 matches \d\d\d)
+    foreach (var pat in patterns.Split())
+    {
+        Console.WriteLine(pat);
+    }
+
+    return false;
+
+    //while(true)
+    //{
+    //    var curChar = validCharacters[pointer];
+    //    if (curChar == '^')
+    //    {
+    //        pointer++;
+    //        continue;
+    //    }
+    //    if (pointer >= validCharacters.Length - 1)
+    //    {
+    //        return false;
+    //    }
+    //    if (!inputLine.Contains(curChar))
+    //    {
+    //        return true;
+    //    }
+    //    pointer++;
+    //    continue;
+    //}
+}
+
 if (args[0] != "-E")
 {
     Console.WriteLine("Expected first argument to be '-E'");
@@ -67,7 +101,7 @@ string inputLine = Console.In.ReadToEnd();
 
 // Uncomment this block to pass the first stage
 
-if (MatchPattern(inputLine, pattern))
+if (MatchPatterns(inputLine, pattern))
 {
     Environment.Exit(0);
 }
