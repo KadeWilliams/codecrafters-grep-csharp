@@ -22,7 +22,7 @@ static bool MatchPattern(string inputLine, string pattern)
     else if (pattern.StartsWith("[") && pattern.EndsWith("]"))
     {
         var validCharacters = pattern.Substring(pattern.IndexOf('[') + 1, pattern.IndexOf(']') - pattern.IndexOf('[') - 1);
-        return inputLine.Contains(validCharacters);
+        return validCharacters.Any(c => inputLine.Contains(c));
     }
     else
     {
