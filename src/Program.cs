@@ -32,7 +32,6 @@ static bool MatchPattern(string inputLine, string pattern)
             while(true)
             {
                 var curChar = validCharacters[pointer];
-                Console.WriteLine(curChar);
                 if (curChar == '^')
                 {
                     pointer++;
@@ -40,11 +39,11 @@ static bool MatchPattern(string inputLine, string pattern)
                 }
                 if (pointer >= validCharacters.Length - 1)
                 {
-                    return true;
+                    return false;
                 }
                 if (!inputLine.Contains(curChar))
                 {
-                    return false;
+                    return true;
                 }
                 pointer++;
                 continue;
