@@ -15,6 +15,10 @@ static bool MatchPattern(string inputLine, string pattern)
     {
         return inputLine.Any(char.IsDigit);
     }
+    else if (pattern == "\\w")
+    {
+        return inputLine.Any(char.IsLetterOrDigit) || inputLine.Contains("_");
+    }
     else
     {
         throw new ArgumentException($"Unhandled pattern: {pattern}");
