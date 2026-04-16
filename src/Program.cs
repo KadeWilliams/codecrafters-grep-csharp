@@ -25,11 +25,34 @@ static bool MatchPattern(string inputLine, string pattern)
         // should not contain whatever follows the '^'
         if (validCharacters[0] == '^')
         {
-            var o = validCharacters.Select(c => {
-                Console.WriteLine($"{inputLine} contains {c}");
-                return !inputLine.Contains(c);
-            });
-            return o.First();
+            /*
+                if pattern == [^abc] and input == "cat", return true since 't' is not in the pattern
+             */
+            while(true)
+            {
+                int pointer = 0;
+                var curChar = validCharacters[pointer];
+                if (curChar == '^')
+                {
+                    pointer++;
+                    continue;
+                }
+                if (pointer == validCharacters.Length)
+                {
+                    return false;
+                }
+                if (!validCharacters.Contains(curChar))
+                {
+                    return true;
+                }
+                pointer++;
+                continue;
+            }
+            //var o = validCharacters.Select(c => {
+            //    Console.WriteLine($"{inputLine} contains {c}");
+            //    return !inputLine.Contains(c);
+            //});
+            //return o.First();
         }
         return validCharacters.Any(c => inputLine.Contains(c));
     }
