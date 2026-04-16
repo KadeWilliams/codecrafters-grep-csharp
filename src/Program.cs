@@ -20,7 +20,7 @@ static bool MatchPattern(string inputLine, string pattern)
 
     while (inputPointer <= inputLine.Length - 1)
     {
-        if (patternPointer == patternList.Count())
+        if (patternPointer == patternList.Count() - 1)
             return true;
 
         if (patternList[patternPointer] == "\\d")
