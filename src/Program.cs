@@ -28,9 +28,9 @@ static bool MatchPattern(string inputLine, string pattern)
             /*
                 if pattern == [^abc] and input == "cat", return true since 't' is not in the pattern
              */
+            int pointer = 0;
             while(true)
             {
-                int pointer = 0;
                 var curChar = validCharacters[pointer];
                 Console.WriteLine(curChar);
                 if (curChar == '^')
