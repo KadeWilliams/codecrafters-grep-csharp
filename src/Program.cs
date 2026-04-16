@@ -42,7 +42,7 @@ static bool MatchPattern(string inputLine, string pattern)
                 {
                     return true;
                 }
-                if (!validCharacters.Contains(curChar))
+                if (!inputLine.Contains(curChar))
                 {
                     return false;
                 }
