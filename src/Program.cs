@@ -4,66 +4,43 @@ using System.Text.RegularExpressions;
 
 static bool MatchPattern(string inputLine, string pattern)
 {
-    //while (true)
-    //{
-    //    // loop over the input
-    //    // does it match the pattern
-    //    // do I need to loop over the pattern to be able to find
-
-    //}
-    Console.WriteLine(inputLine);
-    Console.WriteLine(pattern);
-    foreach (var pat in pattern.Split())
+    var patternList = new List<string>();
+    foreach (var (value, index) in pattern.Select((v, i) => (v, i)))
     {
-
-        Console.WriteLine(pat);
-        Console.WriteLine(pat.Length);
-    }
-
-    if (pattern.Length == 1)
-    {
-        return inputLine.Contains(pattern);
-    } 
-    else if (pattern == "\\d")
-    {
-        return inputLine.Any(char.IsDigit);
-    }
-    else if (pattern == "\\w")
-    {
-        return inputLine.Any(char.IsLetterOrDigit) || inputLine.Contains("_");
-    } 
-    else if (pattern.Contains("[") && pattern.Contains("]"))
-    {
-        var validCharacters = pattern.Substring(pattern.IndexOf('[') + 1, pattern.IndexOf(']') - pattern.IndexOf('[') - 1);
-        if (validCharacters[0] == '^')
+        patternList.Add(value.ToString());
+        if (value == '\\')
         {
-            int pointer = 0;
-            while(true)
+            patternList.Add(pattern[index + 1].ToString());
+        }
+    }
+
+    var patternPointer = 0;
+    var inputPointer = 0;
+    var recheckPointer = 0;
+
+    while (inputPointer <= inputLine.Length)
+    {
+        if (patternPointer == patternList.Count())
+            return true;
+
+        if (patternList[patternPointer] == "\\d")
+        {
+            if (char.IsDigit(inputLine[inputPointer]) || inputLine[inputPointer].ToString() == patternList[patternPointer])
             {
-                var curChar = validCharacters[pointer];
-                if (curChar == '^')
-                {
-                    pointer++;
-                    continue;
-                }
-                if (pointer >= validCharacters.Length - 1)
-                {
-                    return false;
-                }
-                if (!inputLine.Contains(curChar))
-                {
-                    return true;
-                }
-                pointer++;
+                inputPointer++;
+                patternPointer++;
+                continue;
+            }
+            else
+            {
+                inputPointer = recheckPointer;
+                patternPointer = 0;
+                recheckPointer++;
                 continue;
             }
         }
-        return validCharacters.Any(c => inputLine.Contains(c));
     }
-    else
-    {
-        throw new ArgumentException($"Unhandled pattern: {pattern}");
-    }
+    return false;
 }
 
 if (args[0] != "-E")
