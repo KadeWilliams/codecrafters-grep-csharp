@@ -3,6 +3,7 @@ using System.IO;
 
 static bool MatchPattern(string inputLine, string pattern)
 {
+    Console.WriteLine(inputLine, pattern);
     if (pattern.Length == 1)
     {
         return inputLine.Contains(pattern);
@@ -23,7 +24,7 @@ string pattern = args[1];
 string inputLine = Console.In.ReadToEnd();
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
-Console.Error.WriteLine("Logs from your program will appear here!");
+// Console.Error.WriteLine("Logs from your program will appear here!");
 
 // Uncomment this block to pass the first stage
 
