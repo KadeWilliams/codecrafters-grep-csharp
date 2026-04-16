@@ -19,9 +19,14 @@ static bool MatchPattern(string inputLine, string pattern)
     {
         return inputLine.Any(char.IsLetterOrDigit) || inputLine.Contains("_");
     } 
-    else if (pattern.StartsWith("[") && pattern.EndsWith("]"))
+    else if (pattern.Contains("[") && pattern.Contains("]"))
     {
         var validCharacters = pattern.Substring(pattern.IndexOf('[') + 1, pattern.IndexOf(']') - pattern.IndexOf('[') - 1);
+        // should not contain whatever follows the '^'
+        if (validCharacters[0] == '^')
+        {
+            return validCharacters.Any(c => !inputLine.Contains(c));
+        }
         return validCharacters.Any(c => inputLine.Contains(c));
     }
     else
