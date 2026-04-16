@@ -18,6 +18,11 @@ static bool MatchPattern(string inputLine, string pattern)
     else if (pattern == "\\w")
     {
         return inputLine.Any(char.IsLetterOrDigit) || inputLine.Contains("_");
+    } 
+    else if (pattern.StartsWith("[") && pattern.EndsWith("]"))
+    {
+        var validCharacters = pattern.Substring(pattern.IndexOf('[') + 1, pattern.IndexOf(']') - pattern.IndexOf('[') - 1);
+        return inputLine.Contains(validCharacters);
     }
     else
     {
