@@ -28,11 +28,11 @@ static bool MatchPattern(string inputLine, string pattern)
             /*
                 if pattern == [^abc] and input == "cat", return true since 't' is not in the pattern
              */
-            bool looper = true;
-            while(looper)
+            while(true)
             {
                 int pointer = 0;
                 var curChar = validCharacters[pointer];
+                Console.WriteLine(curChar);
                 if (curChar == '^')
                 {
                     pointer++;
@@ -40,12 +40,10 @@ static bool MatchPattern(string inputLine, string pattern)
                 }
                 if (pointer >= validCharacters.Length)
                 {
-                    looper = false;
                     return false;
                 }
                 if (!validCharacters.Contains(curChar))
                 {
-                    looper = false;
                     return true;
                 }
                 pointer++;
