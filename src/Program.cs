@@ -22,12 +22,8 @@ static bool MatchPattern(string inputLine, string pattern)
     else if (pattern.Contains("[") && pattern.Contains("]"))
     {
         var validCharacters = pattern.Substring(pattern.IndexOf('[') + 1, pattern.IndexOf(']') - pattern.IndexOf('[') - 1);
-        // should not contain whatever follows the '^'
         if (validCharacters[0] == '^')
         {
-            /*
-                if pattern == [^abc] and input == "cat", return true since 't' is not in the pattern
-             */
             int pointer = 0;
             while(true)
             {
@@ -48,11 +44,6 @@ static bool MatchPattern(string inputLine, string pattern)
                 pointer++;
                 continue;
             }
-            //var o = validCharacters.Select(c => {
-            //    Console.WriteLine($"{inputLine} contains {c}");
-            //    return !inputLine.Contains(c);
-            //});
-            //return o.First();
         }
         return validCharacters.Any(c => inputLine.Contains(c));
     }
