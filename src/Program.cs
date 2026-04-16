@@ -7,15 +7,18 @@ static bool MatchPattern(string inputLine, string pattern)
     Console.WriteLine(inputLine);
     Console.WriteLine(pattern);
 
-    return Regex.IsMatch(inputLine, pattern);
-    //if (pattern.Length == 1)
-    //{
-        //return inputLine.Contains(pattern);
-    //}
-    //else
-    //{
-        //throw new ArgumentException($"Unhandled pattern: {pattern}");
-    //}
+    if (pattern.Length == 1)
+    {
+        return inputLine.Contains(pattern);
+    } 
+    else if (pattern == "\\d")
+    {
+        return inputLine.Any(char.IsDigit);
+    }
+    else
+    {
+        throw new ArgumentException($"Unhandled pattern: {pattern}");
+    }
 }
 
 if (args[0] != "-E")
