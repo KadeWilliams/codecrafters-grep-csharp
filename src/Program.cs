@@ -3,7 +3,8 @@ using System.IO;
 
 static bool MatchPattern(string inputLine, string pattern)
 {
-    Console.WriteLine(inputLine, pattern);
+    Console.WriteLine(inputLine);
+    Console.WriteLine(pattern);
 
     return true;
     //if (pattern.Length == 1)
