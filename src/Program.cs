@@ -37,7 +37,7 @@ static bool MatchPattern(string inputLine, string pattern)
                     pointer++;
                     continue;
                 }
-                if (pointer == validCharacters.Length)
+                if (pointer >= validCharacters.Length)
                 {
                     return false;
                 }
