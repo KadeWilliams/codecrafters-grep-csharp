@@ -1,12 +1,13 @@
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 
 static bool MatchPattern(string inputLine, string pattern)
 {
     Console.WriteLine(inputLine);
     Console.WriteLine(pattern);
 
-    return true;
+    return Regex.IsMatch(inputLine, pattern);
     //if (pattern.Length == 1)
     //{
         //return inputLine.Contains(pattern);
