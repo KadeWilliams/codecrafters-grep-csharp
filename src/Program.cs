@@ -18,7 +18,7 @@ static bool MatchPattern(string inputLine, string pattern)
     var inputPointer = 0;
     var recheckPointer = 0;
 
-    while (inputPointer <= inputLine.Length)
+    while (inputPointer <= inputLine.Length - 1)
     {
         if (patternPointer == patternList.Count())
             return true;
