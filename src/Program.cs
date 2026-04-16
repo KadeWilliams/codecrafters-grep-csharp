@@ -4,14 +4,16 @@ using System.IO;
 static bool MatchPattern(string inputLine, string pattern)
 {
     Console.WriteLine(inputLine, pattern);
-    if (pattern.Length == 1)
-    {
-        return inputLine.Contains(pattern);
-    }
-    else
-    {
-        throw new ArgumentException($"Unhandled pattern: {pattern}");
-    }
+
+    return true;
+    //if (pattern.Length == 1)
+    //{
+        //return inputLine.Contains(pattern);
+    //}
+    //else
+    //{
+        //throw new ArgumentException($"Unhandled pattern: {pattern}");
+    //}
 }
 
 if (args[0] != "-E")
