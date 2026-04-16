@@ -25,7 +25,7 @@ static bool MatchPattern(string inputLine, string pattern)
         // should not contain whatever follows the '^'
         if (validCharacters[0] == '^')
         {
-            return validCharacters.Any(c => !inputLine.Contains(c));
+            return !validCharacters.Any(c => inputLine.Contains(c));
         }
         return validCharacters.Any(c => inputLine.Contains(c));
     }
