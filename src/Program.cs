@@ -13,7 +13,7 @@ static bool MatchPattern(string inputLine, string pattern)
     //}
     Console.WriteLine(inputLine);
     Console.WriteLine(pattern);
-    Console.WriteLine(pattern.Length);
+    Console.WriteLine(pattern.Split().Select(c => c.Length));
 
     if (pattern.Length == 1)
     {
