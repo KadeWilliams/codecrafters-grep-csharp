@@ -4,8 +4,16 @@ using System.Text.RegularExpressions;
 
 static bool MatchPattern(string inputLine, string pattern)
 {
+    //while (true)
+    //{
+    //    // loop over the input
+    //    // does it match the pattern
+    //    // do I need to loop over the pattern to be able to find
+
+    //}
     Console.WriteLine(inputLine);
     Console.WriteLine(pattern);
+    Console.WriteLine(pattern.Length);
 
     if (pattern.Length == 1)
     {
@@ -53,40 +61,6 @@ static bool MatchPattern(string inputLine, string pattern)
     }
 }
 
-static bool MatchPatterns(string inputLine, string patterns)
-{
-    //int pointer = 0;
-
-    // loop over the patterns 
-    // build a string that's going to be checked (ex: 100 matches \d\d\d)
-    foreach (var pat in patterns.Split())
-    {
-        Console.WriteLine(pat);
-    }
-
-    return false;
-
-    //while(true)
-    //{
-    //    var curChar = validCharacters[pointer];
-    //    if (curChar == '^')
-    //    {
-    //        pointer++;
-    //        continue;
-    //    }
-    //    if (pointer >= validCharacters.Length - 1)
-    //    {
-    //        return false;
-    //    }
-    //    if (!inputLine.Contains(curChar))
-    //    {
-    //        return true;
-    //    }
-    //    pointer++;
-    //    continue;
-    //}
-}
-
 if (args[0] != "-E")
 {
     Console.WriteLine("Expected first argument to be '-E'");
@@ -101,7 +75,7 @@ string inputLine = Console.In.ReadToEnd();
 
 // Uncomment this block to pass the first stage
 
-if (MatchPatterns(inputLine, pattern))
+if (MatchPattern(inputLine, pattern))
 {
     Environment.Exit(0);
 }
