@@ -59,6 +59,7 @@ static bool MatchPattern(string inputLine, string pattern)
         if (patternPointer == tokenList.Count())
         {
             Console.WriteLine($"passing: {string.Join(", ", matchedCharacters)}");
+            Console.WriteLine($"passing: {tokenList.Count()}");
             return true;
         }
         if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
@@ -67,17 +68,18 @@ static bool MatchPattern(string inputLine, string pattern)
             inputPointer++;
             patternPointer++;
             continue;
-        }
-
+        } 
         inputPointer = recheckPointer;
         patternPointer = 0;
         recheckPointer++;
         continue;
     }
-    Console.WriteLine($"failing: {string.Join(", ", matchedCharacters)}");
+    Console.WriteLine($"failing: {tokenList.Count()}");
+    Console.WriteLine($"failing: {tokenList.Count()}");
     if (patternPointer == tokenList.Count())
     {
         Console.WriteLine($"passing: {string.Join(", ", matchedCharacters)}");
+        Console.WriteLine($"passing: {tokenList.Count()}");
         return true;
     }
     return false;
