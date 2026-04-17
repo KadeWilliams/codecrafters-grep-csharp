@@ -18,16 +18,7 @@ static bool MatchPattern(string inputLine, string pattern)
             patternList.Add(value.ToString());
         }
     }
-    foreach (var (value, index) in pattern.Select((v, i) => (v, i)))
-    {
-        patternList.Add(value.ToString());
-        if (value == '\\')
-        {
-            patternList.Add(pattern[index + 1].ToString());
-        }
-    }
 
-    Console.Error.WriteLine(string.Join(", ", patternList));
     var patternPointer = 0;
     var inputPointer = 0;
     var recheckPointer = 0;
