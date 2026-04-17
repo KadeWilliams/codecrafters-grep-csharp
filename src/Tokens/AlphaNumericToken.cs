@@ -10,6 +10,6 @@ public class AlphaNumericToken : IToken
 {
     public bool Matches(char c)
     {
-        return char.IsLetterOrDigit(c);
+        return char.IsLetterOrDigit(c) || c == '_';
     }
 }
