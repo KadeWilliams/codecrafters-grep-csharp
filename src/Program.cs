@@ -29,7 +29,7 @@ static bool MatchPattern(string inputLine, string pattern)
             if (pattern[i+1] == '^')
             {
                 isNegative = true;
-                i++;
+                i+=2;
             }
 
             var groupList = new List<char>();
