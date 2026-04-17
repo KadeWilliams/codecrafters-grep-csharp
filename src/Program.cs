@@ -41,6 +41,7 @@ static bool MatchPattern(string inputLine, string pattern)
                 groupList.Add(pattern[i]);
                 i++;
             }
+            Console.WriteLine($"GroupList:\n{string.Join(", ", groupList)}");
             var groupTokenGroup = new CharacterGroupToken(groupList, isNegative); 
         }
         else
@@ -74,7 +75,7 @@ static bool MatchPattern(string inputLine, string pattern)
         recheckPointer++;
         continue;
     }
-    Console.WriteLine($"failing: {tokenList.Count()}");
+    Console.WriteLine($"failing: {string.Join(", ", matchedCharacters)}");
     Console.WriteLine($"failing: {tokenList.Count()}");
     if (patternPointer == tokenList.Count())
     {
