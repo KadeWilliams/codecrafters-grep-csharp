@@ -5,6 +5,19 @@ using System.Text.RegularExpressions;
 static bool MatchPattern(string inputLine, string pattern)
 {
     var patternList = new List<string>();
+    for (var i = 0; i<=pattern.Length - 1; i++)
+    {
+        var value = pattern[i];
+        if (value == '\\')
+        {
+            patternList.Add($"{value.ToString()}{pattern[i+1].ToString()}");
+            i++;
+        } 
+        else
+        {
+            patternList.Add(value.ToString());
+        }
+    }
     foreach (var (value, index) in pattern.Select((v, i) => (v, i)))
     {
         patternList.Add(value.ToString());
