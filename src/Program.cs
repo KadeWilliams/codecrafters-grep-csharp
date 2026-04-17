@@ -31,6 +31,10 @@ static bool MatchPattern(string inputLine, string pattern)
                 isNegative = true;
                 i+=2;
             }
+            else 
+            {
+                i++;
+            }
 
             var groupList = new List<char>();
             while (true)
