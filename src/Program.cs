@@ -53,13 +53,10 @@ static bool MatchPattern(string inputLine, string pattern)
             continue;
 
         }
-        else
-        {
-            inputPointer = recheckPointer;
-            patternPointer = 0;
-            recheckPointer++;
-            continue;
-        }
+        inputPointer = recheckPointer;
+        patternPointer = 0;
+        recheckPointer++;
+        continue;
     }
     return false;
 }
