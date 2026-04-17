@@ -19,6 +19,7 @@ static bool MatchPattern(string inputLine, string pattern)
         }
     }
 
+    Console.Error.WriteLine(string.Join(", ", patternList));
     var patternPointer = 0;
     var inputPointer = 0;
     var recheckPointer = 0;
