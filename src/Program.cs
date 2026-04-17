@@ -26,16 +26,15 @@ static bool MatchPattern(string inputLine, string pattern)
         else if (value == '[')
         {
             var isNegative = false;
+            if (pattern[i+1] == '^')
+            {
+                isNegative = true;
+                i++;
+            }
 
             var groupList = new List<char>();
             while (true)
             {
-                if (pattern[i+1] == '^')
-                {
-                    isNegative = true;
-                    i++;
-                    continue;
-                }
                 if (pattern[i] == ']')
                     break;
 
