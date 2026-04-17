@@ -23,16 +23,21 @@ static bool MatchPattern(string inputLine, string pattern)
     var patternPointer = 0;
     var inputPointer = 0;
     var recheckPointer = 0;
+    var matchedCharacters = new List<string>();
 
     while (inputPointer <= inputLine.Length - 1)
     {
         if (patternPointer == patternList.Count())
+        {
+            Console.WriteLine(string.Join(", ", matchedCharacters));
             return true;
+        }
 
         if (patternList[patternPointer] == "\\d")
         {
             if (char.IsDigit(inputLine[inputPointer]))
             {
+                matchedCharacters.Add(inputLine[inputPointer].ToString());
                 inputPointer++;
                 patternPointer++;
                 continue;
@@ -42,6 +47,7 @@ static bool MatchPattern(string inputLine, string pattern)
         {
             if (char.IsLetterOrDigit(inputLine[inputPointer]))
             {
+                matchedCharacters.Add(inputLine[inputPointer].ToString());
                 inputPointer++;
                 patternPointer++;
                 continue;
@@ -49,16 +55,18 @@ static bool MatchPattern(string inputLine, string pattern)
         }
         else if (inputLine[inputPointer].ToString() == patternList[patternPointer])
         {
+            matchedCharacters.Add(inputLine[inputPointer].ToString());
             inputPointer++;
             patternPointer++;
             continue;
 
         }
-        recheckPointer++;
         inputPointer = recheckPointer;
         patternPointer = 0;
+        recheckPointer++;
         continue;
     }
+    Console.WriteLine(string.Join(", ", matchedCharacters));
     return false;
 }
 
