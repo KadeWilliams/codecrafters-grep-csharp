@@ -1,25 +1,55 @@
+using codecrafters_grep.src.Tokens;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
 static bool MatchPattern(string inputLine, string pattern)
 {
-    var patternList = new List<string>();
-    for (var i = 0; i<=pattern.Length - 1; i++)
+    //var patternList = new List<string>();
+    var tokenList = new List<IToken>();
+    for (var i = 0; i <= pattern.Length - 1; i++)
     {
         var value = pattern[i];
         if (value == '\\')
         {
-            patternList.Add($"{value.ToString()}{pattern[i+1].ToString()}");
+            switch (pattern[i+1])
+            {
+                case 'w':
+                    tokenList.Add(new AlphaNumericToken());
+                    break;
+                case 'd':
+                    tokenList.Add(new DigitToken());
+                    break;
+            }
             i++;
-        } 
+        }
+        else if (value == '[')
+        {
+            var isNegative = false;
+
+            var groupList = new List<char>();
+            while (true)
+            {
+                if (pattern[i+1] == '^')
+                {
+                    isNegative = true;
+                    i++;
+                    continue;
+                }
+                if (pattern[i] == ']')
+                    break;
+
+                groupList.Add(pattern[i]);
+                i++;
+            }
+            var groupTokenGroup = new CharacterGroupToken(groupList, isNegative); 
+        }
         else
         {
-            patternList.Add(value.ToString());
+            tokenList.Add(new LiteralToken(value));
         }
     }
 
-    Console.Error.WriteLine(string.Join(", ", patternList));
     var patternPointer = 0;
     var inputPointer = 0;
     var recheckPointer = 0;
@@ -27,47 +57,26 @@ static bool MatchPattern(string inputLine, string pattern)
 
     while (inputPointer <= inputLine.Length - 1)
     {
-        if (patternPointer == patternList.Count())
+        if (patternPointer == tokenList.Count())
         {
             Console.WriteLine($"passing: {string.Join(", ", matchedCharacters)}");
             return true;
         }
-
-        if (patternList[patternPointer] == "\\d")
-        {
-            if (char.IsDigit(inputLine[inputPointer]))
-            {
-                matchedCharacters.Add(inputLine[inputPointer].ToString());
-                inputPointer++;
-                patternPointer++;
-                continue;
-            }
-        }
-        else if (patternList[patternPointer] == "\\w")
-        {
-            if (char.IsLetterOrDigit(inputLine[inputPointer]))
-            {
-                matchedCharacters.Add(inputLine[inputPointer].ToString());
-                inputPointer++;
-                patternPointer++;
-                continue;
-            }
-        }
-        else if (inputLine[inputPointer].ToString() == patternList[patternPointer])
+        if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
         {
             matchedCharacters.Add(inputLine[inputPointer].ToString());
             inputPointer++;
             patternPointer++;
             continue;
-
         }
+
         inputPointer = recheckPointer;
         patternPointer = 0;
         recheckPointer++;
         continue;
     }
     Console.WriteLine($"failing: {string.Join(", ", matchedCharacters)}");
-    if (patternPointer == patternList.Count())
+    if (patternPointer == tokenList.Count())
     {
         Console.WriteLine($"passing: {string.Join(", ", matchedCharacters)}");
         return true;
