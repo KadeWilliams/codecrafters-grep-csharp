@@ -29,8 +29,7 @@ static bool MatchPattern(string inputLine, string pattern)
     {
         if (patternPointer == patternList.Count())
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(string.Join(", ", matchedCharacters));
+            Console.WriteLine($"passing: {string.Join(", ", matchedCharacters)}");
             return true;
         }
 
@@ -67,8 +66,7 @@ static bool MatchPattern(string inputLine, string pattern)
         recheckPointer++;
         continue;
     }
-    Console.ForegroundColor = ConsoleColor.Red;
-    Console.WriteLine(string.Join(", ", matchedCharacters));
+    Console.WriteLine($"failing: {string.Join(", ", matchedCharacters)}");
     return false;
 }
 
