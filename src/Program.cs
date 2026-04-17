@@ -54,9 +54,9 @@ static bool MatchPattern(string inputLine, string pattern)
             continue;
 
         }
+        recheckPointer++;
         inputPointer = recheckPointer;
         patternPointer = 0;
-        recheckPointer++;
         continue;
     }
     return false;
