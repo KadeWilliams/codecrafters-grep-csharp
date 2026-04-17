@@ -67,6 +67,11 @@ static bool MatchPattern(string inputLine, string pattern)
         continue;
     }
     Console.WriteLine($"failing: {string.Join(", ", matchedCharacters)}");
+    if (patternPointer == patternList.Count())
+    {
+        Console.WriteLine($"passing: {string.Join(", ", matchedCharacters)}");
+        return true;
+    }
     return false;
 }
 
