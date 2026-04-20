@@ -88,12 +88,16 @@ static bool MatchPattern(string inputLine, string pattern)
         {
             return false;
         }
-        else if (endAnchorPresent && inputPointer == inputLine.Length - 1)
+        else if (endAnchorPresent)
         {
             Console.WriteLine("End anchor present");
             Console.WriteLine($"Input Pointer: {inputPointer}");
             Console.WriteLine($"Input Line: {inputLine.Length}");
-            return true;
+
+            if (inputPointer == inputLine.Length - 1)
+                return true;
+            else
+                return false;
         }
         inputPointer = recheckPointer;
         patternPointer = 0;
