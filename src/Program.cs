@@ -88,7 +88,7 @@ static bool MatchPattern(string inputLine, string pattern)
         }
         else if (endAnchorPresent)
         {
-            if (inputPointer != inputLine.Length - 2)
+            if (inputPointer != inputLine.Length - 1)
             {
                 return false;
             }
