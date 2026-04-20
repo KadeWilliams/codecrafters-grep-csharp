@@ -97,7 +97,12 @@ static bool MatchPattern(string inputLine, string pattern)
             if (inputPointer == inputLine.Length - 1)
                 return true;
             else
-                return false;
+            {
+                inputPointer = recheckPointer;
+                patternPointer = 0;
+                recheckPointer++;
+                continue;
+            }
         }
         inputPointer = recheckPointer;
         patternPointer = 0;
