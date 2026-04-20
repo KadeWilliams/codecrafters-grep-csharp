@@ -81,17 +81,13 @@ static bool MatchPattern(string inputLine, string pattern)
                 return true;
             }
         }
-        else if (endAnchorPresent && inputPointer == inputLine.Length - 1) // if $ is present and we're at the end of input 
-        {
-            return true;
-        }
-        else if (endAnchorPresent && inputPointer != inputLine.Length - 1)
-        {
-            return false;
-        }
 
         if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
         {
+            if (endAnchorPresent && inputPointer < inputLine.Length - 1)
+            {
+                return false;
+            }
             matchedCharacters.Add(inputLine[inputPointer].ToString());
             inputPointer++;
             patternPointer++;
