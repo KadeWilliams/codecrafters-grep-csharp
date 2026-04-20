@@ -87,6 +87,12 @@ static bool MatchPattern(string inputLine, string pattern)
             return false;
         }
 
+        Console.WriteLine($"End Anchor: {endAnchorPresent.ToString()}");
+        Console.WriteLine($"End Anchor: {patternPointer}");
+        Console.WriteLine($"End Anchor: {tokenList.Count()}");
+        Console.WriteLine($"End Anchor: {inputPointer}");
+        Console.WriteLine($"End Anchor: {inputLine.Length}");
+
         if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
         {
             if (endAnchorPresent && inputPointer == inputLine.Length - 1)
