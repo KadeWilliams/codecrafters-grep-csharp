@@ -56,7 +56,8 @@ static bool MatchPattern(string inputLine, string pattern)
                 startAnchorPresent = true;
                 continue;
             } 
-            else if (value == '$' && i == pattern.Length - 1)
+            
+            if (value == '$' && i == pattern.Length - 1)
             {
                 endAnchorPresent = true;
                 continue;
@@ -72,15 +73,16 @@ static bool MatchPattern(string inputLine, string pattern)
 
     while (inputPointer <= inputLine.Length - 1)
     {
-        Console.WriteLine(inputLine[inputPointer]);
-        if (patternPointer == tokenList.Count())
+        if (patternPointer == tokenList.Count() && !endAnchorPresent)
         {
-            Console.WriteLine("Here");
             return true;
+        } else if (endAnchorPresent)
+        {
+            return false;
         }
+
         if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
         {
-            Console.WriteLine("Matched token");
             matchedCharacters.Add(inputLine[inputPointer].ToString());
             inputPointer++;
             patternPointer++;
@@ -90,17 +92,7 @@ static bool MatchPattern(string inputLine, string pattern)
         {
             return false;
         }
-        else if (endAnchorPresent && inputLine[inputPointer] == '$')
-        {
-            Console.WriteLine("End anchor present");
-            Console.WriteLine($"Input Pointer: {inputPointer}");
-            Console.WriteLine($"Input Line: {inputLine.Length}");
 
-            if (inputPointer == inputLine.Length - 1)
-            {
-                return true;
-            }
-        }
         inputPointer = recheckPointer;
         patternPointer = 0;
         recheckPointer++;
