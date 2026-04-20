@@ -74,6 +74,7 @@ static bool MatchPattern(string inputLine, string pattern)
         Console.WriteLine(inputLine[inputPointer]);
         if (patternPointer == tokenList.Count())
         {
+            Console.WriteLine("Here");
             return true;
         }
         if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
