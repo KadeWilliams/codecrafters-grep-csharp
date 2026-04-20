@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace codecrafters_grep.src.Tokens
+namespace codecrafters_grep.src.Tokens;
+ class QuantifierToken
 {
-    internal class AnchorToken
-    {
-    }
 }
