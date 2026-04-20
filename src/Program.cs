@@ -88,11 +88,9 @@ static bool MatchPattern(string inputLine, string pattern)
         }
         else if (endAnchorPresent)
         {
-            if (inputPointer != inputLine.Length - 1)
-            {
-                return false;
-            }
-            return true;
+            if (inputPointer == inputLine.Length - 1)
+                return true;
+            return false;
         }
         inputPointer = recheckPointer;
         patternPointer = 0;
