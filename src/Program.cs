@@ -84,6 +84,10 @@ static bool MatchPattern(string inputLine, string pattern)
             patternPointer = 0;
             recheckPointer++;
             continue;
+        } 
+        else
+        {
+            return false;
         }
     }
     if (patternPointer == tokenList.Count())
