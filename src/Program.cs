@@ -83,6 +83,9 @@ static bool MatchPattern(string inputLine, string pattern)
         else if (endAnchorPresent && inputPointer == inputLine.Length - 1) 
         {
             return true;
+        } else if (endAnchorPresent && inputPointer != inputLine.Length - 1)
+        {
+            return false;
         }
 
         if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
