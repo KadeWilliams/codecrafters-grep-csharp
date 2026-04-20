@@ -73,12 +73,16 @@ static bool MatchPattern(string inputLine, string pattern)
 
     while (inputPointer <= inputLine.Length - 1)
     {
-        if (patternPointer == tokenList.Count() && !endAnchorPresent)
+        if (!endAnchorPresent)
+        {
+            if (patternPointer == tokenList.Count())
+            {
+                return true;
+            }
+        } 
+        else if (endAnchorPresent && inputPointer == inputLine.Length - 1) 
         {
             return true;
-        } else if (endAnchorPresent)
-        {
-            return false;
         }
 
         if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
