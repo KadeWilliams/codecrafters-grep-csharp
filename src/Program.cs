@@ -71,13 +71,13 @@ static bool MatchPattern(string inputLine, string pattern)
 
     while (inputPointer <= inputLine.Length - 1)
     {
+        Console.WriteLine(inputLine[inputPointer]);
         if (patternPointer == tokenList.Count())
         {
             return true;
         }
         if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
         {
-            
             Console.WriteLine("Matched token");
             matchedCharacters.Add(inputLine[inputPointer].ToString());
             inputPointer++;
