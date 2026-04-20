@@ -89,6 +89,8 @@ static bool MatchPattern(string inputLine, string pattern)
         else if (endAnchorPresent)
         {
             Console.WriteLine("End anchor present");
+            Console.WriteLine(inputPointer);
+            Console.WriteLine(inputLine.Length);
             if (inputPointer == inputLine.Length - 2)
                 return true;
             return false;
