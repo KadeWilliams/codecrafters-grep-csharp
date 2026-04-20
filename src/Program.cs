@@ -5,11 +5,17 @@ using System.Text.RegularExpressions;
 
 static bool MatchPattern(string inputLine, string pattern)
 {
-    //var patternList = new List<string>();
+    bool anchorPresent = false; 
     var tokenList = new List<IToken>();
+    if (pattern[0] == '^')
+    {
+        anchorPresent = true;
+    }
+
     for (var i = 0; i <= pattern.Length - 1; i++)
     {
         var value = pattern[i];
+
         if (value == '\\')
         {
             switch (pattern[i+1])
@@ -47,7 +53,7 @@ static bool MatchPattern(string inputLine, string pattern)
             }
             var tokenGroup = new CharacterGroupToken(groupList, isNegative);
             tokenList.Add(tokenGroup);
-        }
+        } 
         else
         {
             tokenList.Add(new LiteralToken(value));
@@ -72,10 +78,13 @@ static bool MatchPattern(string inputLine, string pattern)
             patternPointer++;
             continue;
         } 
-        inputPointer = recheckPointer;
-        patternPointer = 0;
-        recheckPointer++;
-        continue;
+        if (!anchorPresent)
+        {
+            inputPointer = recheckPointer;
+            patternPointer = 0;
+            recheckPointer++;
+            continue;
+        }
     }
     if (patternPointer == tokenList.Count())
     {
