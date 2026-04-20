@@ -84,9 +84,9 @@ static bool MatchPattern(string inputLine, string pattern)
 
         if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
         {
-            if (endAnchorPresent && inputPointer < inputLine.Length - 1)
+            if (endAnchorPresent && inputPointer == inputLine.Length - 1)
             {
-                return false;
+                return true;
             }
             matchedCharacters.Add(inputLine[inputPointer].ToString());
             inputPointer++;
