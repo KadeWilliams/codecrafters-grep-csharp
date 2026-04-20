@@ -88,7 +88,7 @@ static bool MatchPattern(string inputLine, string pattern)
         }
         else if (endAnchorPresent)
         {
-            return false;
+            return true;
         }
         inputPointer = recheckPointer;
         patternPointer = 0;
