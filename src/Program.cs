@@ -88,10 +88,10 @@ static bool MatchPattern(string inputLine, string pattern)
         }
 
         Console.WriteLine($"End Anchor: {endAnchorPresent.ToString()}");
-        Console.WriteLine($"End Anchor: {patternPointer}");
-        Console.WriteLine($"End Anchor: {tokenList.Count()}");
-        Console.WriteLine($"End Anchor: {inputPointer}");
-        Console.WriteLine($"End Anchor: {inputLine.Length}");
+        Console.WriteLine($"Pattern Pointer: {patternPointer}");
+        Console.WriteLine($"Token List Count: {tokenList.Count()}");
+        Console.WriteLine($"Input Pointer: {inputPointer}");
+        Console.WriteLine($"Input Line: {inputLine.Length}");
 
         if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
         {
