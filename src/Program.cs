@@ -1,16 +1,9 @@
 using codecrafters_grep.src.Tokens;
-using System;
-using System.IO;
-using System.Text.RegularExpressions;
 
 static bool MatchPattern(string inputLine, string pattern)
 {
-    bool anchorPresent = false; 
+    var anchorPresent = false;
     var tokenList = new List<IToken>();
-    if (pattern[0] == '^')
-    {
-        anchorPresent = true;
-    }
 
     for (var i = 0; i <= pattern.Length - 1; i++)
     {
@@ -56,6 +49,11 @@ static bool MatchPattern(string inputLine, string pattern)
         } 
         else
         {
+            if (value == '^' && i == 0)
+            {
+                anchorPresent = true;
+                continue;
+            }
             tokenList.Add(new LiteralToken(value));
         }
     }
@@ -78,17 +76,14 @@ static bool MatchPattern(string inputLine, string pattern)
             patternPointer++;
             continue;
         } 
-        if (!anchorPresent)
-        {
-            inputPointer = recheckPointer;
-            patternPointer = 0;
-            recheckPointer++;
-            continue;
-        } 
-        else
+        else if (anchorPresent)
         {
             return false;
         }
+        inputPointer = recheckPointer;
+        patternPointer = 0;
+        recheckPointer++;
+        continue;
     }
     if (patternPointer == tokenList.Count())
     {
