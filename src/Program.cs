@@ -82,16 +82,16 @@ static bool MatchPattern(string inputLine, string pattern)
             }
         }
 
-        if (endAnchorPresent && patternPointer > tokenList.Count() && inputPointer <= inputLine.Length - 1)
+        if (endAnchorPresent && patternPointer == tokenList.Count() && inputPointer < inputLine.Length - 1)
         {
             return false;
         }
 
-        Console.WriteLine($"End Anchor: {endAnchorPresent.ToString()}");
-        Console.WriteLine($"Pattern Pointer: {patternPointer}");
-        Console.WriteLine($"Token List Count: {tokenList.Count()}");
-        Console.WriteLine($"Input Pointer: {inputPointer}");
-        Console.WriteLine($"Input Line: {inputLine.Length}");
+        //Console.WriteLine($"End Anchor: {endAnchorPresent.ToString()}");
+        //Console.WriteLine($"Pattern Pointer: {patternPointer}");
+        //Console.WriteLine($"Token List Count: {tokenList.Count()}");
+        //Console.WriteLine($"Input Pointer: {inputPointer}");
+        //Console.WriteLine($"Input Line: {inputLine.Length}");
 
         if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
         {
