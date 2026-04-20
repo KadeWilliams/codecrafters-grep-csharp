@@ -77,6 +77,8 @@ static bool MatchPattern(string inputLine, string pattern)
         }
         if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
         {
+            
+            Console.WriteLine("Matched token");
             matchedCharacters.Add(inputLine[inputPointer].ToString());
             inputPointer++;
             patternPointer++;
