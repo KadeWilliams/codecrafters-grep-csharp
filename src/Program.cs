@@ -50,12 +50,13 @@ static bool MatchPattern(string inputLine, string pattern)
         } 
         else
         {
+            Console.WriteLine($"Token: {value}");
             if (value == '^' && i == 0)
             {
                 startAnchorPresent = true;
                 continue;
             } 
-            else if (value == '$' && i ==  pattern.Length - 1)
+            else if (value == '$' && i == pattern.Length - 1)
             {
                 endAnchorPresent = true;
                 continue;
