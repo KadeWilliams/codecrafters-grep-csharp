@@ -12,7 +12,7 @@ static bool MatchPattern(string inputLine, string pattern)
 
         if (value == '\\')
         {
-            switch (pattern[i+1])
+            switch (pattern[i + 1])
             {
                 case 'w':
                     tokenList.Add(new AlphaNumericToken());
@@ -26,12 +26,12 @@ static bool MatchPattern(string inputLine, string pattern)
         else if (value == '[')
         {
             var isNegative = false;
-            if (pattern[i+1] == '^')
+            if (pattern[i + 1] == '^')
             {
                 isNegative = true;
-                i+=2;
+                i += 2;
             }
-            else 
+            else
             {
                 i++;
             }
@@ -47,7 +47,7 @@ static bool MatchPattern(string inputLine, string pattern)
             }
             var tokenGroup = new CharacterGroupToken(groupList, isNegative);
             tokenList.Add(tokenGroup);
-        } 
+        }
         else
         {
             Console.WriteLine($"Token: {value}");
@@ -55,8 +55,8 @@ static bool MatchPattern(string inputLine, string pattern)
             {
                 startAnchorPresent = true;
                 continue;
-            } 
-            
+            }
+
             if (value == '$' && i == pattern.Length - 1)
             {
                 endAnchorPresent = true;
@@ -73,17 +73,19 @@ static bool MatchPattern(string inputLine, string pattern)
 
     while (inputPointer <= inputLine.Length - 1)
     {
+        Console.WriteLine($"Input Point: {inputLine[inputPointer]}");
         if (!endAnchorPresent)
         {
             if (patternPointer == tokenList.Count())
             {
                 return true;
             }
-        } 
-        else if (endAnchorPresent && inputPointer == inputLine.Length - 1) 
+        }
+        else if (endAnchorPresent && inputPointer == inputLine.Length - 1) // if $ is present and we're at the end of input 
         {
             return true;
-        } else if (endAnchorPresent && inputPointer != inputLine.Length - 1)
+        }
+        else if (endAnchorPresent && inputPointer != inputLine.Length - 1)
         {
             return false;
         }
@@ -94,7 +96,7 @@ static bool MatchPattern(string inputLine, string pattern)
             inputPointer++;
             patternPointer++;
             continue;
-        } 
+        }
         else if (startAnchorPresent)
         {
             return false;

@@ -10,7 +10,7 @@ public class CharacterGroupToken : IToken
 {
 
     private List<char> _tokens;
-    private bool _isNegative; 
+    private bool _isNegative;
     public CharacterGroupToken(List<char> tokens, bool isNegative)
     {
         _tokens = tokens;
@@ -18,7 +18,7 @@ public class CharacterGroupToken : IToken
     }
     public bool Matches(char c)
     {
-        if (_isNegative) 
+        if (_isNegative)
         {
             return !_tokens.Contains(c);
         }
