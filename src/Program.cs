@@ -88,8 +88,6 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token)
             return new OneOrMoreToken(token);
         case '?':
             return new ZeroOrOneToken(token);
-        case '.':
-            return new OneOrMoreToken(token);
     }
 
     return token;
