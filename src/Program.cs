@@ -93,6 +93,49 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token)
     return token;
 }
 
+static IToken CreateToken(string pattern, int index, out int newIndex)
+{
+    newIndex = index;
+    if (pattern[newIndex] == '\\')
+    {
+        switch (pattern[newIndex + 1])
+        {
+            case 'w':
+                return new AlphaNumericToken();
+            case 'd':
+                return new DigitToken();
+        }
+    }
+    else if (pattern[newIndex] == '[')
+    {
+        var isNegative = false;
+        if (pattern[newIndex + 1] == '^')
+        {
+            isNegative = true;
+            newIndex += 2;
+        }
+        else
+        {
+            newIndex++;
+        }
+
+        var groupList = new List<char>();
+        while (true)
+        {
+            if (pattern[newIndex] == ']')
+                break;
+
+            groupList.Add(pattern[newIndex]);
+            newIndex++;
+        }
+        var tokenGroup = new CharacterGroupToken(groupList, isNegative);
+        return tokenGroup;
+    }
+    var lt = new LiteralToken(pattern[index]);
+    newIndex = index++;
+    return lt;
+}
+
 static bool MatchPattern(string inputLine, string pattern)
 {
     var startAnchorPresent = false;
@@ -151,6 +194,26 @@ static bool MatchPattern(string inputLine, string pattern)
             }
             var tokenGroup = new CharacterGroupToken(groupList, isNegative);
             tokens.Add(tokenGroup);
+        }
+        else if (value == '(')
+        {
+            var altOptions = new List<List<IToken>>();
+            var altOption = new List<IToken>();
+            while (true)
+            {
+                if (pattern[i] == ')')
+                    break;
+
+                if (pattern[i] == '|')
+                {
+                    altOptions.Add(altOption);
+                    altOption.Clear();
+                }
+
+                altOption.Add(pattern[i]);
+
+                i++;
+            }
         }
         else
         {
