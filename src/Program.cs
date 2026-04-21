@@ -18,10 +18,6 @@ using System.Reflection.Metadata.Ecma335;
 
 static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, int tokenPosition, bool endAchorPresent = false)
 {
-    Console.WriteLine($"Input: {inputLine}");
-    Console.WriteLine($"Input Position: {inputPosition}");
-    Console.WriteLine($"Token Position: {tokenPosition}");
-    Console.WriteLine($"Token Count: {tokens.Count()}");
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
@@ -42,19 +38,19 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
     // if token matches recurse through again; iterating one for both token and input positions
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
-        Console.WriteLine(inputLine[inputPosition]);
+        int curInp = inputPosition;
+        int curTok = tokenPosition;
         if (tokens[tokenPosition] is OneOrMoreToken)
         {
-            int curInp = inputPosition;
-            int curTok = tokenPosition;
             return MatchHere(inputLine, curInp + 1, tokens, curTok, endAchorPresent) || MatchHere(inputLine, curInp + 1, tokens, curTok + 1, endAchorPresent);
+        }
+
+        if (tokens[tokenPosition] is ZeroOrOneToken)
+        {
+            return MatchHere(inputLine, curInp + 1, tokens, curTok + 1, endAchorPresent) || MatchHere(inputLine, curInp, tokens, curTok + 1, endAchorPresent);
         }
         return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, endAchorPresent);
     }
-    //else if (tokens[tokenPosition] is OneOrMoreToken)
-    //{
-    //    return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, endAchorPresent);
-    //}
 
     return false;
 }
@@ -85,6 +81,8 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token)
     {
         case '+':
             return new OneOrMoreToken(token);
+        case '?':
+            return new ZeroOrOneToken(token);
     }
 
     return token;
