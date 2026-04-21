@@ -1,17 +1,6 @@
 using codecrafters_grep.src.Tokens;
 using System.Reflection.Metadata.Ecma335;
 
-static bool MatchQuantifier(string inputLine, int inputPosition, List<IToken> tokens, int tokenPosition, bool endAchorPresent = false)
-{
-
-    if (MatchHere(inputLine, inputPosition, tokens, tokenPosition, endAchorPresent))
-    {
-
-    }
-
-    return false;
-}
-
 /*
     iter1: 
         MatchHere("1 apples", 0, "\d", 0)
