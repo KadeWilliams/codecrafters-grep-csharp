@@ -93,7 +93,7 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token)
         case '?':
             return new ZeroOrOneToken(token);
         case '.':
-            return new WildcardToken(token);
+            return new WildcardToken();
     }
 
     return token;
@@ -169,6 +169,17 @@ static bool MatchPattern(string inputLine, string pattern)
             if (value == '$' && i == pattern.Length - 1)
             {
                 endAnchorPresent = true;
+                continue;
+            }
+
+            if (value == '.')
+            {
+                var wct = new WildcardToken();
+                var qWct = WrapIfQuantifier(pattern, i + 1, wct);
+                if (wct.GetType() != qWct.GetType())
+                {
+                    i++;
+                }
                 continue;
             }
             var lt = new LiteralToken(value);

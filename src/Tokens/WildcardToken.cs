@@ -8,11 +8,7 @@ namespace codecrafters_grep.src.Tokens;
 
 public class WildcardToken : IToken
 {
-    private IToken _token;
-    public WildcardToken(IToken token)
-    {
-        _token = token;
-    }
+    public WildcardToken() { }
     public bool Matches(char c)
     {
         return true;
