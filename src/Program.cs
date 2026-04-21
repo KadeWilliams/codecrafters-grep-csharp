@@ -45,9 +45,9 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
         Console.WriteLine(inputLine[inputPosition]);
         if (tokens[tokenPosition] is OneOrMoreToken)
         {
-            int nextInpPos = inputPosition;
-            int nextTokPos = tokenPosition;
-            return MatchHere(inputLine, nextInpPos + 1, tokens, tokenPosition, endAchorPresent) || MatchHere(inputLine, inputPosition, tokens, nextTokPos + 1, endAchorPresent);
+            int curInp = inputPosition;
+            int curTok = tokenPosition;
+            return MatchHere(inputLine, curInp + 1, tokens, curTok, endAchorPresent) || MatchHere(inputLine, curInp, tokens, curTok + 1, endAchorPresent);
         }
         return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, endAchorPresent);
     }
