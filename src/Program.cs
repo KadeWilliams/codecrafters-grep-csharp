@@ -52,7 +52,7 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
 
         if (tokens[tokenPosition] is WildcardToken)
         {
-            return MatchHere(inputLine, curInp + 1, tokens, curTok, endAchorPresent);
+            return MatchHere(inputLine, ++inputPosition, tokens, curTok, endAchorPresent);
         }
         return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, endAchorPresent);
     }
