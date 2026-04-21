@@ -15,6 +15,6 @@ public class OneOrMoreToken : IToken
     }
     public bool Matches(char c)
     {
-        throw new NotImplementedException();
+        return _token.Matches(c);
     }
 }
