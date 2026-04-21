@@ -1,10 +1,16 @@
 using codecrafters_grep.src.Tokens;
+using System.Reflection.Metadata.Ecma335;
 
-/*
-    TODO: 
-        - [ ] Problem 1: Given a starting position in the input, does the pattern match from exactly that position?
-        - [ ] Problem 2: Find any starting position in the input where the problem 1 is *true*. 
- */
+static bool MatchQuantifier(string inputLine, int inputPosition, List<IToken> tokens, int tokenPosition, bool endAchorPresent = false)
+{
+
+    if (MatchHere(inputLine, inputPosition, tokens, tokenPosition, endAchorPresent))
+    {
+
+    }
+
+    return false;
+}
 
 /*
     iter1: 
@@ -43,6 +49,12 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
     // if token matches recurse through again; iterating one for both token and input positions
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
+        if (tokens[tokenPosition] is OneOrMoreToken)
+        {
+            int nextInpPos = inputPosition++;
+            int nextTokPos = tokenPosition++;
+            return MatchHere(inputLine, nextInpPos, tokens, tokenPosition, endAchorPresent) || MatchHere(inputLine, inputPosition, tokens, nextTokPos, endAchorPresent);
+        }
         return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, endAchorPresent);
     }
 
@@ -63,6 +75,23 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
             is token position equal to tokens count 
                 yes; 1 != 1; return 1
  */
+
+static IToken WrapIfQuantifier(string pattern, int index, IToken token)
+{
+    if (index >= pattern.Length)
+    {
+        return token;
+    }
+
+    switch (pattern[index])
+    {
+        case '+':
+            return new OneOrMoreToken(token);
+    }
+
+    return token;
+}
+
 static bool MatchPattern(string inputLine, string pattern)
 {
     var startAnchorPresent = false;
@@ -77,10 +106,22 @@ static bool MatchPattern(string inputLine, string pattern)
             switch (pattern[i + 1])
             {
                 case 'w':
-                    tokens.Add(new AlphaNumericToken());
+                    var ant = new AlphaNumericToken();
+                    var qAnt = WrapIfQuantifier(pattern, i + 2, ant);
+                    if (ant.GetType() != qAnt.GetType())
+                    {
+                        i++;
+                    }
+                    tokens.Add(qAnt);
                     break;
                 case 'd':
-                    tokens.Add(new DigitToken());
+                    var dt = new DigitToken();
+                    var qDt = WrapIfQuantifier(pattern, i + 2, dt);
+                    if (dt.GetType() != qDt.GetType())
+                    {
+                        i++;
+                    }
+                    tokens.Add(qDt);
                     break;
             }
             i++;
@@ -123,7 +164,13 @@ static bool MatchPattern(string inputLine, string pattern)
                 endAnchorPresent = true;
                 continue;
             }
-            tokens.Add(new LiteralToken(value));
+            var lt = new LiteralToken(value);
+            var qLt = WrapIfQuantifier(pattern, i + 1, lt);
+            if (lt.GetType() != qLt.GetType())
+            {
+                i++;
+            }
+            tokens.Add(qLt);
         }
     }
 

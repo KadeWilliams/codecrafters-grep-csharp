@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace codecrafters_grep.src.Tokens;
 
-internal interface IToken
+public interface IToken
 {
     bool Matches(char c);
 }
