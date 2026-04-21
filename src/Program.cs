@@ -49,6 +49,11 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
         {
             return MatchHere(inputLine, curInp + 1, tokens, curTok + 1, endAchorPresent) || MatchHere(inputLine, curInp, tokens, curTok + 1, endAchorPresent);
         }
+
+        if (tokens[tokenPosition] is WildcardToken)
+        {
+            return MatchHere(inputLine, curInp + 1, tokens, curTok, endAchorPresent);
+        }
         return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, endAchorPresent);
     }
     else if (tokens[tokenPosition] is ZeroOrOneToken)
