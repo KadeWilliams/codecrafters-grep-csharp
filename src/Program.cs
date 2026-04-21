@@ -176,6 +176,7 @@ static bool MatchPattern(string inputLine, string pattern)
                 {
                     i++;
                 }
+                tokens.Add(qWct);
                 continue;
             }
             var lt = new LiteralToken(value);
