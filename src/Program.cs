@@ -21,6 +21,7 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
     Console.WriteLine($"Input: {inputLine}");
     Console.WriteLine($"Input Position: {inputPosition}");
     Console.WriteLine($"Token Position: {tokenPosition}");
+    Console.WriteLine($"Token Count: {tokens.Count()}");
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
@@ -33,7 +34,7 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
     }
 
     // we've gotten through all of the input characters without passing
-    if (inputPosition >= inputLine.Length)
+    if (inputPosition > inputLine.Length)
     {
         return false;
     }
