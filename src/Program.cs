@@ -53,7 +53,7 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
     }
     else if (tokens[tokenPosition] is OneOrMoreToken)
     {
-        return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, endAchorPresent);
+        return MatchHere(inputLine, ++inputPosition, tokens, tokenPosition, endAchorPresent);
     }
 
     return false;
