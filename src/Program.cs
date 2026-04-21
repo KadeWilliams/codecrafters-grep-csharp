@@ -18,10 +18,9 @@ using System.Reflection.Metadata.Ecma335;
 
 static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, int tokenPosition, bool endAchorPresent = false)
 {
-    Console.WriteLine(inputLine);
-    Console.WriteLine(inputPosition);
-    Console.WriteLine(tokens);
-    Console.WriteLine(tokenPosition);
+    Console.WriteLine($"Input: {inputLine}");
+    Console.WriteLine($"Input Position: {inputPosition}");
+    Console.WriteLine($"Token Position: {tokenPosition}");
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
