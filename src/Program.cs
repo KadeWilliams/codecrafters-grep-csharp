@@ -51,6 +51,10 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
         }
         return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, endAchorPresent);
     }
+    else if (tokens[tokenPosition] is OneOrMoreToken)
+    {
+        return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, endAchorPresent);
+    }
 
     return false;
 }
