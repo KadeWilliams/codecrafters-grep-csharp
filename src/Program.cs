@@ -61,6 +61,7 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
     {
         foreach (var tokenList in alt.GetTokens)
         {
+            Console.Error.WriteLine($"tokenPosition: {tokenPosition}, tokens.Count: {tokens.Count}");
             var combined = new List<IToken>(tokenList);
             Console.Error.WriteLine($"Combined count: {combined.Count}");
             foreach (var t in combined)
