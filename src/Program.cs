@@ -35,6 +35,7 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
         return false;
     }
 
+    Console.WriteLine($"Currently checking: {inputLine[inputPosition]}");
     // if token matches recurse through again; iterating one for both token and input positions
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
@@ -60,7 +61,6 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
     {
         foreach (var tokenList in alt.GetTokens)
         {
-            Console.WriteLine("Checking the Alternations");
             return MatchHere(inputLine, inputPosition, tokenList, ++tokenPosition, endAchorPresent);
         }
     }
