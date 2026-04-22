@@ -56,6 +56,13 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
     {
         return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, endAchorPresent);
     }
+    else if (tokens[tokenPosition] is AlternationToken alt)
+    {
+        foreach (var tokenList in alt.GetTokens)
+        {
+            return MatchHere(inputLine, inputPosition, tokenList, ++tokenPosition, endAchorPresent);
+        }
+    }
 
     return false;
 }
@@ -75,8 +82,9 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
                 yes; 1 != 1; return 1
  */
 
-static IToken WrapIfQuantifier(string pattern, int index, IToken token)
+static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int newIndex)
 {
+    newIndex = index;
     if (index >= pattern.Length)
     {
         return token;
@@ -85,11 +93,12 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token)
     switch (pattern[index])
     {
         case '+':
+            newIndex++;
             return new OneOrMoreToken(token);
         case '?':
+            newIndex++;
             return new ZeroOrOneToken(token);
     }
-
     return token;
 }
 
@@ -101,8 +110,10 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
         switch (pattern[newIndex + 1])
         {
             case 'w':
+                newIndex += 2;
                 return new AlphaNumericToken();
             case 'd':
+                newIndex += 2;
                 return new DigitToken();
         }
     }
@@ -123,7 +134,10 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
         while (true)
         {
             if (pattern[newIndex] == ']')
+            {
+                newIndex++;
                 break;
+            }
 
             groupList.Add(pattern[newIndex]);
             newIndex++;
@@ -131,8 +145,35 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
         var tokenGroup = new CharacterGroupToken(groupList, isNegative);
         return tokenGroup;
     }
-    var lt = new LiteralToken(pattern[index]);
-    newIndex = index++;
+    else if (pattern[newIndex] == '(')
+    {
+        newIndex++;
+        var altOptions = new List<List<IToken>>();
+        var altOption = new List<IToken>();
+        while (true)
+        {
+            if (pattern[newIndex] == ')')
+            {
+                altOptions.Add(altOption);
+                break;
+            }
+
+            if (pattern[newIndex] == '|')
+            {
+                altOptions.Add(altOption);
+                altOption = new List<IToken>();
+                newIndex++;
+            }
+            else
+            {
+                altOption.Add(CreateToken(pattern, newIndex, out newIndex));
+            }
+        }
+        return new AlternationToken(altOptions);
+
+    }
+    var lt = new LiteralToken(pattern[newIndex]);
+    newIndex++;
     return lt;
 }
 
@@ -144,110 +185,21 @@ static bool MatchPattern(string inputLine, string pattern)
     for (var i = 0; i <= pattern.Length - 1; i++)
     {
         var value = pattern[i];
-
-        if (value == '\\')
+        if (value == '^' && i == 0)
         {
-            switch (pattern[i + 1])
-            {
-                case 'w':
-                    var ant = new AlphaNumericToken();
-                    var qAnt = WrapIfQuantifier(pattern, i + 2, ant);
-                    if (ant.GetType() != qAnt.GetType())
-                    {
-                        i++;
-                    }
-                    tokens.Add(qAnt);
-                    break;
-                case 'd':
-                    var dt = new DigitToken();
-                    var qDt = WrapIfQuantifier(pattern, i + 2, dt);
-                    if (dt.GetType() != qDt.GetType())
-                    {
-                        i++;
-                    }
-                    tokens.Add(qDt);
-                    break;
-            }
-            i++;
+            startAnchorPresent = true;
+            continue;
         }
-        else if (value == '[')
+
+        if (value == '$' && i == pattern.Length - 1)
         {
-            var isNegative = false;
-            if (pattern[i + 1] == '^')
-            {
-                isNegative = true;
-                i += 2;
-            }
-            else
-            {
-                i++;
-            }
-
-            var groupList = new List<char>();
-            while (true)
-            {
-                if (pattern[i] == ']')
-                    break;
-
-                groupList.Add(pattern[i]);
-                i++;
-            }
-            var tokenGroup = new CharacterGroupToken(groupList, isNegative);
-            tokens.Add(tokenGroup);
+            endAnchorPresent = true;
+            continue;
         }
-        else if (value == '(')
-        {
-            var altOptions = new List<List<IToken>>();
-            var altOption = new List<IToken>();
-            while (true)
-            {
-                if (pattern[i] == ')')
-                    break;
 
-                if (pattern[i] == '|')
-                {
-                    altOptions.Add(altOption);
-                    altOption.Clear();
-                }
+        var ct = CreateToken(pattern, i, out i);
 
-                altOption.Add(pattern[i]);
-
-                i++;
-            }
-        }
-        else
-        {
-            if (value == '^' && i == 0)
-            {
-                startAnchorPresent = true;
-                continue;
-            }
-
-            if (value == '$' && i == pattern.Length - 1)
-            {
-                endAnchorPresent = true;
-                continue;
-            }
-
-            if (value == '.')
-            {
-                var wct = new WildcardToken();
-                var qWct = WrapIfQuantifier(pattern, i + 1, wct);
-                if (wct.GetType() != qWct.GetType())
-                {
-                    i++;
-                }
-                tokens.Add(qWct);
-                continue;
-            }
-            var lt = new LiteralToken(value);
-            var qLt = WrapIfQuantifier(pattern, i + 1, lt);
-            if (lt.GetType() != qLt.GetType())
-            {
-                i++;
-            }
-            tokens.Add(qLt);
-        }
+        tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
     }
 
     if (startAnchorPresent)
@@ -288,141 +240,3 @@ else
 {
     Environment.Exit(1);
 }
-/*
-static bool MatchPattern(string inputLine, string pattern)
-{
-    var startAnchorPresent = false;
-    var endAnchorPresent = false;
-    var tokenList = new List<IToken>();
-
-    for (var i = 0; i <= pattern.Length - 1; i++)
-    {
-        var value = pattern[i];
-
-        if (value == '\\')
-        {
-            switch (pattern[i + 1])
-            {
-                case 'w':
-                    tokenList.Add(new AlphaNumericToken());
-                    break;
-                case 'd':
-                    tokenList.Add(new DigitToken());
-                    break;
-            }
-            i++;
-        }
-        else if (value == '[')
-        {
-            var isNegative = false;
-            if (pattern[i + 1] == '^')
-            {
-                isNegative = true;
-                i += 2;
-            }
-            else
-            {
-                i++;
-            }
-
-            var groupList = new List<char>();
-            while (true)
-            {
-                if (pattern[i] == ']')
-                    break;
-
-                groupList.Add(pattern[i]);
-                i++;
-            }
-            var tokenGroup = new CharacterGroupToken(groupList, isNegative);
-            tokenList.Add(tokenGroup);
-        }
-        else
-        {
-            if (value == '^' && i == 0)
-            {
-                startAnchorPresent = true;
-                continue;
-            }
-
-            if (value == '$' && i == pattern.Length - 1)
-            {
-                endAnchorPresent = true;
-                continue;
-            }
-            tokenList.Add(new LiteralToken(value));
-        }
-    }
-
-    var patternPointer = 0;
-    var inputPointer = 0;
-    var recheckPointer = 0;
-    var matchedCharacters = new List<string>();
-
-    while (inputPointer <= inputLine.Length - 1)
-    {
-        if (!endAnchorPresent)
-        {
-            if (patternPointer == tokenList.Count())
-            {
-                return true;
-            }
-        }
-
-        // if we're checking the end and we've reached the end of the token list and we still have more characters to check then the end anchor does not pass
-        if (endAnchorPresent && patternPointer == tokenList.Count() && inputPointer < inputLine.Length - 1)
-        {
-            return false;
-        }
-
-        if (tokenList[patternPointer].Matches(inputLine[inputPointer]))
-        {
-            if (endAnchorPresent && inputPointer == inputLine.Length - 1)
-            {
-                return true;
-            }
-            matchedCharacters.Add(inputLine[inputPointer].ToString());
-            inputPointer++;
-            patternPointer++;
-            continue;
-        }
-        else if (startAnchorPresent)
-        {
-            return false;
-        }
-
-        inputPointer = recheckPointer;
-        patternPointer = 0;
-        recheckPointer++;
-        continue;
-    }
-    if (patternPointer == tokenList.Count())
-    {
-        return true;
-    }
-    return false;
-}
-
-if (args[0] != "-E")
-{
-    Console.WriteLine("Expected first argument to be '-E'");
-    Environment.Exit(2);
-}
-
-string pattern = args[1];
-string inputLine = Console.In.ReadToEnd();
-
-// You can use print statements as follows for debugging, they'll be visible when running tests.
-// Console.Error.WriteLine("Logs from your program will appear here!");
-
-// Uncomment this block to pass the first stage
-
-if (MatchPattern(inputLine, pattern))
-{
-    Environment.Exit(0);
-}
-else
-{
-    Environment.Exit(1);
-}
-*/

@@ -4,9 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace codecrafters_grep.src.Tokens
+namespace codecrafters_grep.src.Tokens;
+
+public class AlternationToken : IToken
 {
-    internal class AlternationToken
+    private List<List<IToken>> _tokens;
+    public AlternationToken(List<List<IToken>> tokens)
     {
+        _tokens = tokens;
+    }
+
+    public bool Matches(char c)
+    {
+        return false;
     }
 }
