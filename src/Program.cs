@@ -211,9 +211,9 @@ static bool MatchPattern(string inputLine, string pattern)
         return MatchHere(inputLine, 0, tokens, 0, endAnchorPresent);
     }
 
-    for (int i = 0; i <= inputLine.Length - 1; i++)
+    for (int j = 0; j <= inputLine.Length - 1; j++)
     {
-        if (MatchHere(inputLine, i, tokens, 0, endAnchorPresent))
+        if (MatchHere(inputLine, j, tokens, 0, endAnchorPresent))
         {
             return true;
         }
