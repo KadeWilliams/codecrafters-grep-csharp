@@ -60,6 +60,7 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
     {
         foreach (var tokenList in alt.GetTokens)
         {
+            Console.WriteLine("Checking the Alternations");
             return MatchHere(inputLine, inputPosition, tokenList, ++tokenPosition, endAchorPresent);
         }
     }
