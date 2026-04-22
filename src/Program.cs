@@ -67,12 +67,12 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
         {
             Console.Error.WriteLine($"tokenPosition: {tokenPosition}, tokens.Count: {tokens.Count}");
             var combined = new List<IToken>(tokenList);
+            combined.AddRange(tokens.Skip(tokenPosition + 1));
             Console.Error.WriteLine($"Combined count: {combined.Count}");
             foreach (var t in combined)
             {
                 Console.Error.WriteLine($"Combined token: {t.GetType().Name}");
             }
-            combined.AddRange(tokens.Skip(tokenPosition + 1));
             if (MatchHere(inputLine, inputPosition, combined, 0, endAchorPresent))
                 return true;
         }
