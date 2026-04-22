@@ -34,9 +34,13 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
     }
 
     // we've gotten through all of the input characters without passing
-    if (inputPosition >= inputLine.Length && tokens[tokenPosition] is not ZeroOrOneToken)
+    if (inputPosition >= inputLine.Length)
     {
-        return false;
+        if (tokens[tokenPosition] is not ZeroOrOneToken)
+        {
+            return false;
+        }
+        return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, endAchorPresent);
     }
 
     // if token matches recurse through again; iterating one for both token and input positions
