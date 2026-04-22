@@ -184,7 +184,8 @@ static bool MatchPattern(string inputLine, string pattern)
     var startAnchorPresent = false;
     var endAnchorPresent = false;
     var tokens = new List<IToken>();
-    for (var i = 0; i <= pattern.Length - 1; i++)
+    int i = 0;
+    while (i < pattern.Length)
     {
         var value = pattern[i];
         Console.WriteLine($"Value: {value}");
