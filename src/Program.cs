@@ -106,6 +106,7 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
 static IToken CreateToken(string pattern, int index, out int newIndex)
 {
     newIndex = index;
+    Console.WriteLine($"Checking token: {pattern[newIndex]}");
     if (pattern[newIndex] == '\\')
     {
         switch (pattern[newIndex + 1])
