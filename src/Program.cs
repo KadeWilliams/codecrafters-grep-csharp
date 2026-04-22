@@ -188,6 +188,7 @@ static bool MatchPattern(string inputLine, string pattern)
     for (var i = 0; i <= pattern.Length - 1; i++)
     {
         var value = pattern[i];
+        Console.WriteLine($"Value: {value}");
         if (value == '^' && i == 0)
         {
             startAnchorPresent = true;
