@@ -18,6 +18,10 @@ using System.Reflection.Metadata.Ecma335;
 
 static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, int tokenPosition, bool endAchorPresent = false)
 {
+    for (int idx = 0; idx < tokens.Count; idx++)
+    {
+        Console.Error.WriteLine($"outer token[{idx}]: {tokens[idx].GetType().Name}");
+    }
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
