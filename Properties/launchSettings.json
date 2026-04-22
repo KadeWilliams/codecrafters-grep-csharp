@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "codecrafters-grep": {
+      "commandName": "Project",
+      "commandLineArgs": "-E \"(cat|dog)\""
+    }
+  }
+}

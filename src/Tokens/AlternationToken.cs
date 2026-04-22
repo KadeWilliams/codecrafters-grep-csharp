@@ -18,4 +18,6 @@ public class AlternationToken : IToken
     {
         return false;
     }
+
+    public List<List<IToken>> GetTokens => _tokens;
 }
