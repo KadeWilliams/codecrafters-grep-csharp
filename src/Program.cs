@@ -192,18 +192,21 @@ static bool MatchPattern(string inputLine, string pattern)
         if (value == '^' && i == 0)
         {
             startAnchorPresent = true;
+            i++;
             continue;
         }
 
         if (value == '$' && i == pattern.Length - 1)
         {
             endAnchorPresent = true;
+            i++;
             continue;
         }
 
         var ct = CreateToken(pattern, i, out i);
 
         tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
+        Console.WriteLine($"i after wrap: {i}");
     }
 
     if (startAnchorPresent)
