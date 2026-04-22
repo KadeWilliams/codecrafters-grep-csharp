@@ -61,7 +61,10 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
     {
         foreach (var tokenList in alt.GetTokens)
         {
-            return MatchHere(inputLine, inputPosition, tokenList, ++tokenPosition, endAchorPresent);
+            var combined = new List<IToken>(tokenList);
+            combined.AddRange(tokens.Skip(tokenPosition + 1));
+            if (MatchHere(inputLine, inputPosition, combined, 0, endAchorPresent))
+                return true;
         }
     }
 
@@ -158,10 +161,10 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
             if (pattern[newIndex] == ')')
             {
                 altOptions.Add(altOption);
+                newIndex++;
                 break;
             }
-
-            if (pattern[newIndex] == '|')
+            else if (pattern[newIndex] == '|')
             {
                 altOptions.Add(altOption);
                 altOption = new List<IToken>();
