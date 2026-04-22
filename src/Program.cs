@@ -190,6 +190,10 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
         return new AlternationToken(altOptions);
 
     }
+    else if (pattern[newIndex] == '.')
+    {
+        return new WildcardToken();
+    }
     var lt = new LiteralToken(pattern[newIndex]);
     newIndex++;
     return lt;
