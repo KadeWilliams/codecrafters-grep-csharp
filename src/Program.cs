@@ -192,6 +192,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
     }
     else if (pattern[newIndex] == '.')
     {
+        newIndex++;
         return new WildcardToken();
     }
     var lt = new LiteralToken(pattern[newIndex]);
