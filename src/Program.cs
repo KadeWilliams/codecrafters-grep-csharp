@@ -173,6 +173,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
         return new AlternationToken(altOptions);
 
     }
+    Console.WriteLine($"Adding token literal: {pattern[newIndex]}");
     var lt = new LiteralToken(pattern[newIndex]);
     newIndex++;
     return lt;
