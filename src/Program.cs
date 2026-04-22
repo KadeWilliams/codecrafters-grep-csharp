@@ -35,10 +35,10 @@ static bool MatchHere(string inputLine, int inputPosition, List<IToken> tokens, 
         return false;
     }
 
-    Console.WriteLine($"Currently checking: {inputLine[inputPosition]}");
     // if token matches recurse through again; iterating one for both token and input positions
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
+        Console.WriteLine($"Token matches:\ninput{inputLine[inputPosition]}");
         int curInp = inputPosition;
         int curTok = tokenPosition;
         if (tokens[tokenPosition] is OneOrMoreToken)
@@ -108,9 +108,7 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
 
 static IToken CreateToken(string pattern, int index, out int newIndex)
 {
-    Console.WriteLine($"Checking index: {index}");
     newIndex = index;
-    Console.WriteLine($"Checking token: {pattern[newIndex]}");
     if (pattern[newIndex] == '\\')
     {
         switch (pattern[newIndex + 1])
@@ -178,7 +176,6 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
         return new AlternationToken(altOptions);
 
     }
-    Console.WriteLine($"Adding token literal: {pattern[newIndex]}");
     var lt = new LiteralToken(pattern[newIndex]);
     newIndex++;
     return lt;
@@ -193,7 +190,6 @@ static bool MatchPattern(string inputLine, string pattern)
     while (i < pattern.Length)
     {
         var value = pattern[i];
-        Console.WriteLine($"Value: {value}");
         if (value == '^' && i == 0)
         {
             startAnchorPresent = true;
@@ -211,7 +207,6 @@ static bool MatchPattern(string inputLine, string pattern)
         var ct = CreateToken(pattern, i, out i);
 
         tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
-        Console.WriteLine($"i after wrap: {i}");
     }
 
     if (startAnchorPresent)
