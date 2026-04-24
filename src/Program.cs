@@ -42,7 +42,7 @@ static bool MatchHere(
     // we've gotten through all of the input characters without passing
     if (inputPosition >= inputLine.Length)
     {
-        if (tokens[tokenPosition] is not ZeroOrOneToken)
+        if (tokens[tokenPosition] is not ZeroOrOneToken || tokens[tokenPosition] is not OneOrMoreToken)
         {
             return false;
         }
