@@ -24,10 +24,9 @@ static bool MatchHere(
     ref List<string> matchedCapture,
     bool endAchorPresent = false)
 {
-    for (int idx = 0; idx < tokens.Count; idx++)
-    {
-        Console.Error.WriteLine($"outer token[{idx}]: {tokens[idx].GetType().Name}");
-    }
+    // At the top of MatchHere
+    Console.Error.WriteLine($"MatchHere: inputPos={inputPosition} tokPos={tokenPosition} input='{(inputPosition < inputLine.Length ? inputLine[inputPosition].ToString() : "END")}' token={(tokenPosition < tokens.Count ? tokens[tokenPosition].GetType().Name : "END")}");
+
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
@@ -72,6 +71,8 @@ static bool MatchHere(
     }
     else if (tokens[tokenPosition] is AlternationToken alt)
     {
+        // Inside AlternationToken branch
+        Console.Error.WriteLine($"Alternation: trying sequence of {tokenList.Count} tokens");
         foreach (var tokenList in alt.GetTokens)
         {
             var combined = new List<IToken>(tokenList);
@@ -82,13 +83,24 @@ static bool MatchHere(
     }
     else if (tokens[tokenPosition] is CaptureGroupToken capGroupToken)
     {
+
+        // Inside CaptureGroupToken branch, before the loop
+        Console.Error.WriteLine($"CaptureGroup: trying positions {inputPosition} to {inputLine.Length}");
         var combined = new List<IToken>(capGroupToken.GetTokens);
         combined.AddRange(tokens.Skip(tokenPosition + 1));
         for (int i = inputPosition; i <= inputLine.Length; i++)
         {
+            // Inside the loop, before first MatchHere
+            Console.Error.WriteLine($"CaptureGroup: trying substring '{inputLine.Substring(inputPosition, i - inputPosition)}'");
             if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, capGroupToken.GetTokens, 0, ref matchedCapture, endAchorPresent))
             {
+                // When capture succeeds
+                Console.Error.WriteLine($"CaptureGroup: captured '{inputLine.Substring(inputPosition, i - inputPosition)}'");
+
                 matchedCapture.Add(inputLine.Substring(inputPosition, i - inputPosition));
+
+                // When captures list is written to
+                Console.Error.WriteLine($"Captures list: [{string.Join(", ", matchedCapture)}]");
                 return MatchHere(inputLine, i, combined, 0, ref matchedCapture, endAchorPresent);
             }
         }
