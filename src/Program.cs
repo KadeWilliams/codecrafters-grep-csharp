@@ -116,7 +116,7 @@ static bool MatchHere(
 
                 // we then continue with the rest of the input starting from the end of this loop
                 // we pass the combined list and start at 0 
-                var combined = new List<IToken>(capGroupToken.GetTokens);
+                var combined = new List<IToken>(tokens);
 
                 // pass the capture group token as it's contents have been consumed
                 combined.AddRange(tokens.Skip(tokenPosition + 1));
