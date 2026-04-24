@@ -26,8 +26,6 @@ static bool MatchHere(
     bool endAchorPresent = false)
 {
     Console.Error.WriteLine($"ENTER: input='{inputLine}' inputPos={inputPosition} tokPos={tokenPosition} tokCount={tokens.Count}");
-    // At the top of MatchHere
-    //Console.Error.WriteLine($"MatchHere: inputPos={inputPosition} tokPos={tokenPosition} input='{(inputPosition < inputLine.Length ? inputLine[inputPosition].ToString() : "END")}' token={(tokenPosition < tokens.Count ? tokens[tokenPosition].GetType().Name : "END")}");
 
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
@@ -73,8 +71,6 @@ static bool MatchHere(
     }
     else if (tokens[tokenPosition] is AlternationToken alt)
     {
-        //// Inside AlternationToken branch
-        //Console.Error.WriteLine($"Alternation: trying sequence of {tokenList.Count} tokens");
         foreach (var tokenList in alt.GetTokens)
         {
             var combined = new List<IToken>(tokenList);
@@ -83,75 +79,8 @@ static bool MatchHere(
                 return true;
         }
     }
-    // there's a group of characters we have to check
-    else if (tokens[tokenPosition] is CaptureGroupToken capGroupToken)
-    {
-        // Inside CaptureGroupToken branch, before the loop
-        //Console.Error.WriteLine($"CaptureGroup: trying positions {inputPosition} to {inputLine.Length}");
-        Console.Error.WriteLine("Capture Group Token");
-        foreach (var token in capGroupToken.GetTokens)
-        {
-            Console.Error.WriteLine($"Sub Token: {token.GetType()}");
-        }
+    // this is where the new CaptureGroup token type is going to go
 
-        // combine the tokens within the group with the rest of characters in the token list
-
-        // start at the first character in the input and increment
-        for (int i = inputPosition; i <= inputLine.Length; i++)
-        {
-            // Inside the loop, before first MatchHere
-            Console.Error.WriteLine($"CaptureGroup: trying substring '{inputLine.Substring(inputPosition, i - inputPosition)}'");
-
-            // pass the substring starting from the input position that's passed to the curent loop minus the input position 
-            // if the capture group is at position 0 then it'd be from 0 to 0 - 0 for the first loop
-            // subsequent loops would be 0, i + 1 - 0
-            // we only need to pass the capture group tokens through this list because they're the only ones that matter until this passes or fails
-            // pass the referenced list of matched captures
-            Console.Error.WriteLine($"endAnchorPresent={endAchorPresent} substring check");
-            var capResult = MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, capGroupToken.GetTokens, 0, ref matchedCapture, endAchorPresent);
-            Console.Error.WriteLine($"substring='{inputLine.Substring(inputPosition, i - inputPosition)}' result={capResult}");
-            if (capResult)
-            {
-                // When capture succeeds
-                //Console.Error.WriteLine($"CaptureGroup: captured '{inputLine.Substring(inputPosition, i - inputPosition)}'");
-
-                Console.Error.WriteLine($"CaptureGroup: matched! captured='{inputLine.Substring(inputPosition, i - inputPosition)}'");
-
-                // if the capture group passes we capture that string and store it in the matched capture list from the starting position to the end of the loop
-                matchedCapture.Add(inputLine.Substring(inputPosition, i - inputPosition));
-
-                // When captures list is written to
-                //Console.Error.WriteLine($"Captures list: [{string.Join(", ", matchedCapture)}]");
-
-                // we then continue with the rest of the input starting from the end of this loop
-                // we pass the combined list and start at 0 
-                var combined = new List<IToken>(tokens.Skip(tokenPosition + 1));
-
-                if (MatchHere(inputLine, i, combined, 0, ref matchedCapture, endAchorPresent))
-                {
-                    return true;
-                }
-                matchedCapture.RemoveAt(matchedCapture.Count - 1);
-            }
-        }
-        return false;
-    }
-    else if (tokens[tokenPosition] is BackreferenceToken backRef)
-    {
-        // if input is "cat and cat" and pattern is "(cat) and \1"
-        // if we're in this branch we're at \1
-        // we need to check from the last inputToken that passed? 
-
-        var capString = matchedCapture[backRef.Position - 1];
-        Console.WriteLine($"Captured String: {capString}");
-        if (inputLine.Substring(inputPosition, capString.Length) == capString)
-        {
-            Console.WriteLine($"Substring: {inputLine.Substring(inputPosition, capString.Length)}");
-            inputPosition += capString.Length;
-            return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
-        }
-        return false;
-    }
 
     return false;
 }
@@ -213,10 +142,10 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
             case 'd':
                 newIndex += 2;
                 return new DigitToken();
-            default:
-                var value = int.Parse(pattern[newIndex + 1].ToString());
-                newIndex += 2;
-                return new BackreferenceToken(value);
+                //default:
+                //    var value = int.Parse(pattern[newIndex + 1].ToString());
+                //    newIndex += 2;
+                //    return new BackreferenceToken(value);
 
         }
     }
@@ -264,7 +193,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
                     break;
                 }
                 newIndex++;
-                return new CaptureGroupToken(altOption);
+                //return new CaptureGroupToken(altOption);
             }
             else if (pattern[newIndex] == '|')
             {
@@ -318,14 +247,6 @@ static bool MatchPattern(string inputLine, string pattern)
 
         tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
     }
-
-    /*
-     * TESTING WHAT'S BEING STORED
-     */
-    //foreach (var (value, index) in tokens.Select((v, i) => (v, i)))
-    //{
-    //    Console.WriteLine(value.GetType().Name);
-    //}
 
     var consumedChars = new List<string>();
     if (startAnchorPresent)
