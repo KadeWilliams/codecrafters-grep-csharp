@@ -25,6 +25,7 @@ static bool MatchHere(
     ref List<string> matchedCapture,
     bool endAchorPresent = false)
 {
+    Console.Error.WriteLine($"ENTER: input='{inputLine}' inputPos={inputPosition} tokPos={tokenPosition} tokCount={tokens.Count}");
     // At the top of MatchHere
     //Console.Error.WriteLine($"MatchHere: inputPos={inputPosition} tokPos={tokenPosition} input='{(inputPosition < inputLine.Length ? inputLine[inputPosition].ToString() : "END")}' token={(tokenPosition < tokens.Count ? tokens[tokenPosition].GetType().Name : "END")}");
 
