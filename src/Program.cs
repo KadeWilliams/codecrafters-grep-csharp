@@ -123,7 +123,7 @@ static bool MatchHere(
                 return MatchHere(inputLine, i, combined, 0, ref matchedCapture, endAchorPresent);
             }
         }
-        return true;
+        return false;
     }
     else if (tokens[tokenPosition] is BackreferenceToken backRef)
     {
