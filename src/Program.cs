@@ -121,7 +121,7 @@ static bool MatchHere(
                 return MatchHere(inputLine, i, combined, 0, ref matchedCapture, endAchorPresent);
             }
         }
-        return true;
+        return false;
     }
     else if (tokens[tokenPosition] is BackreferenceToken backRef)
     {
@@ -308,10 +308,10 @@ static bool MatchPattern(string inputLine, string pattern)
     /*
      * TESTING WHAT'S BEING STORED
      */
-    foreach (var (value, index) in tokens.Select((v, i) => (v, i)))
-    {
-        Console.WriteLine(value.GetType().Name);
-    }
+    //foreach (var (value, index) in tokens.Select((v, i) => (v, i)))
+    //{
+    //    Console.WriteLine(value.GetType().Name);
+    //}
 
     var consumedChars = new List<string>();
     if (startAnchorPresent)
