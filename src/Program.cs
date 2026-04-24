@@ -21,7 +21,7 @@ static bool MatchHere(
     int inputPosition,
     List<IToken> tokens,
     int tokenPosition,
-    ref List<char> consumedChars,
+    ref List<string> matchedCapture,
     bool endAchorPresent = false)
 {
     for (int idx = 0; idx < tokens.Count; idx++)
@@ -46,7 +46,7 @@ static bool MatchHere(
         {
             return false;
         }
-        return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref consumedChars, endAchorPresent);
+        return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
     }
 
     // if token matches recurse through again; iterating one for both token and input positions
@@ -56,19 +56,19 @@ static bool MatchHere(
         int curTok = tokenPosition;
         if (tokens[tokenPosition] is OneOrMoreToken)
         {
-            return MatchHere(inputLine, curInp + 1, tokens, curTok, ref consumedChars, endAchorPresent) || MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref consumedChars, endAchorPresent);
+            return MatchHere(inputLine, curInp + 1, tokens, curTok, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
         }
 
         if (tokens[tokenPosition] is ZeroOrOneToken)
         {
-            return MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref consumedChars, endAchorPresent) || MatchHere(inputLine, curInp, tokens, curTok + 1, ref consumedChars, endAchorPresent);
+            return MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, curInp, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
         }
 
-        return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, ref consumedChars, endAchorPresent);
+        return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
     }
     else if (tokens[tokenPosition] is ZeroOrOneToken)
     {
-        return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref consumedChars, endAchorPresent);
+        return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
     }
     else if (tokens[tokenPosition] is AlternationToken alt)
     {
@@ -76,7 +76,7 @@ static bool MatchHere(
         {
             var combined = new List<IToken>(tokenList);
             combined.AddRange(tokens.Skip(tokenPosition + 1));
-            if (MatchHere(inputLine, inputPosition, combined, 0, ref consumedChars, endAchorPresent))
+            if (MatchHere(inputLine, inputPosition, combined, 0, ref matchedCapture, endAchorPresent))
                 return true;
         }
     }
@@ -84,11 +84,15 @@ static bool MatchHere(
     {
         var combined = new List<IToken>(capGroupToken.GetTokens);
         combined.AddRange(tokens.Skip(tokenPosition + 1));
-        if (MatchHere(inputLine, inputPosition, combined, 0, ref consumedChars, endAchorPresent))
+        for (int i = inputPosition; i <= inputLine.Length; i++)
         {
-            //consumedChars.Add();
-            return true;
+            if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, capGroupToken.GetTokens, 0, ref matchedCapture, endAchorPresent))
+            {
+                matchedCapture.Add(inputLine.Substring(inputPosition, i - inputPosition));
+                return MatchHere(inputLine, i, combined, 0, ref matchedCapture, endAchorPresent);
+            }
         }
+        return true;
     }
 
     return false;
@@ -251,12 +255,15 @@ static bool MatchPattern(string inputLine, string pattern)
         tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
     }
 
+    /*
+     * TESTING WHAT'S BEING STORED
+     */
     foreach (var (value, index) in tokens.Select((v, i) => (v, i)))
     {
         Console.WriteLine(value.GetType().Name);
     }
 
-    var consumedChars = new List<char>();
+    var consumedChars = new List<string>();
     if (startAnchorPresent)
     {
         return MatchHere(inputLine, 0, tokens, 0, ref consumedChars, endAnchorPresent);
