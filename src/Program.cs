@@ -120,7 +120,11 @@ static bool MatchHere(
                 // we pass the combined list and start at 0 
                 var combined = new List<IToken>(tokens.Skip(tokenPosition + 1));
 
-                return MatchHere(inputLine, i, combined, 0, ref matchedCapture, endAchorPresent);
+                if (MatchHere(inputLine, i, combined, 0, ref matchedCapture, endAchorPresent))
+                {
+                    return true;
+                }
+                matchedCapture.RemoveAt(matchedCapture.Count - 1);
             }
         }
         return false;
