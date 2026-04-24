@@ -88,6 +88,11 @@ static bool MatchHere(
     {
         // Inside CaptureGroupToken branch, before the loop
         //Console.Error.WriteLine($"CaptureGroup: trying positions {inputPosition} to {inputLine.Length}");
+        Console.Error.WriteLine("Capture Group Token");
+        foreach (var token in capGroupToken.GetTokens)
+        {
+            Console.Error.WriteLine($"Sub Token: {token.GetType()}");
+        }
 
         // combine the tokens within the group with the rest of characters in the token list
 
