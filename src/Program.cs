@@ -98,7 +98,7 @@ static bool MatchHere(
         for (int i = inputPosition; i <= inputLine.Length; i++)
         {
             // Inside the loop, before first MatchHere
-            //Console.Error.WriteLine($"CaptureGroup: trying substring '{inputLine.Substring(inputPosition, i - inputPosition)}'");
+            Console.Error.WriteLine($"CaptureGroup: trying substring '{inputLine.Substring(inputPosition, i - inputPosition)}'");
 
             // pass the substring starting from the input position that's passed to the curent loop minus the input position 
             // if the capture group is at position 0 then it'd be from 0 to 0 - 0 for the first loop
@@ -109,6 +109,8 @@ static bool MatchHere(
             {
                 // When capture succeeds
                 //Console.Error.WriteLine($"CaptureGroup: captured '{inputLine.Substring(inputPosition, i - inputPosition)}'");
+
+                Console.Error.WriteLine($"CaptureGroup: matched! captured='{inputLine.Substring(inputPosition, i - inputPosition)}'");
 
                 // if the capture group passes we capture that string and store it in the matched capture list from the starting position to the end of the loop
                 matchedCapture.Add(inputLine.Substring(inputPosition, i - inputPosition));
@@ -121,7 +123,7 @@ static bool MatchHere(
                 return MatchHere(inputLine, i, combined, 0, ref matchedCapture, endAchorPresent);
             }
         }
-        return false;
+        return true;
     }
     else if (tokens[tokenPosition] is BackreferenceToken backRef)
     {
