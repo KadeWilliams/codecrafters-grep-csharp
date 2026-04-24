@@ -89,10 +89,6 @@ static bool MatchHere(
         //Console.Error.WriteLine($"CaptureGroup: trying positions {inputPosition} to {inputLine.Length}");
 
         // combine the tokens within the group with the rest of characters in the token list
-        var combined = new List<IToken>(capGroupToken.GetTokens);
-
-        // pass the capture group token as it's contents have been consumed
-        combined.AddRange(tokens.Skip(tokenPosition + 1));
 
         // start at the first character in the input and increment
         for (int i = inputPosition; i <= inputLine.Length; i++)
@@ -120,6 +116,10 @@ static bool MatchHere(
 
                 // we then continue with the rest of the input starting from the end of this loop
                 // we pass the combined list and start at 0 
+                var combined = new List<IToken>(capGroupToken.GetTokens);
+
+                // pass the capture group token as it's contents have been consumed
+                combined.AddRange(tokens.Skip(tokenPosition + 1));
                 return MatchHere(inputLine, i, combined, 0, ref matchedCapture, endAchorPresent);
             }
         }
