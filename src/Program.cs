@@ -101,6 +101,7 @@ static bool MatchHere(
             // subsequent loops would be 0, i + 1 - 0
             // we only need to pass the capture group tokens through this list because they're the only ones that matter until this passes or fails
             // pass the referenced list of matched captures
+            Console.Error.WriteLine($"substring='{inputLine.Substring(inputPosition, i - inputPosition)}' result={captureResult}");
             if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, capGroupToken.GetTokens, 0, ref matchedCapture, endAchorPresent))
             {
                 // When capture succeeds
