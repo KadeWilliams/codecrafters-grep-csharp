@@ -275,7 +275,8 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
             }
             else
             {
-                altOption.Add(CreateToken(pattern, newIndex, out newIndex));
+                var innerToken = CreateToken(pattern, newIndex, out newIndex);
+                altOption.Add(WrapIfQuantifier(pattern, newIndex, innerToken, out newIndex));
             }
         }
         return new AlternationToken(altOptions);
