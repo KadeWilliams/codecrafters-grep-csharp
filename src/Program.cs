@@ -130,8 +130,10 @@ static bool MatchHere(
         // we need to check from the last inputToken that passed? 
 
         var capString = matchedCapture[backRef.Position - 1];
+        Console.WriteLine($"Captured String: {capString}");
         if (inputLine.Substring(inputPosition, capString.Length) == capString)
         {
+            Console.WriteLine($"Substring: {inputLine.Substring(inputPosition, capString.Length)}");
             inputPosition += capString.Length;
             return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
         }
