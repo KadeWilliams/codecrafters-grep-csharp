@@ -71,8 +71,8 @@ static bool MatchHere(
     }
     else if (tokens[tokenPosition] is AlternationToken alt)
     {
-        // Inside AlternationToken branch
-        Console.Error.WriteLine($"Alternation: trying sequence of {tokenList.Count} tokens");
+        //// Inside AlternationToken branch
+        //Console.Error.WriteLine($"Alternation: trying sequence of {tokenList.Count} tokens");
         foreach (var tokenList in alt.GetTokens)
         {
             var combined = new List<IToken>(tokenList);
