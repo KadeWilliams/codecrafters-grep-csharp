@@ -2,21 +2,6 @@ using codecrafters_grep.src.Tokens;
 using System.ComponentModel.Design;
 using System.Reflection.Metadata.Ecma335;
 
-/*
-    iter1: 
-        MatchHere("1 apples", 0, "\d", 0)
-            is token position equal to tokens count 
-                no; 0 != 1
-            is input position greater than or equal to inputLine.Length
-                no; 0 ! >= 1
-            is "\d" equal to "1"
-                yes; 
-    iter2: 
-        MatchHere("1 apples", 1, "\d", 1)
-            is token position equal to tokens count 
-                yes; 1 != 1; return 1
- */
-
 static bool MatchHere(
     string inputLine,
     int inputPosition,
@@ -79,35 +64,33 @@ static bool MatchHere(
                 return true;
         }
     }
-    // this is where the new CaptureGroup token type is going to go
+    else if (tokens[tokenPosition] is CaptureGroupToken cgt)
+    {
+        var capGroupTokens = new List<IToken>(cgt.GetTokens);
+        for (int i = 0; i <= inputLine.Length; i++)
+        {
 
+            if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, capGroupTokens, 0, ref matchedCapture, endAchorPresent))
+            {
+                matchedCapture.Add(inputLine.Substring(inputPosition, i - inputPosition));
+                var remainingTokens = new List<IToken>(tokens.Skip(tokenPosition + 1));
+                if (MatchHere(inputLine, i, remainingTokens, 0, ref matchedCapture, endAchorPresent))
+                {
+                    return true;
+                }
+                else
+                {
+                    matchedCapture.RemoveAt(matchedCapture.Count - 1);
+                    continue;
+                }
+            }
+        }
+        return false;
+    }
+    // this is where the new CaptureGroup token type is going to go
 
     return false;
 }
-
-/*
-    iter0: 
-        MatchHere("cat and cat", 0, "(cat) and \1", 0, null)
-            is token position equal to tokens counts   
-                no 
-            is input position greater than or equal to inputLine Length
-                no
-            does 
-                
-    ----------------
-    iter1: 
-        MatchHere("1 apples", 0, "\d", 0)
-            is token position equal to tokens count 
-                no; 0 != 1
-            is input position greater than or equal to inputLine.Length
-                no; 0 ! >= 1
-            is "\d" equal to "1"
-                yes; 
-    iter2: 
-        MatchHere("1 apples", 1, "\d", 1)
-            is token position equal to tokens count 
-                yes; 1 != 1; return 1
- */
 
 static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int newIndex)
 {
@@ -273,11 +256,6 @@ if (args[0] != "-E")
 
 string pattern = args[1];
 string inputLine = Console.In.ReadToEnd();
-
-// You can use print statements as follows for debugging, they'll be visible when running tests.
-// Console.Error.WriteLine("Logs from your program will appear here!");
-
-// Uncomment this block to pass the first stage
 
 if (MatchPattern(inputLine, pattern))
 {
