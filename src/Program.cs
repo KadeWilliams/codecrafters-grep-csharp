@@ -276,18 +276,17 @@ if (args[0] != "-E")
 string pattern = args[1];
 if (args.Length > 2)
 {
-    Console.WriteLine(string.Join(", ", args));
     var files = args.Skip(2);
-    foreach (var arg in args)
+    foreach (var file in files)
     {
-        var inputLines = File.ReadAllLines(arg);
+        var inputLines = File.ReadAllLines(file);
         bool lineFound = false;
         foreach (var line in inputLines)
         {
             if (MatchPattern(line, pattern))
             {
                 lineFound = true;
-                Console.WriteLine($"{arg}:{line}");
+                Console.WriteLine($"{file}:{line}");
             }
         }
 
