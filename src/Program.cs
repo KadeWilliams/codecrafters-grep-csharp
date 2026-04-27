@@ -86,7 +86,10 @@ static bool MatchHere(
         }
         return false;
     }
-    // this is where the new CaptureGroup token type is going to go
+    else if (tokens[tokenPosition] is BackreferenceToken)
+    {
+        Console.WriteLine("BackreferenceToken hit");
+    }
 
     return false;
 }
