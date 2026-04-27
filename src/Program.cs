@@ -91,6 +91,9 @@ static bool MatchHere(
     {
         Console.WriteLine(brt.Position);
         Console.WriteLine(string.Join(", ", matchedCapture));
+        if (!matchedCapture.ContainsKey(brt.Position))
+            return false;
+
         var capturedString = matchedCapture[brt.Position];
         var peekDistance = inputPosition + capturedString.Length;
         if (peekDistance > inputLine.Length)
