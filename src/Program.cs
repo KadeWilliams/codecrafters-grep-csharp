@@ -7,7 +7,7 @@ static bool MatchHere(
     int inputPosition,
     List<IToken> tokens,
     int tokenPosition,
-    ref List<string> matchedCapture,
+    ref Dictionary<int, string> matchedCapture,
     bool endAchorPresent = false)
 {
     Console.Error.WriteLine($"ENTER: input='{inputLine}' inputPos={inputPosition} tokPos={tokenPosition} tokCount={tokens.Count}");
@@ -72,7 +72,7 @@ static bool MatchHere(
 
             if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, capGroupTokens, 0, ref matchedCapture, endAchorPresent))
             {
-                matchedCapture.Add(inputLine.Substring(inputPosition, i - inputPosition));
+                matchedCapture[cgt.GroupNumber] = inputLine.Substring(inputPosition, i - inputPosition);
                 Console.WriteLine($"Substring: {inputLine.Substring(inputPosition, i - inputPosition)}");
                 var remainingTokens = new List<IToken>(tokens.Skip(tokenPosition + 1));
                 if (MatchHere(inputLine, i, remainingTokens, 0, ref matchedCapture, endAchorPresent))
@@ -81,7 +81,7 @@ static bool MatchHere(
                 }
                 else
                 {
-                    matchedCapture.RemoveAt(matchedCapture.Count - 1);
+                    matchedCapture.Remove(cgt.GroupNumber);
                 }
             }
         }
@@ -91,7 +91,7 @@ static bool MatchHere(
     {
         Console.WriteLine(brt.Position);
         Console.WriteLine(string.Join(", ", matchedCapture));
-        var capturedString = matchedCapture.ElementAt(brt.Position - 1);
+        var capturedString = matchedCapture[brt.Position];
         var peekDistance = inputPosition + capturedString.Length;
         if (peekDistance > inputLine.Length)
         {
@@ -128,7 +128,7 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
     return token;
 }
 
-static IToken CreateToken(string pattern, int index, out int newIndex)
+static IToken CreateToken(string pattern, int index, out int newIndex, ref int groupNumberCount)
 {
     newIndex = index;
     if (pattern[newIndex] == '\\')
@@ -180,6 +180,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
     }
     else if (pattern[newIndex] == '(')
     {
+        groupNumberCount++;
         newIndex++;
         var altOptions = new List<List<IToken>>();
         List<IToken> altOption = new List<IToken>();
@@ -195,7 +196,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
                     altOption = [altToken];
                 }
                 newIndex++;
-                return new CaptureGroupToken(altOption);
+                return new CaptureGroupToken(altOption, groupNumberCount);
             }
             else if (pattern[newIndex] == '|')
             {
@@ -206,7 +207,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
             }
             else
             {
-                var innerToken = CreateToken(pattern, newIndex, out newIndex);
+                var innerToken = CreateToken(pattern, newIndex, out newIndex, ref groupNumberCount);
                 altOption.Add(WrapIfQuantifier(pattern, newIndex, innerToken, out newIndex));
             }
         }
@@ -244,12 +245,13 @@ static bool MatchPattern(string inputLine, string pattern)
             continue;
         }
         Console.WriteLine($"pattern: {pattern} i: {i}");
-        var ct = CreateToken(pattern, i, out i);
+        int groupNumber = 0;
+        var ct = CreateToken(pattern, i, out i, ref groupNumber);
 
         tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
     }
 
-    var consumedChars = new List<string>();
+    var consumedChars = new Dictionary<int, string>();
     if (startAnchorPresent)
     {
         return MatchHere(inputLine, 0, tokens, 0, ref consumedChars, endAnchorPresent);
