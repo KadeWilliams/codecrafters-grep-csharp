@@ -225,7 +225,7 @@ static bool MatchPattern(string inputLine, string pattern)
             i++;
             continue;
         }
-
+        Console.WriteLine($"pattern: {pattern} i: {i}");
         var ct = CreateToken(pattern, i, out i);
 
         tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
