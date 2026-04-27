@@ -280,10 +280,10 @@ foreach (var line in inputLine)
     if (MatchPattern(line, pattern))
     {
         Console.WriteLine(inputLine);
-        Environment.Exit(0);
     }
     else
     {
         Environment.Exit(1);
     }
 }
+Environment.Exit(0);
