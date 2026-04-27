@@ -138,6 +138,9 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
             case 'd':
                 newIndex += 2;
                 return new DigitToken();
+            case '\\':
+                newIndex += 2;
+                return new LiteralToken('\\');
             default:
                 var value = int.Parse(pattern[newIndex + 1].ToString());
                 newIndex += 2;
