@@ -290,6 +290,7 @@ if (inputLine.Length < 1)
 
 if (MatchPattern(inputLine, pattern))
 {
+    Console.WriteLine(inputLine);
     Environment.Exit(0);
 }
 else
