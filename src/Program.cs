@@ -89,6 +89,7 @@ static bool MatchHere(
     else if (tokens[tokenPosition] is BackreferenceToken brt)
     {
         Console.WriteLine(brt.Position);
+        Console.WriteLine(string.Join(", ", matchedCapture));
         var capturedString = matchedCapture.ElementAt(brt.Position - 1);
         var peekDistance = inputPosition + capturedString.Length;
         if (peekDistance > inputLine.Length)
