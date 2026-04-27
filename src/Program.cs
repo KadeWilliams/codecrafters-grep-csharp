@@ -181,9 +181,9 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
     else if (pattern[newIndex] == '(')
     {
         newIndex++;
-        bool pipeVisited = false;
         var altOptions = new List<List<IToken>>();
         List<IToken> altOption = new List<IToken>();
+        var pipeVisited = false;
         while (true)
         {
             if (pattern[newIndex] == ')')
@@ -191,17 +191,17 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
                 if (pipeVisited)
                 {
                     altOptions.Add(altOption);
-                    newIndex++;
-                    break;
+                    var altToken = new AlternationToken(altOptions);
+                    altOption = [altToken];
                 }
                 newIndex++;
                 return new CaptureGroupToken(altOption);
             }
             else if (pattern[newIndex] == '|')
             {
+                pipeVisited = true;
                 altOptions.Add(altOption);
                 altOption = new List<IToken>();
-                pipeVisited = true;
                 newIndex++;
             }
             else
@@ -210,7 +210,6 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
                 altOption.Add(WrapIfQuantifier(pattern, newIndex, innerToken, out newIndex));
             }
         }
-        return new AlternationToken(altOptions);
     }
     else if (pattern[newIndex] == '.')
     {
