@@ -89,10 +89,15 @@ static bool MatchHere(
     else if (tokens[tokenPosition] is BackreferenceToken brt)
     {
         var capturedString = matchedCapture.ElementAt(brt.Position - 1);
-
-        if (inputLine.Substring(inputPosition, inputPosition + capturedString.Length - 1) == capturedString)
+        var peekDistance = inputPosition + capturedString.Length;
+        if (peekDistance > inputLine.Length)
         {
-            return MatchHere(inputLine.Substring(inputPosition + capturedString.Length - 1), inputPosition + capturedString.Length, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
+            return false;
+        }
+
+        if (inputLine.Substring(inputPosition, peekDistance) == capturedString)
+        {
+            return MatchHere(inputLine.Substring(peekDistance), inputPosition + capturedString.Length, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
         }
         return false;
     }
