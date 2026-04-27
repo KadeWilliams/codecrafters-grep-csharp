@@ -282,7 +282,7 @@ foreach (var line in inputLine)
     if (MatchPattern(line, pattern))
     {
         foundMatch = true;
-        Console.WriteLine(line);
+        Console.WriteLine($"{line} {foundMatch}");
     }
 }
 
