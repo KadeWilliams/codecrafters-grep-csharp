@@ -74,6 +74,7 @@ static bool MatchHere(
             {
                 matchedCapture[cgt.GroupNumber] = inputLine.Substring(inputPosition, i - inputPosition);
                 Console.WriteLine($"Substring: {inputLine.Substring(inputPosition, i - inputPosition)}");
+                Console.Error.WriteLine($"CaptureGroup #{cgt.GroupNumber} storing: {inputLine.Substring(inputPosition, i - inputPosition)}");
                 var remainingTokens = new List<IToken>(tokens.Skip(tokenPosition + 1));
                 if (MatchHere(inputLine, i, remainingTokens, 0, ref matchedCapture, endAchorPresent))
                 {
