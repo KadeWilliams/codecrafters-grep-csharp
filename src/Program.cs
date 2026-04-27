@@ -299,9 +299,13 @@ if (args.Length > 2)
 else
 {
     string inputLine = Console.In.ReadToEnd();
-    if (inputLine.Length < 1)
+    if (MatchPattern(inputLine, pattern))
     {
-        inputLine = File.ReadAllText(args[2]);
+        Environment.Exit(0);
+    }
+    else
+    {
+        Environment.Exit(1);
     }
 }
 
