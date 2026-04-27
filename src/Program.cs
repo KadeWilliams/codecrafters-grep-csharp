@@ -88,9 +88,13 @@ static bool MatchHere(
     }
     else if (tokens[tokenPosition] is BackreferenceToken brt)
     {
-        Console.WriteLine("BackreferenceToken hit");
-        Console.WriteLine(brt.Position);
-        Console.WriteLine(matchedCapture.ElementAt(brt.Position - 1));
+        var capturedString = matchedCapture.ElementAt(brt.Position - 1);
+
+        if (inputLine.Substring(inputPosition, inputPosition + capturedString.Length) == capturedString)
+        {
+            return MatchHere(inputLine.Substring(inputPosition + capturedString.Length), inputPosition + capturedString.Length, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent)
+        }
+        return false;
     }
 
     return false;
