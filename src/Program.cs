@@ -176,7 +176,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
                     break;
                 }
                 newIndex++;
-                //return new CaptureGroupToken(altOption);
+                return new CaptureGroupToken(altOption);
             }
             else if (pattern[newIndex] == '|')
             {
