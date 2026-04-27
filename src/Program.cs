@@ -224,7 +224,6 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
 
 static bool MatchPattern(string inputLine, string pattern)
 {
-    Console.WriteLine(inputLine);
     var startAnchorPresent = false;
     var endAnchorPresent = false;
     var tokens = new List<IToken>();
