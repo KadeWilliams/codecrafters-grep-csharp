@@ -282,6 +282,11 @@ if (args[0] != "-E")
 string pattern = args[1];
 string inputLine = Console.In.ReadToEnd();
 
+if (inputLine.Length < 1)
+{
+    inputLine = File.ReadAllText(args[2]);
+}
+
 if (MatchPattern(inputLine, pattern))
 {
     Environment.Exit(0);
