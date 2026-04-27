@@ -90,7 +90,7 @@ static bool MatchHere(
     {
         Console.WriteLine("BackreferenceToken hit");
         Console.WriteLine(brt.Position);
-        Console.WriteLine(matchedCapture[brt.Position]);
+        Console.WriteLine(matchedCapture.ElementAt(brt.Position));
     }
 
     return false;
