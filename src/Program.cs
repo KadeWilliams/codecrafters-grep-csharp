@@ -273,19 +273,17 @@ if (args[0] != "-E")
 }
 
 string pattern = args[1];
-string inputLine = Console.In.ReadToEnd();
+var inputLine = File.ReadAllLines(args[2]);
 
-if (inputLine.Length < 1)
+foreach (var line in inputLine)
 {
-    inputLine = File.ReadAllText(args[2]);
-}
-
-if (MatchPattern(inputLine, pattern))
-{
-    Console.WriteLine(inputLine);
-    Environment.Exit(0);
-}
-else
-{
-    Environment.Exit(1);
+    if (MatchPattern(line, pattern))
+    {
+        Console.WriteLine(inputLine);
+        Environment.Exit(0);
+    }
+    else
+    {
+        Environment.Exit(1);
+    }
 }
