@@ -276,24 +276,28 @@ if (args[0] != "-E")
 string pattern = args[1];
 if (args.Length > 2)
 {
-    var inputLines = File.ReadAllLines(args[2]);
-    bool lineFound = false;
-    foreach (var line in inputLines)
+    foreach (var arg in args)
     {
-        if (MatchPattern(line, pattern))
+        var inputLines = File.ReadAllLines(arg);
+        bool lineFound = false;
+        foreach (var line in inputLines)
         {
-            lineFound = true;
-            Console.WriteLine(line);
+            if (MatchPattern(line, pattern))
+            {
+                lineFound = true;
+                Console.WriteLine($"{arg}:{line}");
+            }
         }
-    }
 
-    if (lineFound)
-    {
-        Environment.Exit(0);
-    }
-    else
-    {
-        Environment.Exit(1);
+        if (lineFound)
+        {
+            Environment.Exit(0);
+        }
+        else
+        {
+            Environment.Exit(1);
+        }
+
     }
 }
 else
