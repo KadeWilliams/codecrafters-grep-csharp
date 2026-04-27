@@ -97,7 +97,7 @@ static bool MatchHere(
 
         if (inputLine.Substring(inputPosition, capturedString.Length) == capturedString)
         {
-            return MatchHere(inputLine.Substring(peekDistance), inputPosition + capturedString.Length, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
+            return MatchHere(inputLine.Substring(peekDistance), 0, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
         }
         return false;
     }
