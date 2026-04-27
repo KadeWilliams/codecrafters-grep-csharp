@@ -1,6 +1,7 @@
 using codecrafters_grep.src.Tokens;
 using System.ComponentModel.Design;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 
 static bool MatchHere(
     string inputLine,
@@ -273,23 +274,35 @@ if (args[0] != "-E")
 }
 
 string pattern = args[1];
-var inputLine = File.ReadAllLines(args[2]);
-
-bool foundMatch = false;
-foreach (var line in inputLine)
+if (args.Length > 2)
 {
-    if (MatchPattern(line, pattern))
+    var inputLines = File.ReadAllLines(args[2]);
+    bool lineFound = false;
+    foreach (var line in inputLines)
     {
-        foundMatch = true;
-        Console.WriteLine(line);
+        if (MatchPattern(line, pattern))
+        {
+            lineFound = true;
+            Console.WriteLine(line);
+        }
     }
-}
 
-if (foundMatch)
-{
-    Environment.Exit(0);
+    if (lineFound)
+    {
+        Environment.Exit(0);
+    }
+    else
+    {
+        Environment.Exit(1);
+    }
 }
 else
 {
-    Environment.Exit(1);
+    string inputLine = Console.In.ReadToEnd();
+    if (inputLine.Length < 1)
+    {
+        inputLine = File.ReadAllText(args[2]);
+    }
 }
+
+
