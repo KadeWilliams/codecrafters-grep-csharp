@@ -81,7 +81,6 @@ static bool MatchHere(
                 else
                 {
                     matchedCapture.RemoveAt(matchedCapture.Count - 1);
-                    continue;
                 }
             }
         }
