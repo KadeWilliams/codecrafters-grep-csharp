@@ -10,8 +10,6 @@ static bool MatchHere(
     ref Dictionary<int, string> matchedCapture,
     bool endAchorPresent = false)
 {
-    Console.Error.WriteLine($"ENTER: input='{inputLine}' inputPos={inputPosition} tokPos={tokenPosition} tokCount={tokens.Count}");
-
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
@@ -73,8 +71,6 @@ static bool MatchHere(
             if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, capGroupTokens, 0, ref matchedCapture, endAchorPresent))
             {
                 matchedCapture[cgt.GroupNumber] = inputLine.Substring(inputPosition, i - inputPosition);
-                Console.WriteLine($"Substring: {inputLine.Substring(inputPosition, i - inputPosition)}");
-                Console.Error.WriteLine($"CaptureGroup #{cgt.GroupNumber} storing: {inputLine.Substring(inputPosition, i - inputPosition)}");
                 var remainingTokens = new List<IToken>(tokens.Skip(tokenPosition + 1));
                 if (MatchHere(inputLine, i, remainingTokens, 0, ref matchedCapture, endAchorPresent))
                 {
@@ -90,8 +86,6 @@ static bool MatchHere(
     }
     else if (tokens[tokenPosition] is BackreferenceToken brt)
     {
-        Console.WriteLine(brt.Position);
-        Console.WriteLine(string.Join(", ", matchedCapture));
         if (!matchedCapture.ContainsKey(brt.Position))
             return false;
 
@@ -229,7 +223,6 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
 
 static bool MatchPattern(string inputLine, string pattern)
 {
-    Console.WriteLine($"Input Line: {inputLine}");
     var startAnchorPresent = false;
     var endAnchorPresent = false;
     var tokens = new List<IToken>();
@@ -251,7 +244,6 @@ static bool MatchPattern(string inputLine, string pattern)
             i++;
             continue;
         }
-        Console.WriteLine($"pattern: {pattern} i: {i}");
         var ct = CreateToken(pattern, i, out i, ref groupNumber);
 
         tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
