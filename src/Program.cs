@@ -115,8 +115,6 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
 static IToken CreateToken(string pattern, int index, out int newIndex)
 {
     newIndex = index;
-    Console.WriteLine(newIndex);
-    Console.WriteLine(index);
     if (pattern[newIndex] == '\\')
     {
         switch (pattern[newIndex + 1])
@@ -127,10 +125,10 @@ static IToken CreateToken(string pattern, int index, out int newIndex)
             case 'd':
                 newIndex += 2;
                 return new DigitToken();
-                //default:
-                //    var value = int.Parse(pattern[newIndex + 1].ToString());
-                //    newIndex += 2;
-                //    return new BackreferenceToken(value);
+            default:
+                var value = int.Parse(pattern[newIndex + 1].ToString());
+                newIndex += 2;
+                return new BackreferenceToken(value);
 
         }
     }
