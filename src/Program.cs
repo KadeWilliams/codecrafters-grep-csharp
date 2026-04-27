@@ -185,6 +185,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
     else if (pattern[newIndex] == '(')
     {
         groupNumberCount++;
+        int myGroupNumber = groupNumberCount;
         newIndex++;
         var altOptions = new List<List<IToken>>();
         List<IToken> altOption = new List<IToken>();
@@ -200,7 +201,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
                     altOption = [altToken];
                 }
                 newIndex++;
-                return new CaptureGroupToken(altOption, groupNumberCount);
+                return new CaptureGroupToken(altOption, myGroupNumber);
             }
             else if (pattern[newIndex] == '|')
             {
