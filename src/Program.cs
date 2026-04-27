@@ -73,6 +73,7 @@ static bool MatchHere(
             if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, capGroupTokens, 0, ref matchedCapture, endAchorPresent))
             {
                 matchedCapture.Add(inputLine.Substring(inputPosition, i - inputPosition));
+                Console.WriteLine($"Substring: {inputLine.Substring(inputPosition, i - inputPosition)}");
                 var remainingTokens = new List<IToken>(tokens.Skip(tokenPosition + 1));
                 if (MatchHere(inputLine, i, remainingTokens, 0, ref matchedCapture, endAchorPresent))
                 {
