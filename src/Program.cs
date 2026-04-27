@@ -67,7 +67,7 @@ static bool MatchHere(
     else if (tokens[tokenPosition] is CaptureGroupToken cgt)
     {
         var capGroupTokens = new List<IToken>(cgt.GetTokens);
-        for (int i = 0; i <= inputLine.Length; i++)
+        for (int i = inputPosition; i <= inputLine.Length; i++)
         {
 
             if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, capGroupTokens, 0, ref matchedCapture, endAchorPresent))
