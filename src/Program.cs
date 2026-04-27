@@ -276,15 +276,21 @@ if (args[0] != "-E")
 string pattern = args[1];
 var inputLine = File.ReadAllLines(args[2]);
 
+bool foundMatch = false;
 foreach (var line in inputLine)
 {
     if (MatchPattern(line, pattern))
     {
+        foundMatch = true;
         Console.WriteLine(line);
-        Environment.Exit(0);
     }
-    else
-    {
-        Environment.Exit(1);
-    }
+}
+
+if (foundMatch)
+{
+    Environment.Exit(0);
+}
+else
+{
+    Environment.Exit(1);
 }
