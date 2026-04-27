@@ -276,6 +276,7 @@ if (args[0] != "-E")
 string pattern = args[1];
 if (args.Length > 2)
 {
+    Console.WriteLine(string.Join(", ", args));
     foreach (var arg in args)
     {
         var inputLines = File.ReadAllLines(arg);
