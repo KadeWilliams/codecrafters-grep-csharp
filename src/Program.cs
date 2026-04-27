@@ -228,6 +228,7 @@ static bool MatchPattern(string inputLine, string pattern)
     var endAnchorPresent = false;
     var tokens = new List<IToken>();
     int i = 0;
+    int groupNumber = 0;
     while (i < pattern.Length)
     {
         var value = pattern[i];
@@ -245,7 +246,6 @@ static bool MatchPattern(string inputLine, string pattern)
             continue;
         }
         Console.WriteLine($"pattern: {pattern} i: {i}");
-        int groupNumber = 0;
         var ct = CreateToken(pattern, i, out i, ref groupNumber);
 
         tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
