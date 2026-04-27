@@ -277,6 +277,7 @@ string pattern = args[1];
 if (args.Length > 2)
 {
     Console.WriteLine(string.Join(", ", args));
+    var files = args.Skip(2);
     foreach (var arg in args)
     {
         var inputLines = File.ReadAllLines(arg);
