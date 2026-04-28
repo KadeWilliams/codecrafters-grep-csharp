@@ -267,7 +267,7 @@ static bool MatchPattern(string inputLine, string pattern)
     return false;
 }
 
-static bool ProcessFiles(IEnumerable<string> files, string pattern)
+static bool ProcessFiles(IEnumerable<string> files, string pattern, bool includeFileName)
 {
     bool lineFound = false;
     foreach (var file in files)
@@ -278,13 +278,14 @@ static bool ProcessFiles(IEnumerable<string> files, string pattern)
             if (MatchPattern(line, pattern))
             {
                 lineFound = true;
-                if (files.Count() < 2)
+                if (includeFileName)
                 {
-                    Console.WriteLine($"{line}");
+                    Console.WriteLine($"{file}:{line}");
                 }
                 else
                 {
-                    Console.WriteLine($"{file}:{line}");
+
+                    Console.WriteLine($"{line}");
                 }
             }
         }
@@ -315,7 +316,7 @@ if (args[0] == "-r")
     //Console.WriteLine($"Dirs: {string.Join(", ", dirs)}");
     //Console.WriteLine($"Files: {string.Join(", ", files)}");
     string pattern = args[2];
-    bool lineFound = ProcessFiles(files, pattern);
+    bool lineFound = ProcessFiles(files, pattern, true);
 
     Environment.Exit(0);
 }
@@ -325,7 +326,11 @@ else if (args[0] == "-E")
     if (args.Length > 2)
     {
         var files = args.Skip(2);
-        bool lineFound = ProcessFiles(files, pattern);
+        bool includeFileName = false;
+        if (files.Count() < 2)
+            includeFileName = true;
+        bool lineFound = ProcessFiles(files, pattern, includeFileName);
+
         //bool lineFound = false;
         //foreach (var file in files)
         //{
