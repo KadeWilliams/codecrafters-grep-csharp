@@ -126,7 +126,7 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
     {
         return token;
     }
-
+    Console.WriteLine(pattern[index]);
     switch (pattern[index])
     {
         case '+':
