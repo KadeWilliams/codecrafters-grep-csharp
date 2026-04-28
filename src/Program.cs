@@ -317,8 +317,8 @@ if (args[0] == "-r")
         }
     }
 
-    Console.WriteLine($"Dirs: {string.Join(", ", dirs)}");
-    Console.WriteLine($"Files: {string.Join(", ", files)}");
+    //Console.WriteLine($"Dirs: {string.Join(", ", dirs)}");
+    //Console.WriteLine($"Files: {string.Join(", ", files)}");
     string pattern = args[2];
     bool lineFound = ProcessFiles(files, pattern, true);
 
