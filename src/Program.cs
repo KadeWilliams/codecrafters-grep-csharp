@@ -29,9 +29,9 @@ static bool MatchHere(
         {
             return false;
         }
-        if (tokens[tokenPosition] is NQuantifierToken n)
+        if (tokens[tokenPosition] is NQuantifierToken q)
         {
-            if (n.Number > 0)
+            if (q.Number > 0)
             {
                 return false;
             }
