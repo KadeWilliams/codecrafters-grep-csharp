@@ -15,22 +15,17 @@ static bool MatchHere(
     if (tokenPosition == tokens.Count())
     {
         // we've completed the tokens but not reached the end of the input and the end of the input has to match 
-        if (endAchorPresent && inputPosition < inputLine.Length && tokens[tokenPosition] is not ZeroOrMoreToken)
+        if (endAchorPresent && inputPosition < inputLine.Length)
         {
             return false;
         }
         return true;
     }
 
-    if (tokens[tokenPosition] is ZeroOrMoreToken)
-    {
-        return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
-    }
-
     // we've gotten through all of the input characters without passing
     if (inputPosition >= inputLine.Length)
     {
-        if (tokens[tokenPosition] is not ZeroOrOneToken || tokens[tokenPosition] is not ZeroOrMoreToken)
+        if (tokens[tokenPosition] is not ZeroOrOneToken)
         {
             return false;
         }
@@ -44,17 +39,12 @@ static bool MatchHere(
         int curTok = tokenPosition;
         if (tokens[tokenPosition] is OneOrMoreToken)
         {
-            // advance the input and stay on the current token
-            //      because we're saying the current token has been found and we need to move to the next character in the input
-            //      and we need to see if we find another match further in the input of the current token
-            // || advance the input and token 
-            //      because we need to find the next input and compare it against the next token to advance the process
             return MatchHere(inputLine, curInp + 1, tokens, curTok, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
         }
 
         if (tokens[tokenPosition] is ZeroOrMoreToken)
         {
-            return MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
+            return MatchHere(inputLine, curInp + 1, tokens, curTok, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, curInp, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
         }
 
         if (tokens[tokenPosition] is ZeroOrOneToken)
@@ -67,6 +57,10 @@ static bool MatchHere(
     else if (tokens[tokenPosition] is ZeroOrOneToken)
     {
         return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
+    }
+    else if (tokens[tokenPosition] is ZeroOrMoreToken)
+    {
+        return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
     }
     else if (tokens[tokenPosition] is AlternationToken alt)
     {
