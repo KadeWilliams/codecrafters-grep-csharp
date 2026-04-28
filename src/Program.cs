@@ -277,10 +277,10 @@ string pattern = args[1];
 if (args.Length > 2)
 {
     var files = args.Skip(2);
+    bool lineFound = false;
     foreach (var file in files)
     {
         var inputLines = File.ReadAllLines(file);
-        bool lineFound = false;
         foreach (var line in inputLines)
         {
             if (MatchPattern(line, pattern))
@@ -289,16 +289,14 @@ if (args.Length > 2)
                 Console.WriteLine($"{file}:{line}");
             }
         }
-
-        if (lineFound)
-        {
-            Environment.Exit(0);
-        }
-        else
-        {
-            Environment.Exit(1);
-        }
-
+    }
+    if (lineFound)
+    {
+        Environment.Exit(0);
+    }
+    else
+    {
+        Environment.Exit(1);
     }
 }
 else
