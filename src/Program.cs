@@ -267,19 +267,40 @@ static bool MatchPattern(string inputLine, string pattern)
     return false;
 }
 
-static void ProcessFilesRecursively(string[] directories)
+static bool ProcessFiles(IEnumerable<string> files, string pattern)
 {
-    foreach (var d in directories)
+    bool lineFound = false;
+    foreach (var file in files)
     {
-        Console.WriteLine(d);
+        var inputLines = File.ReadAllLines(file);
+        foreach (var line in inputLines)
+        {
+            if (MatchPattern(line, pattern))
+            {
+                lineFound = true;
+                if (files.Count() < 2)
+                {
+                    Console.WriteLine($"{line}");
+                }
+                else
+                {
+                    Console.WriteLine($"{file}:{line}");
+                }
+            }
+        }
     }
+    return lineFound;
 }
 
 if (args[0] == "-r")
 {
     var directory = args.Skip(3);
     var dirs = Directory.GetDirectories(directory.First());
-    ProcessFilesRecursively(dirs);
+    // get files in directories
+    string pattern = args[3];
+    Console.WriteLine(pattern);
+    //ProcessFiles(dirs);
+    Environment.Exit(0);
 }
 else if (args[0] == "-E")
 {
@@ -287,26 +308,27 @@ else if (args[0] == "-E")
     if (args.Length > 2)
     {
         var files = args.Skip(2);
-        bool lineFound = false;
-        foreach (var file in files)
-        {
-            var inputLines = File.ReadAllLines(file);
-            foreach (var line in inputLines)
-            {
-                if (MatchPattern(line, pattern))
-                {
-                    lineFound = true;
-                    if (files.Count() < 2)
-                    {
-                        Console.WriteLine($"{line}");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"{file}:{line}");
-                    }
-                }
-            }
-        }
+        bool lineFound = ProcessFiles(files, pattern);
+        //bool lineFound = false;
+        //foreach (var file in files)
+        //{
+        //    var inputLines = File.ReadAllLines(file);
+        //    foreach (var line in inputLines)
+        //    {
+        //        if (MatchPattern(line, pattern))
+        //        {
+        //            lineFound = true;
+        //            if (files.Count() < 2)
+        //            {
+        //                Console.WriteLine($"{line}");
+        //            }
+        //            else
+        //            {
+        //                Console.WriteLine($"{file}:{line}");
+        //            }
+        //        }
+        //    }
+        //}
         if (lineFound)
         {
             Environment.Exit(0);
