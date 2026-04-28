@@ -112,6 +112,17 @@ static bool MatchHere(
         }
         return false;
     }
+    //else if (tokens[tokenPosition] is NQuantifierToken nqt)
+    //{
+    //    for (int i = 0; i <= nqt.Number; i++)
+    //    {
+    //        if (MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent))
+    //        {
+    //            return true;
+    //        }
+    //    }
+    //    return false;
+    //}
 
     return false;
 }
@@ -134,6 +145,13 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
         case '*':
             newIndex++;
             return new ZeroOrMoreToken(token);
+        case '{':
+            newIndex++;
+            int num = int.Parse(pattern[newIndex].ToString());
+            newIndex++;
+            Console.WriteLine(num);
+            Console.WriteLine(token);
+            return new NQuantifierToken(num, token);
     }
     return token;
 }
