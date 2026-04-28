@@ -269,7 +269,10 @@ static bool MatchPattern(string inputLine, string pattern)
 
 static void ProcessFilesRecursively(string[] directories)
 {
-    Console.WriteLine(directories.Select(d => d));
+    foreach (var d in directories)
+    {
+        Console.WriteLine(d);
+    }
 }
 
 if (args[0] == "-r")
