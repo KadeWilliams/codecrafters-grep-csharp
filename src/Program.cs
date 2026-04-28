@@ -62,9 +62,13 @@ static bool MatchHere(
 
         return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
     }
-    else if (tokens[tokenPosition] is ZeroOrOneToken || tokens[tokenPosition] is ZeroOrMoreToken)
+    else if (tokens[tokenPosition] is ZeroOrOneToken)
     {
         return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
+    }
+    else if (tokens[tokenPosition] is ZeroOrMoreToken)
+    {
+        return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
     }
     else if (tokens[tokenPosition] is AlternationToken alt)
     {
