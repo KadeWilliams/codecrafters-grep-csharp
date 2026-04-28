@@ -25,7 +25,7 @@ static bool MatchHere(
     // we've gotten through all of the input characters without passing
     if (inputPosition >= inputLine.Length)
     {
-        if (tokens[tokenPosition] is not ZeroOrOneToken)
+        if (tokens[tokenPosition] is not ZeroOrOneToken && tokens[tokenPosition] is not ZeroOrMoreToken)
         {
             return false;
         }
@@ -42,14 +42,14 @@ static bool MatchHere(
             return MatchHere(inputLine, curInp + 1, tokens, curTok, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
         }
 
-        if (tokens[tokenPosition] is ZeroOrOneToken)
+        if (tokens[tokenPosition] is ZeroOrOneToken || tokens[tokenPosition] is ZeroOrMoreToken)
         {
             return MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, curInp, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
         }
 
         return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
     }
-    else if (tokens[tokenPosition] is ZeroOrOneToken)
+    else if (tokens[tokenPosition] is ZeroOrOneToken || tokens[tokenPosition] is ZeroOrMoreToken)
     {
         return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
     }
@@ -123,6 +123,9 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
         case '?':
             newIndex++;
             return new ZeroOrOneToken(token);
+        case '*':
+            newIndex++;
+            return new ZeroOrMoreToken(token);
     }
     return token;
 }
@@ -317,8 +320,6 @@ if (args[0] == "-r")
         }
     }
 
-    //Console.WriteLine($"Dirs: {string.Join(", ", dirs)}");
-    //Console.WriteLine($"Files: {string.Join(", ", files)}");
     string pattern = args[2];
     bool lineFound = ProcessFiles(files, pattern, true);
     if (lineFound)
@@ -338,31 +339,10 @@ else if (args[0] == "-E")
     {
         var files = args.Skip(2);
         bool includeFileName = false;
-        //Console.WriteLine(string.Join(", ", files));
         if (files.Count() > 1)
             includeFileName = true;
         bool lineFound = ProcessFiles(files, pattern, includeFileName);
 
-        //bool lineFound = false;
-        //foreach (var file in files)
-        //{
-        //    var inputLines = File.ReadAllLines(file);
-        //    foreach (var line in inputLines)
-        //    {
-        //        if (MatchPattern(line, pattern))
-        //        {
-        //            lineFound = true;
-        //            if (files.Count() < 2)
-        //            {
-        //                Console.WriteLine($"{line}");
-        //            }
-        //            else
-        //            {
-        //                Console.WriteLine($"{file}:{line}");
-        //            }
-        //        }
-        //    }
-        //}
         if (lineFound)
         {
             Environment.Exit(0);
@@ -389,12 +369,3 @@ else
 {
     Environment.Exit(2);
 }
-
-/*
-if (args[0] != "-E")
-{
-    Console.WriteLine("Expected first argument to be '-E'");
-    Environment.Exit(2);
-}
-
-*/
