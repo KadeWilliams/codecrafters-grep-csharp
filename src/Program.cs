@@ -37,7 +37,7 @@ static bool MatchHere(
     {
         int curInp = inputPosition;
         int curTok = tokenPosition;
-        if (tokens[tokenPosition] is OneOrMoreToken || tokens[tokenPosition] is ZeroOrMoreToken)
+        if (tokens[tokenPosition] is OneOrMoreToken)
         {
             // advance the input and stay on the current token
             //      because we're saying the current token has been found and we need to move to the next character in the input
@@ -45,6 +45,11 @@ static bool MatchHere(
             // || advance the input and token 
             //      because we need to find the next input and compare it against the next token to advance the process
             return MatchHere(inputLine, curInp + 1, tokens, curTok, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
+        }
+
+        if (tokens[tokenPosition] is ZeroOrMoreToken)
+        {
+            return MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
         }
 
         if (tokens[tokenPosition] is ZeroOrOneToken)
