@@ -267,56 +267,75 @@ static bool MatchPattern(string inputLine, string pattern)
     return false;
 }
 
+static void ProcessFilesRecursively(string[] directories)
+{
+    Console.WriteLine(directories.Select(d => d));
+}
+
+if (args[0] == "-r")
+{
+    var directory = args.Skip(2);
+    var dirs = Directory.GetDirectories(directory.First());
+    ProcessFilesRecursively(dirs);
+}
+else if (args[0] == "-E")
+{
+    string pattern = args[1];
+    if (args.Length > 2)
+    {
+        var files = args.Skip(2);
+        bool lineFound = false;
+        foreach (var file in files)
+        {
+            var inputLines = File.ReadAllLines(file);
+            foreach (var line in inputLines)
+            {
+                if (MatchPattern(line, pattern))
+                {
+                    lineFound = true;
+                    if (files.Count() < 2)
+                    {
+                        Console.WriteLine($"{line}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{file}:{line}");
+                    }
+                }
+            }
+        }
+        if (lineFound)
+        {
+            Environment.Exit(0);
+        }
+        else
+        {
+            Environment.Exit(1);
+        }
+    }
+    else
+    {
+        string inputLine = Console.In.ReadToEnd();
+        if (MatchPattern(inputLine, pattern))
+        {
+            Environment.Exit(0);
+        }
+        else
+        {
+            Environment.Exit(1);
+        }
+    }
+}
+else
+{
+    Environment.Exit(2);
+}
+
+/*
 if (args[0] != "-E")
 {
     Console.WriteLine("Expected first argument to be '-E'");
     Environment.Exit(2);
 }
 
-string pattern = args[1];
-if (args.Length > 2)
-{
-    var files = args.Skip(2);
-    bool lineFound = false;
-    foreach (var file in files)
-    {
-        var inputLines = File.ReadAllLines(file);
-        foreach (var line in inputLines)
-        {
-            if (MatchPattern(line, pattern))
-            {
-                lineFound = true;
-                if (files.Count() < 2)
-                {
-                    Console.WriteLine($"{line}");
-                }
-                else
-                {
-                    Console.WriteLine($"{file}:{line}");
-                }
-            }
-        }
-    }
-    if (lineFound)
-    {
-        Environment.Exit(0);
-    }
-    else
-    {
-        Environment.Exit(1);
-    }
-}
-else
-{
-    string inputLine = Console.In.ReadToEnd();
-    if (MatchPattern(inputLine, pattern))
-    {
-        Environment.Exit(0);
-    }
-    else
-    {
-        Environment.Exit(1);
-    }
-}
-
-
+*/
