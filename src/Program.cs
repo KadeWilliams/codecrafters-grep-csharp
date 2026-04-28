@@ -24,6 +24,8 @@ static bool MatchHere(
 
     if (tokens[tokenPosition] is ZeroOrMoreToken)
     {
+        Console.WriteLine(inputLine[inputPosition]);
+        Console.WriteLine(tokens[tokenPosition]);
         return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
     }
 
