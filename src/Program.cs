@@ -286,7 +286,14 @@ if (args.Length > 2)
             if (MatchPattern(line, pattern))
             {
                 lineFound = true;
-                Console.WriteLine($"{file}:{line}");
+                if (files.Count() < 2)
+                {
+                    Console.WriteLine($"{line}");
+                }
+                else
+                {
+                    Console.WriteLine($"{file}:{line}");
+                }
             }
         }
     }
