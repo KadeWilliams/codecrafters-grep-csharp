@@ -338,6 +338,7 @@ else if (args[0] == "-E")
     {
         var files = args.Skip(2);
         bool includeFileName = false;
+        Console.WriteLine(string.Join(", ", files));
         if (files.Count() < 2)
             includeFileName = true;
         bool lineFound = ProcessFiles(files, pattern, includeFileName);
