@@ -300,7 +300,7 @@ static List<string> GetDirectories(string directory)
 if (args[0] == "-r")
 {
     var directory = args.Skip(3);
-    var dirs = Directory.GetDirectories(directory.First()).ToList();
+    var dirs = new List<string>();
     dirs.AddRange(GetDirectories(directory.First()));
 
     var files = new List<string>();
