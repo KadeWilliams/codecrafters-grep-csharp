@@ -25,12 +25,10 @@ static bool MatchHere(
     // we've gotten through all of the input characters without passing
     if (inputPosition >= inputLine.Length)
     {
-        Console.WriteLine(tokens[tokenPosition] is not ZeroOrOneToken || tokens[tokenPosition] is not ZeroOrMoreToken);
-        if (tokens[tokenPosition] is not ZeroOrOneToken || tokens[tokenPosition] is not ZeroOrMoreToken)
+        if (tokens[tokenPosition] is not ZeroOrOneToken && tokens[tokenPosition] is not ZeroOrMoreToken)
         {
             return false;
         }
-        Console.WriteLine(inputLine, inputLine[inputPosition], tokens[tokenPosition]);
         return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
     }
 
