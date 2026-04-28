@@ -30,6 +30,7 @@ static bool MatchHere(
         {
             return false;
         }
+        Console.WriteLine(inputLine, inputLine[inputPosition], tokens[tokenPosition]);
         return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
     }
 
