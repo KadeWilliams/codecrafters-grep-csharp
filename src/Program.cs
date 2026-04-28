@@ -312,7 +312,7 @@ if (args[0] == "-r")
         }
     }
 
-    Console.WriteLine(string.Join(", ", files);
+    Console.WriteLine(string.Join(", ", files));
     // get files in directories
     //string pattern = args[2];
     //bool lineFound = ProcessFiles(files, pattern);
