@@ -60,6 +60,7 @@ static bool MatchHere(
     }
     else if (tokens[tokenPosition] is ZeroOrMoreToken)
     {
+        Console.WriteLine("Failure; staying on input and advancing tokenPosition.\nDone because we don't care about it matching so we just advance the token to skip it.");
         return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
     }
     else if (tokens[tokenPosition] is AlternationToken alt)
