@@ -321,8 +321,15 @@ if (args[0] == "-r")
     //Console.WriteLine($"Files: {string.Join(", ", files)}");
     string pattern = args[2];
     bool lineFound = ProcessFiles(files, pattern, true);
+    if (lineFound)
+    {
+        Environment.Exit(0);
+    }
+    else
+    {
+        Environment.Exit(1);
+    }
 
-    Environment.Exit(0);
 }
 else if (args[0] == "-E")
 {
