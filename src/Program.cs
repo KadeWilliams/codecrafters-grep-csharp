@@ -22,6 +22,11 @@ static bool MatchHere(
         return true;
     }
 
+    if (tokens[tokenPosition] is ZeroOrMoreToken)
+    {
+        return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
+    }
+
     // we've gotten through all of the input characters without passing
     if (inputPosition >= inputLine.Length)
     {
