@@ -274,7 +274,7 @@ static void ProcessFilesRecursively(string[] directories)
 
 if (args[0] == "-r")
 {
-    var directory = args.Skip(2);
+    var directory = args.Skip(3);
     var dirs = Directory.GetDirectories(directory.First());
     ProcessFilesRecursively(dirs);
 }
