@@ -11,8 +11,6 @@ static bool MatchHere(
     ref Dictionary<int, string> matchedCapture,
     bool endAchorPresent = false)
 {
-    Console.WriteLine(tokenPosition);
-    Console.WriteLine(inputPosition);
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
@@ -27,14 +25,14 @@ static bool MatchHere(
     // we've gotten through all of the input characters without passing
     if (inputPosition >= inputLine.Length)
     {
-        if (tokens[tokenPosition] is not ZeroOrOneToken)
+        Console.WriteLine(tokens[tokenPosition] is not ZeroOrOneToken || tokens[tokenPosition] is not ZeroOrMoreToken);
+        if (tokens[tokenPosition] is not ZeroOrOneToken || tokens[tokenPosition] is not ZeroOrMoreToken)
         {
             return false;
         }
         return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
     }
 
-    Console.WriteLine(tokens[tokenPosition]);
     // if token matches recurse through again; iterating one for both token and input positions
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
@@ -136,7 +134,6 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
             return new ZeroOrOneToken(token);
         case '*':
             newIndex++;
-            Console.WriteLine(pattern[index]);
             return new ZeroOrMoreToken(token);
     }
     return token;
