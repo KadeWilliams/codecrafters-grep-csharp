@@ -18,8 +18,9 @@ public class NQuantifierToken : IToken
 
     public bool Matches(char c)
     {
-        return false;
+        return _token.Matches(c);
     }
 
-    public int Number => _number;
+    //public int Number => _number;
+    public int Number { get; set; }
 }

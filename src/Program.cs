@@ -32,6 +32,14 @@ static bool MatchHere(
         return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
     }
 
+    if (tokens[tokenPosition] is NQuantifierToken n)
+    {
+        if (n.Number == 0)
+        {
+            return true;
+        }
+    }
+
     // if token matches recurse through again; iterating one for both token and input positions
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
@@ -50,6 +58,12 @@ static bool MatchHere(
         if (tokens[tokenPosition] is ZeroOrOneToken)
         {
             return MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, curInp, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
+        }
+        if (tokens[tokenPosition] is NQuantifierToken nqt)
+        {
+            var newTokens = new List<IToken>(tokens);
+            newTokens[tokenPosition] = new NQuantifierToken(nqt.Number--, newTokens[tokenPosition]);
+            return MatchHere(inputLine, curInp + 1, newTokens, curTok, ref matchedCapture, endAchorPresent);
         }
 
         return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
@@ -149,8 +163,6 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
             newIndex++;
             int num = int.Parse(pattern[newIndex].ToString());
             newIndex++;
-            Console.WriteLine(num);
-            Console.WriteLine(token);
             return new NQuantifierToken(num, token);
     }
     return token;
