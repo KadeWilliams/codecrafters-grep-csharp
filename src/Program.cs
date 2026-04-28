@@ -60,7 +60,7 @@ static bool MatchHere(
     }
     else if (tokens[tokenPosition] is ZeroOrMoreToken)
     {
-        return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
+        return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
     }
     else if (tokens[tokenPosition] is AlternationToken alt)
     {
