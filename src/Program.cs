@@ -37,6 +37,7 @@ static bool MatchHere(
     // if token matches recurse through again; iterating one for both token and input positions
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
+        Console.WriteLine("Matching");
         int curInp = inputPosition;
         int curTok = tokenPosition;
         if (tokens[tokenPosition] is OneOrMoreToken)
