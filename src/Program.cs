@@ -29,6 +29,13 @@ static bool MatchHere(
         {
             return false;
         }
+        if (tokens[tokenPosition] is NQuantifierToken n)
+        {
+            if (n.Number > 0)
+            {
+                return false;
+            }
+        }
         return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
     }
 
@@ -38,6 +45,7 @@ static bool MatchHere(
         {
             return true;
         }
+
     }
 
     // if token matches recurse through again; iterating one for both token and input positions
