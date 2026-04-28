@@ -292,14 +292,32 @@ static bool ProcessFiles(IEnumerable<string> files, string pattern)
     return lineFound;
 }
 
+static List<string> GetDirectories(string directory)
+{
+    return Directory.GetDirectories(directory).ToList();
+}
+
 if (args[0] == "-r")
 {
     var directory = args.Skip(3);
-    var dirs = Directory.GetDirectories(directory.First());
+    var dirs = Directory.GetDirectories(directory.First()).ToList();
+    dirs.AddRange(GetDirectories(directory.First()));
+
+    var files = new List<string>();
+    foreach (var dir in dirs)
+    {
+        foreach (var file in Directory.GetFiles(dir))
+        {
+            files.Add(file);
+        }
+    }
+
+
     // get files in directories
     string pattern = args[2];
-    Console.WriteLine(pattern);
-    //ProcessFiles(dirs);
+    bool lineFound = ProcessFiles(files, pattern);
+    //ProcessFiles(dirs, pattern);
+
     Environment.Exit(0);
 }
 else if (args[0] == "-E")
