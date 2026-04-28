@@ -15,7 +15,7 @@ static bool MatchHere(
     if (tokenPosition == tokens.Count())
     {
         // we've completed the tokens but not reached the end of the input and the end of the input has to match 
-        if (endAchorPresent && inputPosition < inputLine.Length)
+        if (endAchorPresent && inputPosition < inputLine.Length && tokens[tokenPosition] is not ZeroOrMoreToken)
         {
             return false;
         }
@@ -24,8 +24,6 @@ static bool MatchHere(
 
     if (tokens[tokenPosition] is ZeroOrMoreToken)
     {
-        Console.WriteLine(inputLine[inputPosition]);
-        Console.WriteLine(tokens[tokenPosition]);
         return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
     }
 
