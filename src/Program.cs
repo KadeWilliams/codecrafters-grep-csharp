@@ -297,7 +297,7 @@ if (args[0] == "-r")
     var directory = args.Skip(3);
     var dirs = Directory.GetDirectories(directory.First());
     // get files in directories
-    string pattern = args[3];
+    string pattern = args[2];
     Console.WriteLine(pattern);
     //ProcessFiles(dirs);
     Environment.Exit(0);
