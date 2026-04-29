@@ -21,16 +21,9 @@ public class NQuantifierToken : IToken
         return _token.Matches(c);
     }
 
-    //public int Number => _number;
     public int Number
     {
-        get
-        {
-            return _number;
-        }
-        set
-        {
-            _number = value;
-        }
+        get => _number;
+        set => _number = value;
     }
 }
