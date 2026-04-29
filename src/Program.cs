@@ -178,11 +178,8 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
             return new ZeroOrMoreToken(token);
         case '{':
             newIndex++;
-            Console.WriteLine($"N Quantifier Number: {pattern[newIndex]}");
-
             int num = int.Parse(pattern[newIndex].ToString());
             newIndex += 2;
-            Console.WriteLine($"End of the N Quantifier: {pattern[newIndex]}");
             return new NQuantifierToken(num, token);
     }
     return token;
