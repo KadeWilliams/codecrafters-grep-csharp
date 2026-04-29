@@ -11,6 +11,7 @@ static bool MatchHere(
     ref Dictionary<int, string> matchedCapture,
     bool endAchorPresent = false)
 {
+
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
@@ -303,6 +304,11 @@ static bool MatchPattern(string inputLine, string pattern)
         }
         var ct = CreateToken(pattern, i, out i, ref groupNumber);
         tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
+    }
+
+    foreach (var token in tokens)
+    {
+        Console.WriteLine(token.GetType());
     }
 
     var consumedChars = new Dictionary<int, string>();
