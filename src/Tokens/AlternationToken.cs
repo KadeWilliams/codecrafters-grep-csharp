@@ -16,15 +16,14 @@ public class AlternationToken : IToken
 
     public bool Matches(char c)
     {
-
-        foreach (var tokenss in _tokens)
-        {
-            foreach (var token in tokenss)
-            {
-                Console.WriteLine(token.GetType());
-            }
-        }
-        Console.WriteLine(c);
+        //foreach (var tokenss in _tokens)
+        //{
+        //    foreach (var token in tokenss)
+        //    {
+        //        Console.WriteLine(token.GetType());
+        //    }
+        //}
+        Console.WriteLine($"Class Input: {c}");
         return false;
     }
 
