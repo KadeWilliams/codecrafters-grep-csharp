@@ -11,6 +11,8 @@ static bool MatchHere(
     ref Dictionary<int, string> matchedCapture,
     bool endAchorPresent = false)
 {
+    Console.WriteLine(tokens[tokenPosition]);
+    Console.WriteLine(inputLine[inputPosition]);
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
@@ -45,7 +47,6 @@ static bool MatchHere(
         {
             return true;
         }
-
     }
 
     // if token matches recurse through again; iterating one for both token and input positions
