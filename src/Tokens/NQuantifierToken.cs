@@ -26,4 +26,5 @@ public class NQuantifierToken : IToken
         get => _number;
         set => _number = value;
     }
+    public IToken InnerToken => _token;
 }

@@ -72,8 +72,7 @@ static bool MatchHere(
         {
             var newTokens = new List<IToken>(tokens);
 
-            newTokens[tokenPosition] = new NQuantifierToken(nqt.Number--, newTokens[tokenPosition]);
-            Console.WriteLine(newTokens[tokenPosition]);
+            newTokens[tokenPosition] = new NQuantifierToken(nqt.Number - 1, nqt.InnerToken);
             return MatchHere(inputLine, curInp + 1, newTokens, curTok, ref matchedCapture, endAchorPresent);
         }
 
