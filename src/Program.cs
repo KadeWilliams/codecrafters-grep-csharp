@@ -52,9 +52,20 @@ static bool MatchHere(
         {
             return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
         }
+
+        var innerTokens = new List<IToken> { n.InnerToken };
+        for (int i = inputPosition; i <= inputLine.Length; i++)
+        {
+            if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, innerTokens, 0, ref matchedCapture, endAchorPresent))
+            {
+                var newTokens = new List<IToken>(tokens);
+                newTokens[tokenPosition] = new NQuantifierToken(n.Number - 1, n.InnerToken);
+                return MatchHere(inputLine, i, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
+            }
+        }
+        return false;
     }
 
-    // if token matches recurse through again; iterating one for both token and input positions
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
         int curInp = inputPosition;
@@ -72,12 +83,6 @@ static bool MatchHere(
         if (tokens[tokenPosition] is ZeroOrOneToken)
         {
             return MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, curInp, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
-        }
-        if (tokens[tokenPosition] is NQuantifierToken nqt)
-        {
-            var newTokens = new List<IToken>(tokens);
-            newTokens[tokenPosition] = new NQuantifierToken(nqt.Number - 1, nqt.InnerToken);
-            return MatchHere(inputLine, curInp + 1, newTokens, curTok, ref matchedCapture, endAchorPresent);
         }
 
         return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
@@ -101,6 +106,12 @@ static bool MatchHere(
                 return true;
         }
     }
+    //else if (tokens[tokenPosition] is NQuantifierToken nqt)
+    //{
+    //    var newTokens = new List<IToken>(tokens);
+    //    newTokens[tokenPosition] = new NQuantifierToken(nqt.Number - 1, nqt.InnerToken);
+    //    return MatchHere(inputLine, curInp + 1, newTokens, curTok, ref matchedCapture, endAchorPresent);
+    //}
     else if (tokens[tokenPosition] is CaptureGroupToken cgt)
     {
         var capGroupTokens = new List<IToken>(cgt.GetTokens);

@@ -18,7 +18,7 @@ public class NQuantifierToken : IToken
 
     public bool Matches(char c)
     {
-        return _token.Matches(c);
+        return false;
     }
 
     public int Number
@@ -27,4 +27,5 @@ public class NQuantifierToken : IToken
         set => _number = value;
     }
     public IToken InnerToken => _token;
+
 }
