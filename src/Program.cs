@@ -21,6 +21,7 @@ static bool MatchHere(
         {
             return false;
         }
+        Console.WriteLine("Token Position == tokens count");
         return true;
     }
 
@@ -45,6 +46,7 @@ static bool MatchHere(
     {
         if (n.Number == 0)
         {
+            Console.WriteLine("N Quantifier Token == 0");
             return true;
         }
     }
