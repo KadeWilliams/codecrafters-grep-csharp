@@ -146,6 +146,7 @@ static bool MatchHere(
 
 static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int newIndex)
 {
+    Console.WriteLine(token.GetType());
     newIndex = index;
     if (index >= pattern.Length)
     {
