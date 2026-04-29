@@ -53,6 +53,8 @@ static bool MatchHere(
     // if token matches recurse through again; iterating one for both token and input positions
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
+        Console.WriteLine(inputLine[inputPosition]);
+        Console.WriteLine(tokens[tokenPosition]);
         int curInp = inputPosition;
         int curTok = tokenPosition;
         if (tokens[tokenPosition] is OneOrMoreToken)
@@ -72,7 +74,6 @@ static bool MatchHere(
         if (tokens[tokenPosition] is NQuantifierToken nqt)
         {
             var newTokens = new List<IToken>(tokens);
-
             newTokens[tokenPosition] = new NQuantifierToken(nqt.Number - 1, nqt.InnerToken);
             return MatchHere(inputLine, curInp + 1, newTokens, curTok, ref matchedCapture, endAchorPresent);
         }
