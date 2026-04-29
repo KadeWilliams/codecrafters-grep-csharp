@@ -96,6 +96,7 @@ static bool MatchHere(
         {
             var combined = new List<IToken>(tokenList);
             combined.AddRange(tokens.Skip(tokenPosition + 1));
+            Console.WriteLine(inputLine[inputPosition]);
             if (MatchHere(inputLine, inputPosition, combined, 0, ref matchedCapture, endAchorPresent))
                 return true;
         }
