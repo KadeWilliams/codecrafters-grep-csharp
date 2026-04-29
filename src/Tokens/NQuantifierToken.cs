@@ -22,5 +22,15 @@ public class NQuantifierToken : IToken
     }
 
     //public int Number => _number;
-    public int Number { get; set; }
+    public int Number
+    {
+        get
+        {
+            return _number;
+        }
+        set
+        {
+            _number = value;
+        }
+    }
 }
