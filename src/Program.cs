@@ -253,7 +253,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
 
                 if (pipeVisited)
                 {
-                    return altToken;
+                    return new CaptureGroupToken(new List<IToken> { altToken }, myGroupNumber);
                 }
                 Console.WriteLine(myGroupNumber);
                 return new CaptureGroupToken(altOption, myGroupNumber);
