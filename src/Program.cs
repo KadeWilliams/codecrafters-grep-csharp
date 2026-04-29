@@ -54,6 +54,7 @@ static bool MatchHere(
         }
     }
 
+    Console.WriteLine(tokens[tokenPosition].GetType());
     // if token matches recurse through again; iterating one for both token and input positions
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
