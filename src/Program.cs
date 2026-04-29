@@ -102,7 +102,6 @@ static bool MatchHere(
     }
     else if (tokens[tokenPosition] is CaptureGroupToken cgt)
     {
-        Console.WriteLine(cgt.GroupNumber);
         var capGroupTokens = new List<IToken>(cgt.GetTokens);
         for (int i = inputPosition; i <= inputLine.Length; i++)
         {
@@ -233,11 +232,13 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
         {
             if (pattern[newIndex] == ')')
             {
+                altOptions.Add(altOption);
+                var altToken = new AlternationToken(altOptions);
+                altOption = [altToken];
+
                 if (pipeVisited)
                 {
-                    altOptions.Add(altOption);
-                    var altToken = new AlternationToken(altOptions);
-                    altOption = [altToken];
+                    return altToken;
                 }
                 newIndex++;
                 return new CaptureGroupToken(altOption, myGroupNumber);
