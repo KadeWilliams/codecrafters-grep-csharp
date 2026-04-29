@@ -34,6 +34,7 @@ static bool MatchHere(
         {
             if (q.Number > 0)
             {
+                Console.WriteLine("N Quantifier Token > 0");
                 return false;
             }
         }
