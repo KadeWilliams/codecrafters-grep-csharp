@@ -27,7 +27,7 @@ static bool MatchHere(
     {
         if (tokens[tokenPosition] is not ZeroOrOneToken
             && tokens[tokenPosition] is not ZeroOrMoreToken
-            && !(tokens[tokenPosition] is NQuantifierToken))
+            && tokens[tokenPosition] is not NQuantifierToken)
         {
             return false;
         }
@@ -77,8 +77,6 @@ static bool MatchHere(
         {
             var newTokens = new List<IToken>(tokens);
             newTokens[tokenPosition] = new NQuantifierToken(nqt.Number - 1, nqt.InnerToken);
-            Console.WriteLine(curInp);
-            Console.WriteLine(curTok);
             return MatchHere(inputLine, curInp + 1, newTokens, curTok, ref matchedCapture, endAchorPresent);
         }
 
