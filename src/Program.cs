@@ -101,7 +101,6 @@ static bool MatchHere(
         {
             var combined = new List<IToken>(tokenList);
             combined.AddRange(tokens.Skip(tokenPosition + 1));
-            Console.WriteLine($"Alt input: {inputLine[inputPosition]}");
             if (MatchHere(inputLine, inputPosition, combined, 0, ref matchedCapture, endAchorPresent))
                 return true;
         }
@@ -177,7 +176,6 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
             newIndex++;
             int num = int.Parse(pattern[newIndex].ToString());
             newIndex++;
-            Console.WriteLine(token.GetType());
             return new NQuantifierToken(num, token);
     }
     return token;
@@ -305,10 +303,6 @@ static bool MatchPattern(string inputLine, string pattern)
         }
         var ct = CreateToken(pattern, i, out i, ref groupNumber);
         tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
-        foreach (var token in tokens)
-        {
-            Console.WriteLine(token.GetType());
-        }
     }
 
     var consumedChars = new Dictionary<int, string>();
@@ -345,7 +339,6 @@ static bool ProcessFiles(IEnumerable<string> files, string pattern, bool include
                 }
                 else
                 {
-
                     Console.WriteLine($"{line}");
                 }
             }
