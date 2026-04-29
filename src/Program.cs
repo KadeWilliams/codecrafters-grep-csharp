@@ -14,7 +14,6 @@ static bool MatchHere(
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
-        Console.WriteLine("Token Position == tokens count");
         // we've completed the tokens but not reached the end of the input and the end of the input has to match 
         if (endAchorPresent && inputPosition < inputLine.Length)
         {
@@ -26,15 +25,17 @@ static bool MatchHere(
     // we've gotten through all of the input characters without passing
     if (inputPosition >= inputLine.Length)
     {
-        if (tokens[tokenPosition] is not ZeroOrOneToken && tokens[tokenPosition] is not ZeroOrMoreToken)
+        if (tokens[tokenPosition] is not ZeroOrOneToken
+            && tokens[tokenPosition] is not ZeroOrMoreToken
+            && !(tokens[tokenPosition] is NQuantifierToken))
         {
             return false;
         }
+
         if (tokens[tokenPosition] is NQuantifierToken q)
         {
             if (q.Number > 0)
             {
-                Console.WriteLine("N Quantifier Token > 0");
                 return false;
             }
             else if (q.Number == 0)
