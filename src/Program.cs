@@ -14,12 +14,12 @@ static bool MatchHere(
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
+        Console.WriteLine("Token Position == tokens count");
         // we've completed the tokens but not reached the end of the input and the end of the input has to match 
         if (endAchorPresent && inputPosition < inputLine.Length)
         {
             return false;
         }
-        Console.WriteLine("Token Position == tokens count");
         return true;
     }
 
@@ -138,6 +138,7 @@ static bool MatchHere(
         return false;
     }
 
+    Console.WriteLine("Default return");
     return false;
 }
 
