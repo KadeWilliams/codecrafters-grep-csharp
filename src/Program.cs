@@ -293,7 +293,6 @@ static bool MatchPattern(string inputLine, string pattern)
             continue;
         }
         var ct = CreateToken(pattern, i, out i, ref groupNumber);
-        Console.WriteLine(ct.GetType());
         tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
     }
 
