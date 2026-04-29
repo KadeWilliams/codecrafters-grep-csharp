@@ -37,6 +37,10 @@ static bool MatchHere(
                 Console.WriteLine("N Quantifier Token > 0");
                 return false;
             }
+            else if (q.Number == 0)
+            {
+                return true;
+            }
         }
         return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
     }
@@ -45,8 +49,7 @@ static bool MatchHere(
     {
         if (n.Number == 0)
         {
-            Console.WriteLine("N Quantifier Token == 0");
-            return true;
+            return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
         }
     }
 
