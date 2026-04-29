@@ -20,6 +20,7 @@ public class NQuantifierToken : IToken
     {
         Console.WriteLine(c);
         Console.WriteLine(_token.Matches(c));
+        Console.WriteLine(_token.GetType());
         return _token.Matches(c);
     }
 
