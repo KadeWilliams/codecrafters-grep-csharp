@@ -18,7 +18,7 @@ public class NQuantifierToken : IToken
 
     public bool Matches(char c)
     {
-        Console.WriteLine(_token.GetType());
+        Console.WriteLine(c);
         return _token.Matches(c);
     }
 
