@@ -10,10 +10,12 @@ public class NQuantifierToken : IToken
 {
     private int _number;
     private IToken _token;
-    public NQuantifierToken(int number, IToken token)
+    private bool _atLeastNTimes = false;
+    public NQuantifierToken(int number, IToken token, bool atLeastNTimes)
     {
         _number = number;
         _token = token;
+        _atLeastNTimes = atLeastNTimes;
     }
 
     public bool Matches(char c)
@@ -27,5 +29,6 @@ public class NQuantifierToken : IToken
         set => _number = value;
     }
     public IToken InnerToken => _token;
+    public bool AtLeastNTimes => _atLeastNTimes;
 
 }

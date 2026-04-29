@@ -49,6 +49,13 @@ static bool MatchHere(
 
     if (tokens[tokenPosition] is NQuantifierToken n)
     {
+        if (n.Number == 0 && n.AtLeastNTimes)
+        {
+            var newTokens = new List<IToken>(tokens);
+            newTokens[tokenPosition] = new ZeroOrMoreToken(n.InnerToken);
+            return MatchHere(inputLine, inputPosition, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
+        }
+
         if (n.Number == 0)
         {
             return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
@@ -60,7 +67,7 @@ static bool MatchHere(
             if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, innerTokens, 0, ref matchedCapture, endAchorPresent))
             {
                 var newTokens = new List<IToken>(tokens);
-                newTokens[tokenPosition] = new NQuantifierToken(n.Number - 1, n.InnerToken);
+                newTokens[tokenPosition] = new NQuantifierToken(n.Number - 1, n.InnerToken, n.AtLeastNTimes);
                 return MatchHere(inputLine, i, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
             }
         }
@@ -176,10 +183,21 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
             newIndex++;
             return new ZeroOrMoreToken(token);
         case '{':
-            newIndex++;
+            newIndex++;// to be on the number
             int num = int.Parse(pattern[newIndex].ToString());
-            newIndex += 2;
-            return new NQuantifierToken(num, token);
+            // need to check if the next char is a ',' it means it's a different type of n quantifier 
+            // then I'd need to advance 3 characters to get to the next token on the next iteration
+            // else advance 2 characters like before
+            newIndex++;//to be on either the ',' or the '}'
+
+            if (pattern[newIndex] == ',')
+            {
+                //advance beyond the '}'
+                newIndex += 2;
+                return new NQuantifierToken(num, token, true);
+            }
+            newIndex++;// advance to next token
+            return new NQuantifierToken(num, token, false);
     }
     return token;
 }
@@ -255,7 +273,6 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
                 {
                     return new CaptureGroupToken(new List<IToken> { altToken }, myGroupNumber);
                 }
-                Console.WriteLine(myGroupNumber);
                 return new CaptureGroupToken(altOption, myGroupNumber);
             }
             else if (pattern[newIndex] == '|')
