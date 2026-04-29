@@ -162,7 +162,6 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
     {
         return token;
     }
-    Console.WriteLine(pattern[index]);
     switch (pattern[index])
     {
         case '+':
@@ -175,9 +174,16 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
             newIndex++;
             return new ZeroOrMoreToken(token);
         case '{':
+            Console.WriteLine(pattern[index]);
+
             newIndex++;
+
+            Console.WriteLine(pattern[newIndex]);
+
             int num = int.Parse(pattern[newIndex].ToString());
             newIndex++;
+
+            Console.WriteLine(pattern[newIndex]);
             return new NQuantifierToken(num, token);
     }
     return token;
