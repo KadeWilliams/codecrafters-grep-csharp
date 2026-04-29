@@ -163,7 +163,6 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
         return token;
     }
 
-    Console.WriteLine($"Current : {pattern[index]}");
 
     switch (pattern[index])
     {
@@ -307,11 +306,6 @@ static bool MatchPattern(string inputLine, string pattern)
         }
         var ct = CreateToken(pattern, i, out i, ref groupNumber);
         tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
-    }
-
-    foreach (var token in tokens)
-    {
-        Console.WriteLine(token.GetType());
     }
 
     var consumedChars = new Dictionary<int, string>();
