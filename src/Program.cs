@@ -51,9 +51,27 @@ static bool MatchHere(
     {
         if (n.Number == 0 && n.AtLeastNTimes)
         {
-            var newTokens = new List<IToken>(tokens);
-            newTokens[tokenPosition] = new ZeroOrMoreToken(n.InnerToken);
-            return MatchHere(inputLine, inputPosition, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
+            if (n.MaxNumber is not null)
+            {
+                if (n.MaxNumber == 0)
+                {
+                    return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
+                }
+                else
+                {
+                    // return MatchHere() || MatchHere();
+                    var newTokens = new List<IToken>(tokens);
+                    newTokens[tokenPosition] = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
+                    return MatchHere(inputLine, inputPosition, newTokens, tokenPosition, ref matchedCapture, endAchorPresent)
+                        || MatchHere(inputLine, inputPosition, newTokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
+                }
+            }
+            else
+            {
+                var newTokens = new List<IToken>(tokens);
+                newTokens[tokenPosition] = new ZeroOrMoreToken(n.InnerToken);
+                return MatchHere(inputLine, inputPosition, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
+            }
         }
 
         if (n.Number == 0)
@@ -67,7 +85,7 @@ static bool MatchHere(
             if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, innerTokens, 0, ref matchedCapture, endAchorPresent))
             {
                 var newTokens = new List<IToken>(tokens);
-                newTokens[tokenPosition] = new NQuantifierToken(n.Number - 1, n.InnerToken, n.AtLeastNTimes);
+                newTokens[tokenPosition] = new NQuantifierToken(n.Number - 1, n.InnerToken, n.AtLeastNTimes, n.MaxNumber);
                 return MatchHere(inputLine, i, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
             }
         }
@@ -193,8 +211,15 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
             if (pattern[newIndex] == ',')
             {
                 //advance beyond the '}'
-                newIndex += 2;
-                return new NQuantifierToken(num, token, true);
+                newIndex++;
+                int? maxNumber = null;
+                var nextChar = pattern[newIndex];
+                if (char.IsDigit(nextChar))
+                {
+                    maxNumber = int.Parse(nextChar.ToString());
+                }
+                newIndex++;
+                return new NQuantifierToken(num, token, true, maxNumber);
             }
             newIndex++;// advance to next token
             return new NQuantifierToken(num, token, false);
