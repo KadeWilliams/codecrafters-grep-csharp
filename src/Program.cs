@@ -73,6 +73,7 @@ static bool MatchHere(
         if (tokens[tokenPosition] is NQuantifierToken nqt)
         {
             var newTokens = new List<IToken>(tokens);
+            Console.WriteLine(nqt.Number);
             newTokens[tokenPosition] = new NQuantifierToken(nqt.Number--, newTokens[tokenPosition]);
             return MatchHere(inputLine, curInp + 1, newTokens, curTok, ref matchedCapture, endAchorPresent);
         }
@@ -137,17 +138,6 @@ static bool MatchHere(
         }
         return false;
     }
-    //else if (tokens[tokenPosition] is NQuantifierToken nqt)
-    //{
-    //    for (int i = 0; i <= nqt.Number; i++)
-    //    {
-    //        if (MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent))
-    //        {
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //}
 
     return false;
 }
