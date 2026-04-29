@@ -236,12 +236,12 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
                 altOptions.Add(altOption);
                 var altToken = new AlternationToken(altOptions);
                 altOption = [altToken];
+                newIndex++;
 
                 if (pipeVisited)
                 {
                     return altToken;
                 }
-                newIndex++;
                 return new CaptureGroupToken(altOption, myGroupNumber);
             }
             else if (pattern[newIndex] == '|')
