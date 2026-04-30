@@ -514,52 +514,32 @@ else if (args[0] == "-E")
 }
 else if (args[0] == "-o")
 {
-    string pattern = args[1];
+    string pattern = args[2];
     bool curFound = false;
     bool found = false;
-    if (args.Length > 2)
+    string inputLine = Console.In.ReadToEnd();
+    if (inputLine.Contains("\n"))
     {
-        var files = args.Skip(2);
-        bool includeFileName = false;
-        if (files.Count() > 1)
-            includeFileName = true;
-        bool lineFound = ProcessFiles(files, pattern, includeFileName);
-
-        if (lineFound)
+        var inputs = inputLine.Split('\n');
+        foreach (var i in inputs)
         {
-            Environment.Exit(0);
-        }
-        else
-        {
-            Environment.Exit(1);
-        }
-    }
-    else
-    {
-        string inputLine = Console.In.ReadToEnd();
-        if (inputLine.Contains("\n"))
-        {
-            var inputs = inputLine.Split('\n');
-            foreach (var i in inputs)
-            {
-                var foundString = MatchPattern(i, pattern);
-                curFound = !string.IsNullOrEmpty(foundString);
-                if (curFound)
-                {
-                    found = true;
-                    Console.WriteLine($"{foundString}");
-                }
-            }
-        }
-        else
-        {
-            var foundString = MatchPattern(inputLine, pattern);
+            var foundString = MatchPattern(i, pattern);
             curFound = !string.IsNullOrEmpty(foundString);
             if (curFound)
             {
                 found = true;
                 Console.WriteLine($"{foundString}");
             }
+        }
+    }
+    else
+    {
+        var foundString = MatchPattern(inputLine, pattern);
+        curFound = !string.IsNullOrEmpty(foundString);
+        if (curFound)
+        {
+            found = true;
+            Console.WriteLine($"{foundString}");
         }
     }
 
