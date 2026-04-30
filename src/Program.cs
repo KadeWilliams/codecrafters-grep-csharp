@@ -151,6 +151,11 @@ static bool MatchHere(
 
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
+        Console.WriteLine($"Input Match: {inputLine[inputPosition]}");
+        Console.WriteLine($"InpPos Match: {inputPosition}");
+        Console.WriteLine($"Token: {tokens[tokenPosition]}");
+        Console.WriteLine($"TokenPos: {tokenPosition}");
+
         int curInp = inputPosition;
         int curTok = tokenPosition;
         if (tokens[tokenPosition] is OneOrMoreToken)
