@@ -461,7 +461,7 @@ else if (args[0] == "-E")
         string inputLine = Console.In.ReadToEnd();
         if (MatchPattern(inputLine, pattern))
         {
-            Console.WriteLine($"{inputLine}\n");
+            //Console.WriteLine($"{inputLine}");
             Environment.Exit(0);
         }
         else
