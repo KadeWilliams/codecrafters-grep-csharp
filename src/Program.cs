@@ -439,6 +439,7 @@ if (args[0] == "-r")
 else if (args[0] == "-E")
 {
     string pattern = args[1];
+    bool found = false;
     if (args.Length > 2)
     {
         var files = args.Skip(2);
@@ -459,15 +460,19 @@ else if (args[0] == "-E")
     else
     {
         string inputLine = Console.In.ReadToEnd();
-        if (MatchPattern(inputLine, pattern))
+        found = MatchPattern(inputLine, pattern);
+        if (found)
         {
-            //Console.WriteLine($"{inputLine}");
-            Environment.Exit(0);
+            Console.WriteLine($"{inputLine}");
         }
-        else
-        {
-            Environment.Exit(1);
-        }
+    }
+    if (found)
+    {
+        Environment.Exit(0);
+    }
+    else
+    {
+        Environment.Exit(1);
     }
 }
 else
