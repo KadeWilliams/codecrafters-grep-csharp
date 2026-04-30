@@ -4,7 +4,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 
-static bool MatchHere(
+static (bool, int) MatchHere(
     string inputLine,
     int inputPosition,
     List<IToken> tokens,
@@ -16,9 +16,9 @@ static bool MatchHere(
     {
         if (endAchorPresent && inputPosition < inputLine.Length)
         {
-            return false;
+            return (false, -1);
         }
-        return true;
+        return (true, inputPosition);
     }
 
     if (inputPosition >= inputLine.Length)
@@ -27,14 +27,14 @@ static bool MatchHere(
             && tokens[tokenPosition] is not ZeroOrMoreToken
             && tokens[tokenPosition] is not NQuantifierToken)
         {
-            return false;
+            return (false, -1);
         }
 
         if (tokens[tokenPosition] is NQuantifierToken q)
         {
             if (q.Number > 0)
             {
-                return false;
+                return (false, -1);
             }
             //else if (q.Number == 0 && q.MaxNumber > 0)
             //{
@@ -69,7 +69,7 @@ static bool MatchHere(
                 if (n.MaxNumber > 0) // {n,m>0}
                 {
                     var inn = new List<IToken> { n.InnerToken };
-                    if (MatchHere(inputLine.Substring(inputPosition, 1), 0, inn, 0, ref matchedCapture, endAchorPresent))
+                    if (MatchHere(inputLine.Substring(inputPosition, 1), 0, inn, 0, ref matchedCapture, endAchorPresent).Item1)
                     {
                         var nt = new List<IToken>(tokens);
                         nt[tokenPosition] = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
@@ -89,7 +89,7 @@ static bool MatchHere(
         var innerTokens = new List<IToken> { n.InnerToken };
         for (int i = inputPosition + 1; i <= inputLine.Length; i++)
         {
-            if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, innerTokens, 0, ref matchedCapture, endAchorPresent))
+            if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, innerTokens, 0, ref matchedCapture, endAchorPresent).Item1)
             {
                 var maxNumber = n?.MaxNumber;
 
@@ -104,7 +104,7 @@ static bool MatchHere(
             }
 
         }
-        return false;
+        return (false, -1);
     }
 
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
@@ -113,17 +113,27 @@ static bool MatchHere(
         int curTok = tokenPosition;
         if (tokens[tokenPosition] is OneOrMoreToken)
         {
-            return MatchHere(inputLine, curInp + 1, tokens, curTok, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
+            var left = MatchHere(inputLine, curInp + 1, tokens, curTok, ref matchedCapture, endAchorPresent);
+            if (left.Item1)
+                return left;
+            return MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
         }
 
         if (tokens[tokenPosition] is ZeroOrMoreToken)
         {
-            return MatchHere(inputLine, curInp + 1, tokens, curTok, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, curInp, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
+            var left = MatchHere(inputLine, curInp + 1, tokens, curTok, ref matchedCapture, endAchorPresent);
+            if (left.Item1)
+                return left;
+            return MatchHere(inputLine, curInp, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
         }
 
         if (tokens[tokenPosition] is ZeroOrOneToken)
         {
-            return MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, curInp, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
+            var left = MatchHere(inputLine, curInp + 1, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
+            if (left.Item1)
+                return left;
+
+            return MatchHere(inputLine, curInp, tokens, curTok + 1, ref matchedCapture, endAchorPresent);
         }
 
         return MatchHere(inputLine, ++inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
@@ -142,8 +152,9 @@ static bool MatchHere(
         {
             var combined = new List<IToken>(tokenList);
             combined.AddRange(tokens.Skip(tokenPosition + 1));
-            if (MatchHere(inputLine, inputPosition, combined, 0, ref matchedCapture, endAchorPresent))
-                return true;
+            var (matched, ind) = MatchHere(inputLine, inputPosition, combined, 0, ref matchedCapture, endAchorPresent);
+            if (matched)
+                return (true, ind);
         }
     }
     else if (tokens[tokenPosition] is CaptureGroupToken cgt)
@@ -151,13 +162,14 @@ static bool MatchHere(
         var capGroupTokens = new List<IToken>(cgt.GetTokens);
         for (int i = inputPosition; i <= inputLine.Length; i++)
         {
-            if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, capGroupTokens, 0, ref matchedCapture, endAchorPresent))
+            if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, capGroupTokens, 0, ref matchedCapture, endAchorPresent).Item1)
             {
                 matchedCapture[cgt.GroupNumber] = inputLine.Substring(inputPosition, i - inputPosition);
                 var remainingTokens = new List<IToken>(tokens.Skip(tokenPosition + 1));
-                if (MatchHere(inputLine, i, remainingTokens, 0, ref matchedCapture, endAchorPresent))
+                var (matched, ind) = MatchHere(inputLine, i, remainingTokens, 0, ref matchedCapture, endAchorPresent);
+                if (matched)
                 {
-                    return true;
+                    return (true, ind);
                 }
                 else
                 {
@@ -165,28 +177,28 @@ static bool MatchHere(
                 }
             }
         }
-        return false;
+        return (false, -1);
     }
     else if (tokens[tokenPosition] is BackreferenceToken brt)
     {
         if (!matchedCapture.ContainsKey(brt.Position))
-            return false;
+            return (false, -1);
 
         var capturedString = matchedCapture[brt.Position];
         var peekDistance = inputPosition + capturedString.Length;
         if (peekDistance > inputLine.Length)
         {
-            return false;
+            return (false, -1);
         }
 
         if (inputLine.Substring(inputPosition, capturedString.Length) == capturedString)
         {
             return MatchHere(inputLine.Substring(peekDistance), 0, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
         }
-        return false;
+        return (false, -1);
     }
 
-    return false;
+    return (false, -1);
 }
 
 static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int newIndex)
@@ -331,7 +343,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
     return lt;
 }
 
-static bool MatchPattern(string inputLine, string pattern)
+static string? MatchPattern(string inputLine, string pattern)
 {
     var startAnchorPresent = false;
     var endAnchorPresent = false;
@@ -361,18 +373,24 @@ static bool MatchPattern(string inputLine, string pattern)
     var consumedChars = new Dictionary<int, string>();
     if (startAnchorPresent)
     {
-        return MatchHere(inputLine, 0, tokens, 0, ref consumedChars, endAnchorPresent);
+        var (matched, ind) = MatchHere(inputLine, 0, tokens, 0, ref consumedChars, endAnchorPresent);
+        if (matched)
+        {
+            return inputLine.Substring(0, ind);
+        }
+        return null;
     }
 
     for (int j = 0; j <= inputLine.Length - 1; j++)
     {
-        if (MatchHere(inputLine, j, tokens, 0, ref consumedChars, endAnchorPresent))
+        var (matched, ind) = MatchHere(inputLine, j, tokens, 0, ref consumedChars, endAnchorPresent);
+        if (matched)
         {
-            return true;
+            return inputLine.Substring(j, ind - j);
         }
     }
 
-    return false;
+    return null;
 }
 
 static bool ProcessFiles(IEnumerable<string> files, string pattern, bool includeFileName)
@@ -383,7 +401,7 @@ static bool ProcessFiles(IEnumerable<string> files, string pattern, bool include
         var inputLines = File.ReadAllLines(file);
         foreach (var line in inputLines)
         {
-            if (MatchPattern(line, pattern))
+            if (!string.IsNullOrEmpty(MatchPattern(line, pattern)))
             {
                 lineFound = true;
                 if (includeFileName)
@@ -466,7 +484,7 @@ else if (args[0] == "-E")
             var inputs = inputLine.Split('\n');
             foreach (var i in inputs)
             {
-                curFound = MatchPattern(i, pattern);
+                curFound = !string.IsNullOrEmpty(MatchPattern(i, pattern));
                 if (curFound)
                 {
                     found = true;
@@ -476,11 +494,71 @@ else if (args[0] == "-E")
         }
         else
         {
-            curFound = MatchPattern(inputLine, pattern);
+            curFound = !string.IsNullOrEmpty(MatchPattern(inputLine, pattern));
             if (curFound)
             {
                 found = true;
                 Console.WriteLine($"{inputLine}");
+            }
+        }
+    }
+
+    if (found)
+    {
+        Environment.Exit(0);
+    }
+    else
+    {
+        Environment.Exit(1);
+    }
+}
+else if (args[0] == "-o")
+{
+    string pattern = args[1];
+    bool curFound = false;
+    bool found = false;
+    if (args.Length > 2)
+    {
+        var files = args.Skip(2);
+        bool includeFileName = false;
+        if (files.Count() > 1)
+            includeFileName = true;
+        bool lineFound = ProcessFiles(files, pattern, includeFileName);
+
+        if (lineFound)
+        {
+            Environment.Exit(0);
+        }
+        else
+        {
+            Environment.Exit(1);
+        }
+    }
+    else
+    {
+        string inputLine = Console.In.ReadToEnd();
+        if (inputLine.Contains("\n"))
+        {
+            var inputs = inputLine.Split('\n');
+            foreach (var i in inputs)
+            {
+                var foundString = MatchPattern(i, pattern);
+                curFound = !string.IsNullOrEmpty(foundString);
+                if (curFound)
+                {
+                    found = true;
+                    Console.WriteLine($"{foundString}");
+                }
+            }
+        }
+        else
+        {
+            var foundString = MatchPattern(inputLine, pattern);
+            curFound = !string.IsNullOrEmpty(foundString);
+            if (curFound)
+            {
+                found = true;
+                Console.WriteLine($"{foundString}");
             }
         }
     }
