@@ -405,6 +405,7 @@ static bool ProcessFiles(IEnumerable<string> files, string pattern, bool include
     bool lineFound = false;
     foreach (var file in files)
     {
+        Console.WriteLine(Environment.StackTrace);
         var inputLines = File.ReadAllLines(file);
         foreach (var line in inputLines)
         {
