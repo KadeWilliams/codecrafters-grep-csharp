@@ -92,16 +92,18 @@ static bool MatchHere(
                                       ^ we're here when Number is 0 and MaxNumber is 2
                                         we simply need to check if the next character in the input also matches the current inner token?
                      */
-
+                    Console.WriteLine("Max Number > 0");
                     var inn = new List<IToken> { n.InnerToken };
                     if (MatchHere(inputLine, inputPosition, inn, 0, ref matchedCapture, endAchorPresent))
                     {
+                        Console.WriteLine("Inner Token Matches");
                         var nt = new List<IToken>(tokens);
                         nt[tokenPosition] = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
                         return MatchHere(inputLine, inputPosition + 1, nt, tokenPosition, ref matchedCapture, endAchorPresent);
                     }
                     else
                     {
+                        Console.WriteLine("Inner Token Does Not Match");
                         return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                     }
 
