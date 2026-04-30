@@ -56,7 +56,7 @@ static bool MatchHere(
         {
             if (n.MaxNumber is not null) // it has a max value
             {
-                if (n.MaxNumber == 0) // meaning it's been exhausted
+                if (n.MaxNumber >= 0) // meaning it's been exhausted
                 {
                     var maxInner = new List<IToken> { n.InnerToken }; // grab the inner token to check 
                     for (int i = 0; i < inputLine.Length; i++) // check from the beginning until it fails, return false?
@@ -78,14 +78,13 @@ static bool MatchHere(
                     //        return MatchHere(inputLine, inputPosition, newTokens, tokenPosition, ref matchedCapture, endAchorPresent)
                     //            || MatchHere(inputLine, inputPosition, newTokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                     //    }
-                    Console.WriteLine(inputPosition);
                     var inners = new List<IToken> { n.InnerToken };
                     for (int i = inputPosition; i <= inputLine.Length; i++)
                     {
                         Console.WriteLine("Getting here");
                         if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, inners, 0, ref matchedCapture, endAchorPresent))
                         {
-                            newTokens[tokenPosition] = new NQuantifierToken(n.Number - 1, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
+                            newTokens[tokenPosition] = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
                             return MatchHere(inputLine, i, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
                         }
                     }
