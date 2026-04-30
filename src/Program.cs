@@ -404,8 +404,10 @@ static string? MatchPattern(string inputLine, string pattern, bool multiLineInpu
         {
             var str = inputLine.Substring(j, ind - j);
             //PrintComplexObject(new { matched, ind, str });
-            //listOfMatches.Add(inputLine.Substring(j, ind - j));
-            return inputLine.Substring(j, ind - j);
+            if (multiLineInput)
+                listOfMatches.Add(inputLine.Substring(j, ind - j));
+            else
+                return inputLine.Substring(j, ind - j);
         }
     }
 
@@ -553,7 +555,7 @@ else if (args[0] == "-o")
         var inputs = inputLine.Split('\n');
         foreach (var i in inputs)
         {
-            var foundString = MatchPattern(i, pattern);
+            var foundString = MatchPattern(i, pattern, true);
             curFound = !string.IsNullOrEmpty(foundString);
             if (curFound)
             {
