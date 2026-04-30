@@ -62,8 +62,8 @@ static bool MatchHere(
      */
     if (tokens[tokenPosition] is NQuantifierToken n)
     {
-        Console.WriteLine(JsonSerializer.Serialize(n));
-        Console.WriteLine(n.InnerToken.GetType());
+        //Console.WriteLine(JsonSerializer.Serialize(n));
+        //Console.WriteLine(n.InnerToken.GetType());
 
         if (n.Number == 0)
         {
@@ -83,28 +83,19 @@ static bool MatchHere(
             {
                 if (n.MaxNumber == 0) // {n,0}
                 {
-                    // we need to check again to make sure it's not the same? 
                     return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                 }
                 if (n.MaxNumber > 0) // {n,m>0}
                 {
-                    /*
-                        input spinachh_soup, spinach{2,4}_soup
-                                      ^ we're here when Number is 0 and MaxNumber is 2
-                                        we simply need to check if the next character in the input also matches the current inner token?
-                     */
                     var inn = new List<IToken> { n.InnerToken };
                     if (MatchHere(inputLine, inputPosition, inn, 0, ref matchedCapture, endAchorPresent))
                     {
-                        Console.WriteLine($"Inner Token Matches {inputLine[inputPosition]}");
                         var nt = new List<IToken>(tokens);
                         nt[tokenPosition] = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
-                        Console.WriteLine($"Moving to next character ({inputLine[inputPosition + 1]}), checking current token again ({nt[tokenPosition]})");
                         return MatchHere(inputLine, inputPosition + 1, nt, tokenPosition, ref matchedCapture, endAchorPresent);
                     }
                     else
                     {
-                        Console.WriteLine($"Inner Token doesn't match ({inputLine[inputPosition]}) ({tokens[tokenPosition + 1]})");
                         var result = MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                         return result;
                         //return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
