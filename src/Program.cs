@@ -17,8 +17,8 @@ static bool MatchHere(
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
-        Console.WriteLine(tokens.Count());
-        Console.WriteLine(tokenPosition);
+        Console.WriteLine($"{tokens.Count()}");
+        Console.WriteLine($"{tokenPosition}");
         // we've completed the tokens but not reached the end of the input and the end of the input has to match 
         if (endAchorPresent && inputPosition < inputLine.Length)
         {
@@ -30,8 +30,8 @@ static bool MatchHere(
     // we've gotten through all of the input characters without passing
     if (inputPosition >= inputLine.Length)
     {
-        Console.WriteLine(inputLine.Length);
-        Console.WriteLine(inputPosition);
+        Console.WriteLine($"{inputLine.Length}");
+        Console.WriteLine($"{inputPosition}");
         if (tokens[tokenPosition] is not ZeroOrOneToken
             && tokens[tokenPosition] is not ZeroOrMoreToken
             && tokens[tokenPosition] is not NQuantifierToken)
@@ -148,81 +148,6 @@ static bool MatchHere(
         }
         return false;
     }
-    //var maxTokens = new List<IToken>(tokens);
-    //for (int i = inputPosition; i <= inputLine.Length; i++)
-    //{
-    //    var newNQuant = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber--);
-    //    maxTokens[tokenPosition] = newNQuant;
-
-    //    return MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, maxTokens, 0, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, i, maxTokens, tokenPosition + 1, ref matchedCapture, endAchorPresent); ;
-    //}
-    //if (n.Number == 0)
-    //{
-    //    if (n.MaxNumber is not null) // it has a max value
-    //    {
-    //        if (n.MaxNumber == 0) // meaning it's been exhausted
-    //        {
-    //            var maxInner = new List<IToken> { n.InnerToken }; // grab the inner token to check 
-    //            for (int i = 0; i < inputLine.Length; i++) // check from the beginning until it fails, return false?
-    //            {
-    //                if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, maxInner, 0, ref matchedCapture, endAchorPresent))
-    //                {
-    //                    return false;
-    //                }
-    //            }
-    //            return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
-    //        }
-    //        else
-    //        {
-    //            //    // return MatchHere() || MatchHere();
-    //            var newTokens = new List<IToken>(tokens);
-    //            //newTokens[tokenPosition] = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
-    //            //    if (n.InnerToken.Matches(inputLine[inputPosition]))
-    //            //    {
-    //            //        return MatchHere(inputLine, inputPosition, newTokens, tokenPosition, ref matchedCapture, endAchorPresent)
-    //            //            || MatchHere(inputLine, inputPosition, newTokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
-    //            //    }
-    //            var inners = new List<IToken> { n.InnerToken };
-    //            for (int i = inputPosition; i <= inputLine.Length; i++)
-    //            {
-    //                Console.WriteLine("Getting here");
-    //                if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, inners, 0, ref matchedCapture, endAchorPresent))
-    //                {
-    //                    newTokens[tokenPosition] = new NQuantifierToken(n.Number, n.InnerToken, n.MaxNumber - 1);
-    //                    return MatchHere(inputLine, i, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
-    //                }
-    //            }
-    //        }
-    //    }
-    //    else
-    //    {
-    //        var newTokens = new List<IToken>(tokens);
-    //        newTokens[tokenPosition] = new ZeroOrMoreToken(n.InnerToken);
-    //        return MatchHere(inputLine, inputPosition, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
-    //    }
-    //}
-
-    //if (n.Number == 0)
-    //{
-    //    return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
-    //}
-
-    //var innerTokens = new List<IToken> { n.InnerToken };
-    //for (int i = inputPosition; i <= inputLine.Length; i++)
-    //{
-    //    if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, innerTokens, 0, ref matchedCapture, endAchorPresent))
-    //    {
-    //        int? maxNumber = n.MaxNumber;
-    //        if (maxNumber is not null)
-    //        {
-    //            maxNumber -= 1;
-    //        }
-    //        var newTokens = new List<IToken>(tokens);
-    //        newTokens[tokenPosition] = new NQuantifierToken(n.Number - 1, n.InnerToken, maxNumber);
-    //        return MatchHere(inputLine, i, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
-    //    }
-    //}
-    //return false;
 
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
