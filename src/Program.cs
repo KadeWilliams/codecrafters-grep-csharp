@@ -107,8 +107,13 @@ static bool MatchHere(
         {
             if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, innerTokens, 0, ref matchedCapture, endAchorPresent))
             {
+                int? maxNumber = n.MaxNumber;
+                if (maxNumber is not null)
+                {
+                    maxNumber -= 1;
+                }
                 var newTokens = new List<IToken>(tokens);
-                newTokens[tokenPosition] = new NQuantifierToken(n.Number - 1, n.InnerToken, n.AtLeastNTimes, n.MaxNumber);
+                newTokens[tokenPosition] = new NQuantifierToken(n.Number - 1, n.InnerToken, n.AtLeastNTimes, maxNumber);
                 return MatchHere(inputLine, i, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
             }
         }
