@@ -210,16 +210,13 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
             newIndex++;
             return new ZeroOrMoreToken(token);
         case '{':
-            newIndex++;// to be on the number
+            newIndex++;
             int num = int.Parse(pattern[newIndex].ToString());
-            // need to check if the next char is a ',' it means it's a different type of n quantifier 
-            // then I'd need to advance 3 characters to get to the next token on the next iteration
-            // else advance 2 characters like before
-            newIndex++;//to be on either the ',' or the '}'
+            newIndex++;
 
             if (pattern[newIndex] == ',')
             {
-                //advance beyond the '}'
+
                 newIndex++;
                 int? maxNumber = null;
                 var nextChar = pattern[newIndex];
@@ -231,7 +228,7 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
                 newIndex++;
                 return new NQuantifierToken(num, token, true, maxNumber);
             }
-            newIndex++;// advance to next token
+            newIndex++;
             return new NQuantifierToken(num, token, false);
     }
     return token;
@@ -464,7 +461,7 @@ else if (args[0] == "-E")
         string inputLine = Console.In.ReadToEnd();
         if (MatchPattern(inputLine, pattern))
         {
-            Console.WriteLine($"{inputLine}");
+            Console.WriteLine($"{inputLine}\n");
             Environment.Exit(0);
         }
         else
