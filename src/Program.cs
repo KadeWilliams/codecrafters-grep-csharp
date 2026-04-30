@@ -17,8 +17,6 @@ static bool MatchHere(
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
-        Console.WriteLine($"Tokens Count: {tokens.Count()}");
-        Console.WriteLine($"Token Position: {tokenPosition}");
         // we've completed the tokens but not reached the end of the input and the end of the input has to match 
         if (endAchorPresent && inputPosition < inputLine.Length)
         {
@@ -30,8 +28,6 @@ static bool MatchHere(
     // we've gotten through all of the input characters without passing
     if (inputPosition >= inputLine.Length)
     {
-        Console.WriteLine($"Input Length: {inputLine.Length}");
-        Console.WriteLine($"Input Position: {inputPosition}");
         if (tokens[tokenPosition] is not ZeroOrOneToken
             && tokens[tokenPosition] is not ZeroOrMoreToken
             && tokens[tokenPosition] is not NQuantifierToken)
@@ -97,26 +93,16 @@ static bool MatchHere(
                                       ^ we're here when Number is 0 and MaxNumber is 2
                                         we simply need to check if the next character in the input also matches the current inner token?
                      */
-                    Console.WriteLine("Max Number > 0");
-                    Console.WriteLine(inputLine[inputPosition]);
-                    Console.WriteLine(inputPosition);
                     var inn = new List<IToken> { n.InnerToken };
                     if (MatchHere(inputLine.Substring(inputPosition, 1), 0, inn, 0, ref matchedCapture, endAchorPresent))
                     {
-                        Console.WriteLine("Inner Token Matches");
                         var nt = new List<IToken>(tokens);
                         nt[tokenPosition] = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
                         return MatchHere(inputLine, inputPosition + 1, nt, tokenPosition, ref matchedCapture, endAchorPresent);
                     }
                     else
                     {
-                        Console.WriteLine("Inner Token Does Not Match");
-                        Console.WriteLine(inputLine[inputPosition]);
-                        Console.WriteLine(inputPosition);
-                        Console.WriteLine(tokens[tokenPosition + 1]);
-
                         var result = MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
-                        Console.WriteLine($"MatchHere result: {result}");
                         return result;
                         //return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                     }
@@ -151,11 +137,6 @@ static bool MatchHere(
 
     if (tokens[tokenPosition].Matches(inputLine[inputPosition]))
     {
-        Console.WriteLine($"Input Match: {inputLine[inputPosition]}");
-        Console.WriteLine($"InpPos Match: {inputPosition}");
-        Console.WriteLine($"Token: {tokens[tokenPosition]}");
-        Console.WriteLine($"TokenPos: {tokenPosition}");
-
         int curInp = inputPosition;
         int curTok = tokenPosition;
         if (tokens[tokenPosition] is OneOrMoreToken)
@@ -193,12 +174,6 @@ static bool MatchHere(
                 return true;
         }
     }
-    //else if (tokens[tokenPosition] is NQuantifierToken nqt)
-    //{
-    //    var newTokens = new List<IToken>(tokens);
-    //    newTokens[tokenPosition] = new NQuantifierToken(nqt.Number - 1, nqt.InnerToken);
-    //    return MatchHere(inputLine, curInp + 1, newTokens, curTok, ref matchedCapture, endAchorPresent);
-    //}
     else if (tokens[tokenPosition] is CaptureGroupToken cgt)
     {
         var capGroupTokens = new List<IToken>(cgt.GetTokens);
