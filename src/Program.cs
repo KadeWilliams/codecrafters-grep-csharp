@@ -94,7 +94,7 @@ static bool MatchHere(
                                         we simply need to check if the next character in the input also matches the current inner token?
                      */
                     var inn = new List<IToken> { n.InnerToken };
-                    if (MatchHere(inputLine.Substring(inputPosition, 1), 0, inn, 0, ref matchedCapture, endAchorPresent))
+                    if (MatchHere(inputLine, inputPosition, inn, 0, ref matchedCapture, endAchorPresent))
                     {
                         var nt = new List<IToken>(tokens);
                         nt[tokenPosition] = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
