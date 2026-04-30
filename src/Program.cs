@@ -14,8 +14,8 @@ static bool MatchHere(
 {
     Console.WriteLine(inputLine[inputPosition]);
     Console.WriteLine(inputPosition);
-    Console.WriteLine(JsonSerializer.Serialize(tokens));
     Console.WriteLine(tokens[tokenPosition]);
+    Console.WriteLine(tokenPosition);
 
 
     // we've gotten through all the tokens without failing
