@@ -12,7 +12,6 @@ static bool MatchHere(
     ref Dictionary<int, string> matchedCapture,
     bool endAchorPresent = false)
 {
-    Console.WriteLine(Environment.StackTrace);
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
@@ -61,8 +60,9 @@ static bool MatchHere(
      */
     if (tokens[tokenPosition] is NQuantifierToken n)
     {
-        //Console.WriteLine(JsonSerializer.Serialize(n));
-        //Console.WriteLine(n.InnerToken.GetType());
+        Console.WriteLine(JsonSerializer.Serialize(n));
+        Console.WriteLine(n.InnerToken.GetType());
+        Console.WriteLine(Environment.StackTrace);
 
         if (n.Number == 0)
         {
