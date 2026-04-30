@@ -128,7 +128,7 @@ static bool MatchHere(
 
         // check the inner token 
         var innerTokens = new List<IToken> { n.InnerToken };
-        for (int i = inputPosition; i <= inputLine.Length; i++)
+        for (int i = inputPosition + 1; i <= inputLine.Length; i++)
         {
             if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, innerTokens, 0, ref matchedCapture, endAchorPresent))
             {
