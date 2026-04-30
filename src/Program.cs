@@ -96,8 +96,10 @@ static bool MatchHere(
                     var inn = new List<IToken> { n.InnerToken };
                     if (MatchHere(inputLine, inputPosition, inn, 0, ref matchedCapture, endAchorPresent))
                     {
+                        Console.WriteLine($"Inner Token Matches {inputLine[inputPosition]}");
                         var nt = new List<IToken>(tokens);
                         nt[tokenPosition] = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
+                        Console.WriteLine($"Moving to next character ({inputLine[inputPosition + 1]}), checking current token again ({nt[tokenPosition]}");
                         return MatchHere(inputLine, inputPosition + 1, nt, tokenPosition, ref matchedCapture, endAchorPresent);
                     }
                     else
