@@ -60,10 +60,6 @@ static bool MatchHere(
      */
     if (tokens[tokenPosition] is NQuantifierToken n)
     {
-        Console.WriteLine(JsonSerializer.Serialize(n));
-        Console.WriteLine(n.InnerToken.GetType());
-        Console.WriteLine(Environment.StackTrace);
-
         if (n.Number == 0)
         {
             if (!n.AtLeastNTimes) // {n}
