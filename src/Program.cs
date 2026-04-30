@@ -358,7 +358,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
     return lt;
 }
 
-static List<string>? MatchPattern(string inputLine, string pattern)
+static List<string> MatchPattern(string inputLine, string pattern)
 {
     var startAnchorPresent = false;
     var endAnchorPresent = false;
@@ -393,9 +393,8 @@ static List<string>? MatchPattern(string inputLine, string pattern)
         if (matched)
         {
             listOfMatches.Add(inputLine.Substring(0, ind));
-            return listOfMatches;
         }
-        return null;
+        return listOfMatches;
     }
 
     for (int j = 0; j <= inputLine.Length - 1; j++)
@@ -411,13 +410,7 @@ static List<string>? MatchPattern(string inputLine, string pattern)
 
     //PrintComplexObject(listOfMatches);
 
-    if (listOfMatches.Count > 0)
-    {
-        Console.WriteLine("HERE");
-        return listOfMatches;
-    }
-
-    return null;
+    return listOfMatches;
 }
 //static string? MatchPattern(string inputLine, string pattern, bool multiLineInput = false)
 //{
