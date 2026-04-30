@@ -49,11 +49,12 @@ static bool MatchHere(
 
     if (tokens[tokenPosition] is NQuantifierToken n)
     {
-        Console.WriteLine(n.InnerToken.GetType());
         if (n.Number == 0 && n.AtLeastNTimes)
         {
+            Console.WriteLine(n.Number);
             if (n.MaxNumber is not null) // it has a max value
             {
+                Console.WriteLine(n.MaxNumber);
                 if (n.MaxNumber == 0) // meaning it's been exhausted
                 {
                     var maxInner = new List<IToken> { n.InnerToken }; // grab the inner token to check 
