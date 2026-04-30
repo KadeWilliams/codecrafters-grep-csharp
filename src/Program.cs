@@ -439,6 +439,7 @@ if (args[0] == "-r")
 else if (args[0] == "-E")
 {
     string pattern = args[1];
+    bool curFound = false;
     bool found = false;
     if (args.Length > 2)
     {
@@ -465,18 +466,20 @@ else if (args[0] == "-E")
             var inputs = inputLine.Split('\n');
             foreach (var i in inputs)
             {
-                found = MatchPattern(i, pattern);
-                if (found)
+                curFound = MatchPattern(i, pattern);
+                if (curFound)
                 {
+                    found = true;
                     Console.WriteLine($"{i}");
                 }
             }
         }
         else
         {
-            found = MatchPattern(inputLine, pattern);
-            if (found)
+            curFound = MatchPattern(inputLine, pattern);
+            if (curFound)
             {
+                found = true;
                 Console.WriteLine($"{inputLine}");
             }
         }
