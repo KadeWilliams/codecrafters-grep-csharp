@@ -396,6 +396,7 @@ static string? MatchPattern(string inputLine, string pattern)
         return null;
     }
 
+    var listOfMatches = new List<string>();
     for (int j = 0; j <= inputLine.Length - 1; j++)
     {
         var (matched, ind) = MatchHere(inputLine, j, tokens, 0, ref consumedChars, endAnchorPresent);
@@ -403,8 +404,14 @@ static string? MatchPattern(string inputLine, string pattern)
         {
             var str = inputLine.Substring(j, ind - j);
             PrintComplexObject(new { matched, ind, str });
-            return inputLine.Substring(j, ind - j);
+            listOfMatches.Add(inputLine.Substring(j, ind - j));
+            //return inputLine.Substring(j, ind - j);
         }
+    }
+
+    foreach (var match in listOfMatches)
+    {
+        Console.WriteLine(match);
     }
 
     return null;
