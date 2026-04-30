@@ -403,81 +403,12 @@ static List<string> MatchPattern(string inputLine, string pattern)
         if (matched)
         {
             var str = inputLine.Substring(j, ind - j);
-            //PrintComplexObject(new { matched, ind, str });
             listOfMatches.Add(inputLine.Substring(j, ind - j));
+            j = ind - 1;
         }
     }
-
-    //PrintComplexObject(listOfMatches);
-
     return listOfMatches;
 }
-//static string? MatchPattern(string inputLine, string pattern, bool multiLineInput = false)
-//{
-//    var startAnchorPresent = false;
-//    var endAnchorPresent = false;
-//    var tokens = new List<IToken>();
-//    int i = 0;
-//    int groupNumber = 0;
-//    while (i < pattern.Length)
-//    {
-//        var value = pattern[i];
-//        if (value == '^' && i == 0)
-//        {
-//            startAnchorPresent = true;
-//            i++;
-//            continue;
-//        }
-
-//        if (value == '$' && i == pattern.Length - 1)
-//        {
-//            endAnchorPresent = true;
-//            i++;
-//            continue;
-//        }
-//        var ct = CreateToken(pattern, i, out i, ref groupNumber);
-//        tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
-//    }
-
-//    var consumedChars = new Dictionary<int, string>();
-//    if (startAnchorPresent)
-//    {
-//        var (matched, ind) = MatchHere(inputLine, 0, tokens, 0, ref consumedChars, endAnchorPresent);
-//        if (matched)
-//        {
-//            return inputLine.Substring(0, ind);
-//        }
-//        return null;
-//    }
-
-//    var listOfMatches = new List<string>();
-//    for (int j = 0; j <= inputLine.Length - 1; j++)
-//    {
-//        var (matched, ind) = MatchHere(inputLine, j, tokens, 0, ref consumedChars, endAnchorPresent);
-//        if (matched)
-//        {
-//            var str = inputLine.Substring(j, ind - j);
-//            //PrintComplexObject(new { matched, ind, str });
-//            if (multiLineInput)
-//                listOfMatches.Add(inputLine.Substring(j, ind - j));
-//            else
-//                return inputLine.Substring(j, ind - j);
-//        }
-//    }
-
-//    //PrintComplexObject(listOfMatches);
-
-//    if (listOfMatches.Count > 0)
-//    {
-//        foreach (var match in listOfMatches)
-//        {
-//            Console.WriteLine(match);
-//        }
-//        //Environment.Exit(0);
-//    }
-
-//    return null;
-//}
 
 static bool ProcessFiles(IEnumerable<string> files, string pattern, bool includeFileName)
 {
