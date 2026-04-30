@@ -564,7 +564,6 @@ else if (args[0] == "-o")
     {
         var foundString = MatchPattern(inputLine, pattern);
         curFound = !string.IsNullOrEmpty(foundString);
-        Console.WriteLine(curFound);
         if (curFound)
         {
             found = true;
