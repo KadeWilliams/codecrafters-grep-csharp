@@ -23,6 +23,13 @@ static bool MatchHere(
 
     if (inputPosition >= inputLine.Length)
     {
+        Console.WriteLine($"Hit end of input. inputPosition={inputPosition}, inputLine.Length={inputLine.Length}");
+        Console.WriteLine($"Token at tokenPosition: {tokens[tokenPosition].GetType()}");
+        if (tokens[tokenPosition] is NQuantifierToken qq)
+        {
+            Console.WriteLine($"NQuant Number={qq.Number}, MaxNumber={qq.MaxNumber}, AtLeastNTimes={qq.AtLeastNTimes}");
+        }
+
         if (tokens[tokenPosition] is not ZeroOrOneToken
             && tokens[tokenPosition] is not ZeroOrMoreToken
             && tokens[tokenPosition] is not NQuantifierToken)
@@ -36,10 +43,10 @@ static bool MatchHere(
             {
                 return false;
             }
-            else if (q.Number == 0 && q.MaxNumber > 0)
-            {
-                return true;
-            }
+            //else if (q.Number == 0 && q.MaxNumber > 0)
+            //{
+            //    return true;
+            //}
         }
         return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
     }
