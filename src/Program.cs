@@ -577,7 +577,8 @@ else if (args[0] == "-E")
             var inputs = inputLine.Split('\n');
             foreach (var i in inputs)
             {
-                curFound = !string.IsNullOrEmpty(MatchPattern(i, pattern));
+                var matches = MatchPattern(i, pattern);
+                curFound = matches.Count > 0;
                 if (curFound)
                 {
                     found = true;
@@ -587,7 +588,8 @@ else if (args[0] == "-E")
         }
         else
         {
-            curFound = !string.IsNullOrEmpty(MatchPattern(inputLine, pattern));
+            var matches = MatchPattern(inputLine, pattern);
+            curFound = matches.Count > 0;
             if (curFound)
             {
                 found = true;
