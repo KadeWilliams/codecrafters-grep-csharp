@@ -188,7 +188,11 @@ static (bool, int) MatchHere(
     else if (tokens[tokenPosition] is BackreferenceToken brt)
     {
         if (!matchedCapture.ContainsKey(brt.Position))
+        {
             return (false, -1);
+        }
+
+        //PrintComplexObject(matchedCapture);
 
         var capturedString = matchedCapture[brt.Position];
         var peekDistance = inputPosition + capturedString.Length;
@@ -199,12 +203,17 @@ static (bool, int) MatchHere(
 
         if (inputLine.Substring(inputPosition, capturedString.Length) == capturedString)
         {
-            return MatchHere(inputLine.Substring(peekDistance), 0, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
+            return MatchHere(inputLine, peekDistance, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
         }
         return (false, -1);
     }
 
     return (false, -1);
+}
+
+static void PrintComplexObject(object v)
+{
+    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(v));
 }
 
 static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int newIndex)
@@ -392,6 +401,8 @@ static string? MatchPattern(string inputLine, string pattern)
         var (matched, ind) = MatchHere(inputLine, j, tokens, 0, ref consumedChars, endAnchorPresent);
         if (matched)
         {
+            var str = inputLine.Substring(j, ind - j);
+            //PrintComplexObject(new { matched, ind, str });
             return inputLine.Substring(j, ind - j);
         }
     }
