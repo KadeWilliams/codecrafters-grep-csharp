@@ -93,6 +93,8 @@ static bool MatchHere(
                                         we simply need to check if the next character in the input also matches the current inner token?
                      */
                     Console.WriteLine("Max Number > 0");
+                    Console.WriteLine(inputLine[inputPosition]);
+                    Console.WriteLine(inputPosition);
                     var inn = new List<IToken> { n.InnerToken };
                     if (MatchHere(inputLine.Substring(inputPosition, 1), 0, inn, 0, ref matchedCapture, endAchorPresent))
                     {
