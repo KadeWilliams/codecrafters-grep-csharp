@@ -2,6 +2,7 @@ using codecrafters_grep.src.Tokens;
 using System.ComponentModel.Design;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 
 static bool MatchHere(
     string inputLine,
@@ -49,6 +50,7 @@ static bool MatchHere(
 
     if (tokens[tokenPosition] is NQuantifierToken n)
     {
+        Console.WriteLine(JsonSerializer.Serialize(n));
         if (n.Number == 0 && n.AtLeastNTimes)
         {
             if (n.MaxNumber is not null) // it has a max value
