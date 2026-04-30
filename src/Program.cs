@@ -83,7 +83,7 @@ static bool MatchHere(
                 if (n.MaxNumber == 0) // {n,0}
                 {
                     // we need to check again to make sure it's not the same? 
-                    return MatchHere(inputLine, inputPosition + 1, tokens, tokenPosition, ref matchedCapture, endAchorPresent);
+                    return MatchHere(inputLine, inputPosition + 1, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                 }
                 if (n.MaxNumber > 0) // {n,m>0}
                 {
@@ -107,17 +107,10 @@ static bool MatchHere(
                         return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                     }
 
-                    //var maxTokens = new List<IToken>(tokens);
-                    //for (int i = inputPosition; i <= inputLine.Length; i++)
-                    //{
-                    //    var newNQuant = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber--);
-                    //    maxTokens[tokenPosition] = newNQuant;
-
-                    //    return MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, maxTokens, 0, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, i, maxTokens, tokenPosition + 1, ref matchedCapture, endAchorPresent); ;
-                    //}
                 }
             }
         }
+
 
         // check the inner token 
         var innerTokens = new List<IToken> { n.InnerToken };
@@ -142,6 +135,14 @@ static bool MatchHere(
 
         return false;
     }
+    //var maxTokens = new List<IToken>(tokens);
+    //for (int i = inputPosition; i <= inputLine.Length; i++)
+    //{
+    //    var newNQuant = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber--);
+    //    maxTokens[tokenPosition] = newNQuant;
+
+    //    return MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, maxTokens, 0, ref matchedCapture, endAchorPresent) || MatchHere(inputLine, i, maxTokens, tokenPosition + 1, ref matchedCapture, endAchorPresent); ;
+    //}
     //if (n.Number == 0)
     //{
     //    if (n.MaxNumber is not null) // it has a max value
