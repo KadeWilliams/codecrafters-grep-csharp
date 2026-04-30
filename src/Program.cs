@@ -254,14 +254,12 @@ static IToken WrapIfQuantifier(string pattern, int index, IToken token, out int 
                 newIndex++;
                 int? maxNumber = null;
                 var nextChar = pattern[newIndex];
-                Console.WriteLine($"PATTERN: {pattern[newIndex]}");
                 if (char.IsDigit(nextChar))
                 {
                     maxNumber = int.Parse(nextChar.ToString());
                     newIndex++;
                 }
                 newIndex++;
-                Console.WriteLine($"PATTERN: {pattern[newIndex]}");
                 return new NQuantifierToken(num, token, true, maxNumber);
             }
             newIndex++;// advance to next token
