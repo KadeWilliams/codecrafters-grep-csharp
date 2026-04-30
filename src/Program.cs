@@ -409,9 +409,13 @@ static string? MatchPattern(string inputLine, string pattern)
         }
     }
 
-    foreach (var match in listOfMatches)
+    if (listOfMatches.Count > 0)
     {
-        Console.WriteLine(match);
+        foreach (var match in listOfMatches)
+        {
+            Console.WriteLine(match);
+        }
+        Environment.Exit(0);
     }
 
     return null;
