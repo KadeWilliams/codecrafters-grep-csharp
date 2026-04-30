@@ -358,7 +358,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
     return lt;
 }
 
-static string? MatchPattern(string inputLine, string pattern)
+static string? MatchPattern(string inputLine, string pattern, bool multiLineInput = false)
 {
     var startAnchorPresent = false;
     var endAnchorPresent = false;
@@ -404,10 +404,12 @@ static string? MatchPattern(string inputLine, string pattern)
         {
             var str = inputLine.Substring(j, ind - j);
             //PrintComplexObject(new { matched, ind, str });
-            listOfMatches.Add(inputLine.Substring(j, ind - j));
-            //return inputLine.Substring(j, ind - j);
+            //listOfMatches.Add(inputLine.Substring(j, ind - j));
+            return inputLine.Substring(j, ind - j);
         }
     }
+
+    //PrintComplexObject(listOfMatches);
 
     if (listOfMatches.Count > 0)
     {
