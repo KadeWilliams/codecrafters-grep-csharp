@@ -12,8 +12,7 @@ static bool MatchHere(
     ref Dictionary<int, string> matchedCapture,
     bool endAchorPresent = false)
 {
-
-
+    Console.WriteLine(Environment.StackTrace);
     // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
@@ -358,7 +357,6 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
 
 static bool MatchPattern(string inputLine, string pattern)
 {
-    Console.WriteLine(Environment.StackTrace);
     var startAnchorPresent = false;
     var endAnchorPresent = false;
     var tokens = new List<IToken>();
