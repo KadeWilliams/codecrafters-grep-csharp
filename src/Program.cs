@@ -84,7 +84,7 @@ static bool MatchHere(
                 if (n.MaxNumber == 0) // {n,0}
                 {
                     // we need to check again to make sure it's not the same? 
-                    return MatchHere(inputLine, inputPosition + 1, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
+                    return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                 }
                 if (n.MaxNumber > 0) // {n,m>0}
                 {
