@@ -9,6 +9,7 @@ public class LiteralToken : IToken
     }
     public bool Matches(char c)
     {
+        Console.WriteLine(c);
         return c == _character;
     }
 }
