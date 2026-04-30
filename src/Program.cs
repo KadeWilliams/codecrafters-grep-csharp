@@ -12,10 +12,8 @@ static bool MatchHere(
     ref Dictionary<int, string> matchedCapture,
     bool endAchorPresent = false)
 {
-    // we've gotten through all the tokens without failing
     if (tokenPosition == tokens.Count())
     {
-        // we've completed the tokens but not reached the end of the input and the end of the input has to match 
         if (endAchorPresent && inputPosition < inputLine.Length)
         {
             return false;
@@ -23,7 +21,6 @@ static bool MatchHere(
         return true;
     }
 
-    // we've gotten through all of the input characters without passing
     if (inputPosition >= inputLine.Length)
     {
         if (tokens[tokenPosition] is not ZeroOrOneToken
@@ -47,17 +44,6 @@ static bool MatchHere(
         return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
     }
 
-    /*
-        in reality all we need to check:
-            if n.Number > 0 
-                do the normal recursion
-            if n.Number == 0
-                if !AtLeastNTimes ({n})
-                if AtLeastNTimes && MaxNumber is null ({n,})
-                    ZeroOrMoreToken
-                if AtLeastNTimes && MaxNumber == 0 ({n,0}) m exhausted (do one more check? then stop?)
-                if AtLeastNTimes && MaxNumber > 0 ({n,m>0}) we've satisfied the check we can skip 
-     */
     if (tokens[tokenPosition] is NQuantifierToken n)
     {
         if (n.Number == 0)
@@ -93,7 +79,6 @@ static bool MatchHere(
                     {
                         var result = MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                         return result;
-                        //return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                     }
 
                 }
@@ -101,13 +86,11 @@ static bool MatchHere(
         }
 
 
-        // check the inner token 
         var innerTokens = new List<IToken> { n.InnerToken };
         for (int i = inputPosition + 1; i <= inputLine.Length; i++)
         {
             if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, innerTokens, 0, ref matchedCapture, endAchorPresent))
             {
-                // we need to reduce the n.Number and n.MaxNumber (if present)
                 var maxNumber = n?.MaxNumber;
 
                 if (maxNumber is not null)
@@ -481,6 +464,7 @@ else if (args[0] == "-E")
         string inputLine = Console.In.ReadToEnd();
         if (MatchPattern(inputLine, pattern))
         {
+            Console.WriteLine($"{inputLine}");
             Environment.Exit(0);
         }
         else
