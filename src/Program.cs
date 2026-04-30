@@ -358,6 +358,7 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
 
 static bool MatchPattern(string inputLine, string pattern)
 {
+    Console.WriteLine(Environment.StackTrace);
     var startAnchorPresent = false;
     var endAnchorPresent = false;
     var tokens = new List<IToken>();
@@ -405,7 +406,6 @@ static bool ProcessFiles(IEnumerable<string> files, string pattern, bool include
     bool lineFound = false;
     foreach (var file in files)
     {
-        Console.WriteLine(Environment.StackTrace);
         var inputLines = File.ReadAllLines(file);
         foreach (var line in inputLines)
         {
