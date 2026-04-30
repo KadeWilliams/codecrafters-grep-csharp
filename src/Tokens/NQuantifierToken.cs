@@ -10,11 +10,13 @@ public class NQuantifierToken : IToken
 {
     private int _number;
     private IToken _token;
+    private bool _atLeastNTimes = false;
     private int? _maxNumber;
-    public NQuantifierToken(int number, IToken token, int? maxNumber = null)
+    public NQuantifierToken(int number, IToken token, bool atLeastNTimes, int? maxNumber = null)
     {
         _number = number;
         _token = token;
+        _atLeastNTimes = atLeastNTimes;
         _maxNumber = maxNumber;
     }
 
@@ -29,6 +31,7 @@ public class NQuantifierToken : IToken
         set => _number = value;
     }
     public IToken InnerToken => _token;
+    public bool AtLeastNTimes => _atLeastNTimes;
     public int? MaxNumber
     {
         get => _maxNumber;
