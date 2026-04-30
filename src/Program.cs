@@ -142,8 +142,14 @@ static (bool, int) MatchHere(
     {
         return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
     }
-    else if (tokens[tokenPosition] is ZeroOrMoreToken)
+    else if (tokens[tokenPosition] is ZeroOrMoreToken z)
     {
+        var t = new List<IToken> { z.Token };
+        var left = MatchHere(inputLine, inputPosition, t, 0, ref matchedCapture, endAchorPresent);
+        if (left.Item1)
+        {
+            return MatchHere(inputLine, left.Item2, tokens, tokenPosition, ref matchedCapture, endAchorPresent);
+        }
         return MatchHere(inputLine, inputPosition, tokens, ++tokenPosition, ref matchedCapture, endAchorPresent);
     }
     else if (tokens[tokenPosition] is AlternationToken alt)

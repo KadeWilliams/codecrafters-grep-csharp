@@ -11,4 +11,5 @@ public class ZeroOrMoreToken : IToken
     {
         return _token.Matches(c);
     }
+    public IToken Token => _token;
 }
