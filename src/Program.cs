@@ -358,11 +358,12 @@ static IToken CreateToken(string pattern, int index, out int newIndex, ref int g
     return lt;
 }
 
-static string? MatchPattern(string inputLine, string pattern, bool multiLineInput = false)
+static List<string>? MatchPattern(string inputLine, string pattern)
 {
     var startAnchorPresent = false;
     var endAnchorPresent = false;
     var tokens = new List<IToken>();
+    var listOfMatches = new List<string>();
     int i = 0;
     int groupNumber = 0;
     while (i < pattern.Length)
@@ -391,12 +392,12 @@ static string? MatchPattern(string inputLine, string pattern, bool multiLineInpu
         var (matched, ind) = MatchHere(inputLine, 0, tokens, 0, ref consumedChars, endAnchorPresent);
         if (matched)
         {
-            return inputLine.Substring(0, ind);
+            listOfMatches.Add(inputLine.Substring(0, ind));
+            return listOfMatches;
         }
         return null;
     }
 
-    var listOfMatches = new List<string>();
     for (int j = 0; j <= inputLine.Length - 1; j++)
     {
         var (matched, ind) = MatchHere(inputLine, j, tokens, 0, ref consumedChars, endAnchorPresent);
@@ -404,10 +405,7 @@ static string? MatchPattern(string inputLine, string pattern, bool multiLineInpu
         {
             var str = inputLine.Substring(j, ind - j);
             //PrintComplexObject(new { matched, ind, str });
-            if (multiLineInput)
-                listOfMatches.Add(inputLine.Substring(j, ind - j));
-            else
-                return inputLine.Substring(j, ind - j);
+            listOfMatches.Add(inputLine.Substring(j, ind - j));
         }
     }
 
@@ -415,15 +413,77 @@ static string? MatchPattern(string inputLine, string pattern, bool multiLineInpu
 
     if (listOfMatches.Count > 0)
     {
-        foreach (var match in listOfMatches)
-        {
-            Console.WriteLine(match);
-        }
-        //Environment.Exit(0);
+        return listOfMatches;
     }
 
     return null;
 }
+//static string? MatchPattern(string inputLine, string pattern, bool multiLineInput = false)
+//{
+//    var startAnchorPresent = false;
+//    var endAnchorPresent = false;
+//    var tokens = new List<IToken>();
+//    int i = 0;
+//    int groupNumber = 0;
+//    while (i < pattern.Length)
+//    {
+//        var value = pattern[i];
+//        if (value == '^' && i == 0)
+//        {
+//            startAnchorPresent = true;
+//            i++;
+//            continue;
+//        }
+
+//        if (value == '$' && i == pattern.Length - 1)
+//        {
+//            endAnchorPresent = true;
+//            i++;
+//            continue;
+//        }
+//        var ct = CreateToken(pattern, i, out i, ref groupNumber);
+//        tokens.Add(WrapIfQuantifier(pattern, i, ct, out i));
+//    }
+
+//    var consumedChars = new Dictionary<int, string>();
+//    if (startAnchorPresent)
+//    {
+//        var (matched, ind) = MatchHere(inputLine, 0, tokens, 0, ref consumedChars, endAnchorPresent);
+//        if (matched)
+//        {
+//            return inputLine.Substring(0, ind);
+//        }
+//        return null;
+//    }
+
+//    var listOfMatches = new List<string>();
+//    for (int j = 0; j <= inputLine.Length - 1; j++)
+//    {
+//        var (matched, ind) = MatchHere(inputLine, j, tokens, 0, ref consumedChars, endAnchorPresent);
+//        if (matched)
+//        {
+//            var str = inputLine.Substring(j, ind - j);
+//            //PrintComplexObject(new { matched, ind, str });
+//            if (multiLineInput)
+//                listOfMatches.Add(inputLine.Substring(j, ind - j));
+//            else
+//                return inputLine.Substring(j, ind - j);
+//        }
+//    }
+
+//    //PrintComplexObject(listOfMatches);
+
+//    if (listOfMatches.Count > 0)
+//    {
+//        foreach (var match in listOfMatches)
+//        {
+//            Console.WriteLine(match);
+//        }
+//        //Environment.Exit(0);
+//    }
+
+//    return null;
+//}
 
 static bool ProcessFiles(IEnumerable<string> files, string pattern, bool includeFileName)
 {
@@ -433,7 +493,8 @@ static bool ProcessFiles(IEnumerable<string> files, string pattern, bool include
         var inputLines = File.ReadAllLines(file);
         foreach (var line in inputLines)
         {
-            if (!string.IsNullOrEmpty(MatchPattern(line, pattern)))
+            var matches = MatchPattern(line, pattern);
+            if (matches.Count > 0)
             {
                 lineFound = true;
                 if (includeFileName)
@@ -555,23 +616,29 @@ else if (args[0] == "-o")
         var inputs = inputLine.Split('\n');
         foreach (var i in inputs)
         {
-            var foundString = MatchPattern(i, pattern, true);
-            curFound = !string.IsNullOrEmpty(foundString);
+            var matches = MatchPattern(i, pattern);
+            curFound = matches.Count > 0;
             if (curFound)
             {
                 found = true;
-                Console.WriteLine($"{foundString}");
+                foreach (var match in matches)
+                {
+                    Console.WriteLine($"{match}");
+                }
             }
         }
     }
     else
     {
-        var foundString = MatchPattern(inputLine, pattern, true);
-        curFound = !string.IsNullOrEmpty(foundString);
+        var matches = MatchPattern(inputLine, pattern);
+        curFound = matches.Count > 0;
         if (curFound)
         {
             found = true;
-            Console.WriteLine($"{foundString}");
+            foreach (var match in matches)
+            {
+                Console.WriteLine($"{match}");
+            }
         }
     }
 
