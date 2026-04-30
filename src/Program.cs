@@ -104,6 +104,7 @@ static bool MatchHere(
                     }
                     else
                     {
+                        Console.WriteLine($"Inner Token doesn't match ({inputLine[inputPosition]}) ({tokens[tokenPosition + 1]})");
                         var result = MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                         return result;
                         //return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
