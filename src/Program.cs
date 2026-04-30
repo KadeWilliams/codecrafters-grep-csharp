@@ -419,7 +419,7 @@ static string? MatchPattern(string inputLine, string pattern, bool multiLineInpu
         {
             Console.WriteLine(match);
         }
-        Environment.Exit(0);
+        //Environment.Exit(0);
     }
 
     return null;
