@@ -49,6 +49,7 @@ static bool MatchHere(
 
     if (tokens[tokenPosition] is NQuantifierToken n)
     {
+        Console.WriteLine(n.InnerToken.GetType());
         if (n.Number == 0 && n.AtLeastNTimes)
         {
             if (n.MaxNumber is not null) // it has a max value
