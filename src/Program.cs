@@ -465,10 +465,10 @@ else if (args[0] == "-E")
             var inputs = inputLine.Split('\n');
             foreach (var i in inputs)
             {
-                found = MatchPattern(inputLine, pattern);
+                found = MatchPattern(i, pattern);
                 if (found)
                 {
-                    Console.WriteLine($"{inputLine}");
+                    Console.WriteLine($"{i}");
                 }
             }
         }
