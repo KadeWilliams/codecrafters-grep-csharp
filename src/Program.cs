@@ -108,7 +108,6 @@ static bool MatchHere(
                         Console.WriteLine("Inner Token Does Not Match");
                         Console.WriteLine(inputLine[inputPosition]);
                         Console.WriteLine(inputPosition);
-                        Console.WriteLine(tokens[tokenPosition]);
                         Console.WriteLine(tokens[tokenPosition + 1]);
 
                         var result = MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
