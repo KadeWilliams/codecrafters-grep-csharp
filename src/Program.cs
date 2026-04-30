@@ -472,6 +472,14 @@ else if (args[0] == "-E")
                 }
             }
         }
+        else
+        {
+            found = MatchPattern(inputLine, pattern);
+            if (found)
+            {
+                Console.WriteLine($"{inputLine}");
+            }
+        }
     }
 
     if (found)
