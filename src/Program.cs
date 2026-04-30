@@ -402,7 +402,7 @@ static string? MatchPattern(string inputLine, string pattern)
         if (matched)
         {
             var str = inputLine.Substring(j, ind - j);
-            //PrintComplexObject(new { matched, ind, str });
+            PrintComplexObject(new { matched, ind, str });
             return inputLine.Substring(j, ind - j);
         }
     }
