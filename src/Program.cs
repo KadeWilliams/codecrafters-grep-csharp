@@ -94,7 +94,7 @@ static bool MatchHere(
                      */
                     Console.WriteLine("Max Number > 0");
                     var inn = new List<IToken> { n.InnerToken };
-                    if (MatchHere(inputLine.Substring(inputPosition, 1), inputPosition, inn, 0, ref matchedCapture, endAchorPresent))
+                    if (MatchHere(inputLine.Substring(inputPosition, 1), 0, inn, 0, ref matchedCapture, endAchorPresent))
                     {
                         Console.WriteLine("Inner Token Matches");
                         var nt = new List<IToken>(tokens);
