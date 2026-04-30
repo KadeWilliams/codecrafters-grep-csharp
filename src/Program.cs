@@ -51,21 +51,18 @@ static bool MatchHere(
     {
         if (n.Number == 0 && n.AtLeastNTimes)
         {
-            Console.WriteLine(n.Number);
             if (n.MaxNumber is not null) // it has a max value
             {
-                Console.WriteLine(n.MaxNumber);
                 if (n.MaxNumber == 0) // meaning it's been exhausted
                 {
                     var maxInner = new List<IToken> { n.InnerToken }; // grab the inner token to check 
                     for (int i = 0; i < inputLine.Length; i++) // check from the beginning until it fails, return false?
                     {
-                        if (!MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, maxInner, 0, ref matchedCapture, endAchorPresent))
+                        if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, maxInner, 0, ref matchedCapture, endAchorPresent))
                         {
                             return false;
                         }
                     }
-                    // strip the inner token out to check if it's another match 
                     return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                 }
                 else
