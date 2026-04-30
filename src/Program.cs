@@ -111,7 +111,10 @@ static bool MatchHere(
                         Console.WriteLine(tokens[tokenPosition]);
                         Console.WriteLine(tokens[tokenPosition + 1]);
 
-                        return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
+                        var result = MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
+                        Console.WriteLine($"MatchHere result: {result}");
+                        return result;
+                        //return MatchHere(inputLine, inputPosition, tokens, tokenPosition + 1, ref matchedCapture, endAchorPresent);
                     }
 
                 }
