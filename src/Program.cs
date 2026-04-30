@@ -413,6 +413,7 @@ static List<string>? MatchPattern(string inputLine, string pattern)
 
     if (listOfMatches.Count > 0)
     {
+        Console.WriteLine("HERE");
         return listOfMatches;
     }
 
