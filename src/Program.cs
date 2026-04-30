@@ -83,6 +83,7 @@ static bool MatchHere(
                         if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, newTokens, 0, ref matchedCapture, endAchorPresent))
                         {
                             newTokens[tokenPosition] = new NQuantifierToken(n.Number - 1, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
+                            Console.WriteLine("Getting here");
                             return MatchHere(inputLine, i, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
                         }
                     }
