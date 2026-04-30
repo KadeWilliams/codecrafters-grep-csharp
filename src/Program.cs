@@ -75,6 +75,7 @@ static bool MatchHere(
                 }
                 if (n.MaxNumber > 0) // {n,m>0}
                 {
+                    Console.WriteLine($"MaxNumber>0 branch: inputPos={inputPosition}, char={inputLine[inputPosition]}, MaxNumber={n.MaxNumber}");
                     var inn = new List<IToken> { n.InnerToken };
                     if (MatchHere(inputLine, inputPosition, inn, 0, ref matchedCapture, endAchorPresent))
                     {
