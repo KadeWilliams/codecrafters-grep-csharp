@@ -460,12 +460,20 @@ else if (args[0] == "-E")
     else
     {
         string inputLine = Console.In.ReadToEnd();
-        found = MatchPattern(inputLine, pattern);
-        if (found)
+        if (inputLine.Contains("\n"))
         {
-            Console.WriteLine($"{inputLine}");
+            var inputs = inputLine.Split('\n');
+            foreach (var i in inputs)
+            {
+                found = MatchPattern(inputLine, pattern);
+                if (found)
+                {
+                    Console.WriteLine($"{inputLine}");
+                }
+            }
         }
     }
+
     if (found)
     {
         Environment.Exit(0);
