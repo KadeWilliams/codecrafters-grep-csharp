@@ -72,7 +72,7 @@ static bool MatchHere(
                 {
                     //    // return MatchHere() || MatchHere();
                     var newTokens = new List<IToken>(tokens);
-                    newTokens[tokenPosition] = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
+                    //newTokens[tokenPosition] = new NQuantifierToken(n.Number, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
                     //    if (n.InnerToken.Matches(inputLine[inputPosition]))
                     //    {
                     //        return MatchHere(inputLine, inputPosition, newTokens, tokenPosition, ref matchedCapture, endAchorPresent)
@@ -82,7 +82,7 @@ static bool MatchHere(
                     {
                         if (MatchHere(inputLine.Substring(inputPosition, i - inputPosition), 0, newTokens, 0, ref matchedCapture, endAchorPresent))
                         {
-                            newTokens[tokenPosition] = new NQuantifierToken(n.Number - 1, n.InnerToken, n.AtLeastNTimes, n.MaxNumber);
+                            newTokens[tokenPosition] = new NQuantifierToken(n.Number - 1, n.InnerToken, n.AtLeastNTimes, n.MaxNumber - 1);
                             return MatchHere(inputLine, i, newTokens, tokenPosition, ref matchedCapture, endAchorPresent);
                         }
                     }
